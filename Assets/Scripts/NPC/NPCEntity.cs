@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
+using System;
 
 public class NPCEntity : MonoBehaviour
 {
@@ -14,7 +15,18 @@ public class NPCEntity : MonoBehaviour
     private Transform movementTarget = null;
 
     protected bool IsGrounded = false;
-    public PlanetController HostPlanet;
+
+    private PlanetController hostPlanet;
+    public PlanetController HostPlanet
+    {
+        get { return hostPlanet; }
+        set
+        {
+            hostPlanet = value;
+            transform.SetParent(hostPlanet.transform);
+        }
+    }
+
     public PlanetController DestinationPlanet;
 
     NpcActions.Action currentAction;
@@ -35,6 +47,7 @@ public class NPCEntity : MonoBehaviour
 
     public UnityEvent OnGotAboard;
     public UnityEvent OnReachedDestination;
+    public event Action OnExitShip;
     private bool IsAboard => HostPlanet == null;
 
     private void Awake()
@@ -83,18 +96,14 @@ public class NPCEntity : MonoBehaviour
     {
         if(collision.gameObject.tag == "Planet")
         {
-            Animator.enabled = true;
-            HostPlanet = collision.gameObject.GetComponent<PlanetController>();
-            transform.SetParent(HostPlanet.transform);
-
             if (HostPlanet == DestinationPlanet)
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
             }
-            else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
-            {
-                CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
-            }
+            //else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
+            //{
+            //    CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
+            //}
             else
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.Wonder);
@@ -118,6 +127,12 @@ public class NPCEntity : MonoBehaviour
         }
     }
 
+    public void Initialize(PlanetController host, PlanetController destination)
+    {
+        this.HostPlanet = host;
+        this.DestinationPlanet = destination;
+    }
+
     public void MoveTo(Transform destination)
     {
         StopAllCoroutines();
@@ -126,8 +141,9 @@ public class NPCEntity : MonoBehaviour
 
     protected IEnumerator MoveToCR(Transform destination)
     {
-        Animator.SetTrigger("Idle");
-        yield return new WaitForSeconds(1.5f);
+        Animator.ResetTrigger("Idle");
+        yield return new WaitForSeconds(.5f);
+        Animator.enabled = true;
         movementTarget = destination;
         Animator.ResetTrigger("Idle");
         Animator.SetTrigger("Run");
@@ -153,16 +169,16 @@ public class NPCEntity : MonoBehaviour
             newRotation = Quaternion.FromToRotation(Vector3.up, contactPointNormal);
         }
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, .15f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, .4f);
     }
 
     public void EnterShip()
     {
         StopAllCoroutines();
         Debug.Log("Entering ship...\nGet Me to: " + DestinationPlanet.name);
+        PlaySceneCanvasController.Instance.TravellersPanelController.AddEntry(this);
         PlayerController.Instance.AddPassenger(this);
         this.HostPlanet.CurrentTraveller = null;
-        this.HostPlanet = null;
         this.IsGrounded = false;
         this.Animator.enabled = false;
         this.OnGotAboard?.Invoke();
@@ -173,7 +189,9 @@ public class NPCEntity : MonoBehaviour
     {
         gameObject.SetActive(true);
         HostPlanet = planet;
-        //transform.rotation = Quaternion.FromToRotation(Vector3.up, (HostPlanet.ReleaseSpot.transform.up - HostPlanet.ReleaseSpot.position));
+        transform.rotation = Quaternion.identity;
         transform.position = HostPlanet.ReleaseSpot.position;
+        PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
+        this.OnExitShip?.Invoke();
     }
 }

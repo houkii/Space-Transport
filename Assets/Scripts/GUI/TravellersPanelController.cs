@@ -14,16 +14,20 @@ public class TravellersPanelController : MonoBehaviour
 
     private List<TravellerUIEntry> travellerEntries = new List<TravellerUIEntry>();
 
-
     public void AddEntry(NPCEntity npc)
     {
         var entry = Instantiate(travellerUIEntryPrefab, this.transform);
         var entryCtrl = entry.GetComponent<TravellerUIEntry>();
-        entryCtrl.Initialize(npc.name, npc.DestinationPlanet.name);
-        npc.OnReachedDestination.AddListener(() => this.RemoveEntry(entryCtrl));
+        entryCtrl.Initialize(npc);
         var entryRT = entry.GetComponent<RectTransform>();
         this.SetPosition(ref entryRT);
         travellerEntries.Add(entryCtrl);
+    }
+
+    public void RemoveEntryOfNpc(NPCEntity entity)
+    {
+        var entryToRemove = travellerEntries.Find(x => x.Npc == entity);
+        this.RemoveEntry(entryToRemove);
     }
 
     public void RemoveEntry(TravellerUIEntry entry)

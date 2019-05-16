@@ -8,4 +8,5 @@ public class Mission : ScriptableObject
 {
     int MissionID;
     public List<PlanetInstance> Planets;
+    public List<TravellerInstance> NpcsToSpawn;
 }

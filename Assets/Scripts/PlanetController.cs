@@ -59,17 +59,18 @@ public class PlanetController : MonoBehaviour
     {
         var spawnedTraveller = Instantiate(traveller.TravelerPrefab, spawnPosition, Quaternion.identity);
 
+        var travellerController = spawnedTraveller.GetComponent<NPCEntity>();
         // Bind planet ID to Planet Controller
-        spawnedTraveller.GetComponent<NPCEntity>().DestinationPlanet =
+        travellerController.DestinationPlanet =
             GameController.Instance.MissionController.MissionPlanets[traveller.DestinationPlanet];
-
+        travellerController.HostPlanet = this;
         return spawnedTraveller;
     }
 
     public PlanetController Initialize(PlanetInstance data)
     {
         this.Data = data;
-        this.Spawn();
+        //this.Spawn();
         return this;
     }
 

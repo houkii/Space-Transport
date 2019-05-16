@@ -11,9 +11,12 @@ public class TravellerUIEntry : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI destinationName;
 
-    public void Initialize(string name, string destination)
+    public NPCEntity Npc { get; private set; }
+
+    public void Initialize(NPCEntity entity)
     {
-        astronautName.text = name;
-        destinationName.text = destination;
+        Npc = entity;
+        astronautName.text = Npc.name;
+        destinationName.text = Npc.DestinationPlanet.name;
     }
 }

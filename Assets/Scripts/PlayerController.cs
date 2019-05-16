@@ -89,6 +89,17 @@ public class PlayerController : MonoBehaviour
         {
             this.StopEngine();
         }
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            foreach(NPCEntity trav in Passengers)
+            {
+                trav.DestinationPlanet = this.HostPlanet;
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            this.ReleasePassengers(this.HostPlanet, true);
+        }
 
         if(this.isMoving)
         {
@@ -190,13 +201,30 @@ public class PlayerController : MonoBehaviour
         this.Passengers.Remove(entity);
     }
 
-    private void ReleasePassengers(PlanetController planet)
+    private void ReleasePassengerToPlanet(NPCEntity entity, PlanetController planet)
     {
-        var leavers = Passengers.FindAll(x => x.DestinationPlanet == planet);
-        if(leavers.Count > 0)
+        entity.ExitShip(planet);
+        this.RemovePassenger(entity);
+    }
+
+    private void ReleasePassengers(PlanetController planet, bool releaseAll = false)
+    {
+        if(releaseAll)
         {
-            StartCoroutine(ReleasePassengersCR(leavers, planet));
+            for(int i = Passengers.Count-1; i >= 0; i--)
+            { 
+                ReleasePassengerToPlanet(Passengers[i], this.HostPlanet);
+            }
         }
+        else
+        {
+            var leavers = Passengers.FindAll(x => x.DestinationPlanet == planet);
+            if (leavers.Count > 0)
+            {
+                StartCoroutine(ReleasePassengersCR(leavers, planet));
+            }
+        }
+        
     }
 
     private IEnumerator ReleasePassengersCR(List<NPCEntity> leavers, PlanetController planet)
@@ -205,9 +233,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         foreach (NPCEntity leaver in leavers)
         {
-            leaver.ExitShip(planet);
-            this.RemovePassenger(leaver);
-            yield return new WaitForSeconds(1.5f);
+            ReleasePassengerToPlanet(leaver, planet);
+             yield return new WaitForSeconds(1.5f);
         }
         this.isLocked = false;
     }

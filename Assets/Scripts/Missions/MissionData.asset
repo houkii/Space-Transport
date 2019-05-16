@@ -21,10 +21,12 @@ MonoBehaviour:
     TravellerInstances:
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
+      HostPlanet: 0
       DestinationPlanet: 1
       SpawnDelay: 0
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
+      HostPlanet: 0
       DestinationPlanet: 1
       SpawnDelay: 0
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
@@ -35,10 +37,12 @@ MonoBehaviour:
     TravellerInstances:
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
+      HostPlanet: 0
       DestinationPlanet: 2
       SpawnDelay: 0
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
+      HostPlanet: 0
       DestinationPlanet: 2
       SpawnDelay: 0
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
@@ -49,9 +53,27 @@ MonoBehaviour:
     TravellerInstances:
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
+      HostPlanet: 0
       DestinationPlanet: 0
       SpawnDelay: 0
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
+      HostPlanet: 0
       DestinationPlanet: 0
       SpawnDelay: 0
+  NpcsToSpawn:
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 0
+    DestinationPlanet: 1
+    SpawnDelay: 3
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 0
+    DestinationPlanet: 1
+    SpawnDelay: 3
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 0
+    DestinationPlanet: 1
+    SpawnDelay: 3

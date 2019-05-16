@@ -32,7 +32,7 @@ public class PlanetInstance
 
     public TravellerInstance GetNextTraveller()
     {
-        if (!Initialized)
+        //if (!Initialized)
             Initialize();
 
         if (TravellersQueue.Count > 0)

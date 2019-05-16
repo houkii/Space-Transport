@@ -19,7 +19,6 @@ namespace NpcActions
         {
             if (other.gameObject.tag == "Player")
             {
-                PlaySceneCanvasController.Instance.TravellersPanelController.AddEntry(npc);
                 npc.EnterShip();
             }
         }

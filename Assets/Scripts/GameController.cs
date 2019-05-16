@@ -7,6 +7,8 @@ public class GameController : Singleton<GameController>
 {
     [SerializeField]
     public MissionController MissionController;
+    [SerializeField]
+    public bool DevModeEnabled = true;
 
     void Update()
     {
