@@ -185,11 +185,11 @@ public class NPCEntity : MonoBehaviour
 
     public void ExitShip(PlanetController planet)
     {
-        gameObject.SetActive(true);
         HostPlanet = planet;
         transform.rotation = Quaternion.identity;
         transform.position = HostPlanet.ReleaseSpot.position;
         PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
+        gameObject.SetActive(true);
         this.OnExitShip?.Invoke();
     }
 }

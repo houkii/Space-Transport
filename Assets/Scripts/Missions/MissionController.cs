@@ -38,6 +38,7 @@ public class MissionController
 
     private void InitializeNpcs()
     {
+        NpcsToSpawn.Clear();
         foreach(TravellerInstance traveller in CurrentMission.NpcsToSpawn)
         {
             NpcsToSpawn.Enqueue(traveller);
@@ -58,6 +59,7 @@ public class MissionController
 
     private void Spawn()
     {
+        Debug.Log("Npcs to spawn: " + NpcsToSpawn.Count);
         if(this.NpcsToSpawn.Count > 1)
         {
             var spawnedNpcController = this.SpawnNPC(NpcsToSpawn.Dequeue());

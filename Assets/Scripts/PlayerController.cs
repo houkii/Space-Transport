@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     public UnityAction<PlanetController> OnPlayerLanded;
     public UnityAction<PlanetController> OnPlayerTookOff;
 
+    public PlayerStatistics Stats = new PlayerStatistics();
+
     private List<NPCEntity> Passengers = new List<NPCEntity>();
 
     private AudioSource Audio;
@@ -193,6 +195,7 @@ public class PlayerController : MonoBehaviour
 
     public void AddPassenger(NPCEntity entity)
     {
+        entity.OnReachedDestination.AddListener(() => Stats.AddScore(666));
         this.Passengers.Add(entity);
     }
 
