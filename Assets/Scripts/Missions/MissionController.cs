@@ -9,13 +9,12 @@ public class MissionController
 {
     [SerializeField]
     private List<Mission> AvailableMissions;
+    private Queue<TravellerInstance> NpcsToSpawn = new Queue<TravellerInstance>();
 
     public Mission CurrentMission { get; private set; }
     public List<PlanetController> MissionPlanets { get; private set; }
     public int CurrentMissionID { get; private set; }
-
-    private Queue<TravellerInstance> NpcsToSpawn = new Queue<TravellerInstance>();
-    public UnityAction<NPCEntity> OnEntitySpawned;
+    public UnityAction<NPCEntity> OnEntitySpawned { get; set; }
 
     public void InitializeMission(int missionID)
     {
@@ -79,7 +78,6 @@ public class MissionController
         npcController.Initialize(planetToSpawnOn, MissionPlanets[npc.DestinationPlanet]);
         OnEntitySpawned?.Invoke(npcController);
         return npcController;
-        //npcController.OnReachedDestination.AddListener(SpawnNPC)
     }
 
 }

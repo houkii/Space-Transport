@@ -11,9 +11,7 @@ public class NPCEntity : MonoBehaviour
     private float speedModifier = 0.2f;
 
     protected Animator Animator;
-    //protected Vector3 MovementTarget = Vector3.zero;
     private Transform movementTarget = null;
-
     protected bool IsGrounded = false;
 
     private PlanetController hostPlanet;
@@ -55,7 +53,7 @@ public class NPCEntity : MonoBehaviour
         gameObject.name = NpcNames.RandomName;
         Animator = GetComponent<Animator>();
         Animator.enabled = false;
-        this.View = PlaySceneCanvasController.Instance.AddNpcCanvas(this); 
+        this.View = PlaySceneCanvasController.Instance.AddNpcCanvas(this);
     }
 
     private void OnEnable()
@@ -100,10 +98,10 @@ public class NPCEntity : MonoBehaviour
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
             }
-            //else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
-            //{
-            //    CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
-            //}
+            else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
+            {
+                CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
+            }
             else
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.Wonder);
