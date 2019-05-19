@@ -10,6 +10,15 @@ public class GameController : Singleton<GameController>
     public MissionController MissionController;
     [SerializeField]
     public bool DevModeEnabled = true;
+    public RewardFactory Rewards { get; private set; }
+    public GameSettings Settings { get; private set; }
+
+    private void Start()
+    {
+        Rewards = new RewardFactory();
+        Settings = new GameSettings();
+        //MissionController.OnLevelCompleted.AddListener(SceneController.Instance.LoadMainMenu);
+    }
 
     void Update()
     {
@@ -23,7 +32,13 @@ public class GameController : Singleton<GameController>
         }
         if(Input.GetKeyDown(KeyCode.Z))
         {
-            PlayerController.Instance.Stats.AddScore(1000);
+            PlayerController.Instance.Stats.AddScore(Rewards.GetReward(Reward.RewardType.DeliveryReward, new DeliveryRewardArgs(5,5)));
         }
     }
+}
+
+public class GameSettings
+{
+    public readonly float FuelCost = -50f;
+    public readonly float FuelLoading = 150f;
 }

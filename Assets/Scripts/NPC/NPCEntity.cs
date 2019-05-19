@@ -9,43 +9,33 @@ public class NPCEntity : MonoBehaviour
 {
     [SerializeField]
     private float speedModifier = 0.2f;
-
-    protected Animator Animator;
+    private Animator Animator;
     private Transform movementTarget = null;
-    protected bool IsGrounded = false;
 
     private PlanetController hostPlanet;
     public PlanetController HostPlanet
     {
         get { return hostPlanet; }
-        set
-        {
-            hostPlanet = value;
-            transform.SetParent(hostPlanet.transform);
-        }
+        set { SetHostPlanet(value); }
     }
 
-    public PlanetController DestinationPlanet;
-
-    NpcActions.Action currentAction;
-    NpcActions.Action CurrentAction
+    private NpcActions.Action currentAction;
+    public NpcActions.Action CurrentAction
     {
         get { return currentAction; }
-        set
-        {
-            if(currentAction == null || (!currentAction.IsLocked && currentAction.Type != value.Type))
-            {
-                currentAction = value;
-                currentAction.Process(this);
-            }
-        }
+        set { SetCurrentAction(value); }
     }
 
+    public PlanetController DestinationPlanet { get; set; }
     public NpcEntityCanvas View { get; private set; }
 
+    public DeliveryRewardArgs DeliveryRewardData { get; private set; }
+
+    // Npc events
     public UnityEvent OnGotAboard;
     public UnityEvent OnReachedDestination;
     public event Action OnExitShip;
+
     private bool IsAboard => HostPlanet == null;
 
     private void Awake()
@@ -67,32 +57,14 @@ public class NPCEntity : MonoBehaviour
     {
         PlayerController.Instance.OnPlayerTookOff -= HandlePlayerTakingOff;
         PlayerController.Instance.OnPlayerLanded -= HandlePlayerLanding;
-        this.View.Hide();
-    }
 
-    private void HandlePlayerTakingOff(PlanetController planetPlayerTookOffFrom)
-    {
-        if(planetPlayerTookOffFrom == HostPlanet && CurrentAction.Type != NpcActions.ActionType.Wonder)
-        {
-            CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.Wonder);
-        }
-    }
-
-    private void HandlePlayerLanding(PlanetController planetPlayerLandedOn)
-    {
-        if(planetPlayerLandedOn == HostPlanet)
-        {
-            CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
-        }
-        //else if(this.IsAboard && planetPlayerLandedOn == DestinationPlanet)
-        //{
-        //    CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
-        //}
+        if(this.View != null)
+            this.View.Hide();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Planet")
+        if (collision.gameObject.tag == "Planet")
         {
             if (HostPlanet == DestinationPlanet)
             {
@@ -119,25 +91,31 @@ public class NPCEntity : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(CurrentAction != null)
+        if (CurrentAction != null)
         {
             CurrentAction.ProcessTriggerCollision(other);
         }
     }
 
-    public void Initialize(PlanetController host, PlanetController destination)
+    #region private methods
+
+    private void HandlePlayerTakingOff(PlanetController planetPlayerTookOffFrom)
     {
-        this.HostPlanet = host;
-        this.DestinationPlanet = destination;
+        if(planetPlayerTookOffFrom == HostPlanet && CurrentAction.Type != NpcActions.ActionType.Wonder)
+        {
+            CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.Wonder);
+        }
     }
 
-    public void MoveTo(Transform destination)
+    private void HandlePlayerLanding(PlanetController planetPlayerLandedOn)
     {
-        StopAllCoroutines();
-        StartCoroutine(MoveToCR(destination));
+        if(planetPlayerLandedOn == HostPlanet)
+        {
+            CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
+        }
     }
 
-    protected IEnumerator MoveToCR(Transform destination)
+    private IEnumerator MoveToCR(Transform destination)
     {
         Animator.ResetTrigger("Idle");
         yield return new WaitForSeconds(.5f);
@@ -170,26 +148,60 @@ public class NPCEntity : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, .4f);
     }
 
+    private void SetHostPlanet(PlanetController planet)
+    {
+        hostPlanet = planet;
+        transform.SetParent(planet.transform);
+    }
+
+    private void SetCurrentAction(NpcActions.Action action)
+    {
+        if (currentAction == null || (!currentAction.IsLocked && currentAction.Type != action.Type))
+        {
+            currentAction = action;
+            currentAction.Process(this);
+        }
+    }
+
+    #endregion
+
+    #region public methods
+
     public void EnterShip()
     {
         StopAllCoroutines();
-        Debug.Log("Entering ship...\nGet Me to: " + DestinationPlanet.name);
         PlaySceneCanvasController.Instance.TravellersPanelController.AddEntry(this);
         PlayerController.Instance.AddPassenger(this);
+        this.DeliveryRewardData = new DeliveryRewardArgs(Time.time + 120);
         this.HostPlanet.CurrentTraveller = null;
-        this.IsGrounded = false;
         this.Animator.enabled = false;
         this.OnGotAboard?.Invoke();
+        
         gameObject.SetActive(false);
     }
 
     public void ExitShip(PlanetController planet)
     {
+        PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
         HostPlanet = planet;
         transform.rotation = Quaternion.identity;
         transform.position = HostPlanet.ReleaseSpot.position;
-        PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
         gameObject.SetActive(true);
+        this.DeliveryRewardData.DeliveryTime = Time.time;
         this.OnExitShip?.Invoke();
     }
+
+    public void Initialize(PlanetController host, PlanetController destination)
+    {
+        this.HostPlanet = host;
+        this.DestinationPlanet = destination;
+    }
+
+    public void MoveTo(Transform destination)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MoveToCR(destination));
+    }
+
+    #endregion
 }

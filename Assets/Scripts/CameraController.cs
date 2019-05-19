@@ -21,6 +21,7 @@ public class CameraController : MonoBehaviour
     private float skyboxRotateSpeed = 1.5f;
 
     private Camera camera;
+    private Effects effects;
     private CircularBuffer angleBuffer = new CircularBuffer(50);
     private CircularBuffer sizeBuffer = new CircularBuffer(50);
     private Sequence activeSequence;
@@ -32,8 +33,19 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         camera = Camera.main;
+        effects = GetComponent<Effects>();
+    }
+
+    private void OnEnable()
+    {
         PlayerController.Instance.OnPlayerLanded += (x) => SetCloseView();
         PlayerController.Instance.OnPlayerTookOff += (x) => SetStandardView();
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.Instance.OnPlayerLanded -= (x) => SetCloseView();
+        PlayerController.Instance.OnPlayerTookOff -= (x) => SetStandardView();
     }
 
     private void SetPosition()
@@ -54,11 +66,10 @@ public class CameraController : MonoBehaviour
     }
 
     private void Update()
-    {
-        
+    { 
         //transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -100f);
-
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotateSpeed);
+        effects.intensity = player.CurrentToMaximumVelocityMagnitudeRatio / 250;
     }
 
     private void FixedUpdate()
@@ -77,7 +88,6 @@ public class CameraController : MonoBehaviour
     {
         standardViewSequence.Kill();
         transform.SetParent(player.transform);
-        //transform.rotation = Quaternion.Euler(10, 0, player.transform.rotation.eulerAngles.x-90f);
         closeViewSequence = DOTween.Sequence();
         closeViewSequence.Append(transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(140, 0, 0)), 2f).SetEase(Ease.OutSine))
             .Join(transform.DOLocalMove(new Vector3(0, 20, 12), 2f).SetEase(Ease.OutSine))
@@ -99,7 +109,6 @@ public class CameraController : MonoBehaviour
                 IsInCloseView = false;
                 transform.SetParent(null);
             });
-            //.Append(transform.DORotateQuaternion(Quaternion.Euler(10,0,0), 1f));
     }
 
     public class CircularBuffer

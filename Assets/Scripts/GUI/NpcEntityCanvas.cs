@@ -36,7 +36,6 @@ public class NpcEntityCanvas : MonoBehaviour
     {
         this.Target = target;
         this.name.text = target.name;
-        //this.Target.OnReachedDestination.AddListener(() => Destroy(gameObject));
         this.Target.OnGotAboard.AddListener(() => this.SpeechBubble.Hide());
     }
 

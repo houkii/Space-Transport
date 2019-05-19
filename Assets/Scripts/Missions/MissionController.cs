@@ -14,7 +14,22 @@ public class MissionController
     public Mission CurrentMission { get; private set; }
     public List<PlanetController> MissionPlanets { get; private set; }
     public int CurrentMissionID { get; private set; }
+    public UnityEvent OnLevelCompleted { get; set; }
     public UnityAction<NPCEntity> OnEntitySpawned { get; set; }
+
+    private int npcsLeft;
+    public int NpcsLeft
+    {
+        get { return npcsLeft; }
+        private set
+        {
+            npcsLeft = value;
+            if(npcsLeft <= 0)
+            {
+                OnLevelCompleted?.Invoke();
+            }
+        }
+    }
 
     public void InitializeMission(int missionID)
     {
@@ -44,6 +59,7 @@ public class MissionController
             NpcsToSpawn.Enqueue(traveller);
         }
         //GameController.Instance.StartCoroutine(SpawnNPCs());
+        this.NpcsLeft = NpcsToSpawn.Count;
         this.Spawn();
     }
 
@@ -78,8 +94,8 @@ public class MissionController
         var spawnedNpc = GameObject.Instantiate(npc.TravelerPrefab, planetToSpawnOn.SpawnPosition.position, Quaternion.identity);
         var npcController = spawnedNpc.GetComponent<NPCEntity>();
         npcController.Initialize(planetToSpawnOn, MissionPlanets[npc.DestinationPlanet]);
+        npcController.OnReachedDestination.AddListener(() => --NpcsLeft);
         OnEntitySpawned?.Invoke(npcController);
         return npcController;
     }
-
 }

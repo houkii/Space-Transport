@@ -23,17 +23,21 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigidbody;
     private CameraController cameraController;
     private Vector3 defaultRotationAngles;
+    private LandingRewardArgs landingData;
     private bool isLocked = false;
     private bool isMoving = false;
     private bool hasLanded = false;
+    private bool joystickAvailable => !(this.transform.parent != null || (this.isLocked || this.hasLanded) || Joystick.Instance.Input.magnitude < .2f);
 
     public UnityEvent OnPlayerDied;
     public UnityAction<PlanetController> OnPlayerLanded;
     public UnityAction<PlanetController> OnPlayerTookOff;
 
-    public PlayerStatistics Stats = new PlayerStatistics();
+    public PlayerStatistics Stats = new PlayerStatistics(1000,1200);
 
     private List<NPCEntity> Passengers = new List<NPCEntity>();
+    private Coroutine fuelLoading;
+    //private Dictionary<NPCEntity, DeliveryRewardArgs> PassengerRewardDict = new Dictionary<NPCEntity, DeliveryRewardArgs>()
 
     private AudioSource Audio;
     [SerializeField]
@@ -66,6 +70,8 @@ public class PlayerController : MonoBehaviour
     {
         this.HandleJoystickInput();
     }
+
+    #region private methods
 
     private void HandleInput()
     {
@@ -114,9 +120,14 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJoystickInput()
     {
-        if (this.transform.parent != null || (this.isLocked || this.hasLanded)) return;
+        if (joystickAvailable)
+        {
+            this.JoystickRotate();
+        }
+    }
 
-        if (Joystick.Instance.Input.magnitude < .2f) return;
+    private void JoystickRotate()
+    {
         float angle = Vector2.SignedAngle(Vector2.right, Joystick.Instance.CompensatedInput.normalized);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(angle, -90, 90), .12f);
     }
@@ -124,23 +135,21 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var colName = collision.contacts[0].thisCollider.name;
-
         if(colName == "PlayerLander")
         {
             if(collision.gameObject.tag == "Landable")
             {  
                 var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
+                this.GetLandingData(ref this.landingData, collision.contacts[0]);
                 this.Land(currentPlanetHost);
             }
             else
             {
-                Debug.Log("Player Died");
                 OnPlayerDied?.Invoke();
             }
         }
         else
         {
-            Debug.Log("Player Died");
             OnPlayerDied?.Invoke();
         }
     }
@@ -158,50 +167,38 @@ public class PlayerController : MonoBehaviour
     {
         this.hasLanded = true;
         this.HostPlanet = planet;
-        transform.SetParent(HostPlanet.transform);
-        Debug.Log("Player Landed on " + planet.name);
+        fuelLoading = StartCoroutine(FuelLoadingCR());
+        transform.SetParent(HostPlanet.transform);    
 
         if (Passengers.Count > 0)
+        {
             this.ReleasePassengers(HostPlanet);
+        }
 
         OnPlayerLanded?.Invoke(planet);
+    }
+
+    private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint)
+    {
+        var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
+        landingData = new LandingRewardArgs(angle, 0, 0);
+    }
+
+    private IEnumerator FuelLoadingCR()
+    {
+        while(this.hasLanded)
+        {
+            Stats.AddFuel(GameController.Instance.Settings.FuelLoading * Time.deltaTime);
+            yield return null;
+        }
     }
 
     private void TakeOff(PlanetController planet)
     {
         this.hasLanded = false;
         this.HostPlanet = null;
-        Debug.Log("Player Took off " + planet.name);
+        StopCoroutine(this.fuelLoading);
         OnPlayerTookOff?.Invoke(planet);
-    }
-
-    public void StartMovement()
-    {
-        if (!this.isMoving)
-        {
-            this.StartEngine();
-            this.isMoving = true;
-        }
-    }
-
-    public void StopMovement()
-    {
-        if (this.isMoving)
-        {
-            this.StopEngine();
-            this.isMoving = false;
-        }
-    }
-
-    public void AddPassenger(NPCEntity entity)
-    {
-        entity.OnReachedDestination.AddListener(() => Stats.AddScore(666));
-        this.Passengers.Add(entity);
-    }
-
-    public void RemovePassenger(NPCEntity entity)
-    {
-        this.Passengers.Remove(entity);
     }
 
     private void ReleasePassengerToPlanet(NPCEntity entity, PlanetController planet)
@@ -224,10 +221,10 @@ public class PlayerController : MonoBehaviour
             var leavers = Passengers.FindAll(x => x.DestinationPlanet == planet);
             if (leavers.Count > 0)
             {
+                this.AddScore(Reward.RewardType.LandingReward, this.landingData);
                 StartCoroutine(ReleasePassengersCR(leavers, planet));
             }
         }
-        
     }
 
     private IEnumerator ReleasePassengersCR(List<NPCEntity> leavers, PlanetController planet)
@@ -247,6 +244,7 @@ public class PlayerController : MonoBehaviour
         if (rigidbody.velocity.magnitude < maxVelocityMagnitude)
         {
             rigidbody.AddForce(transform.forward * acceleration * Time.deltaTime, ForceMode.Acceleration);
+            Stats.AddFuel(GameController.Instance.Settings.FuelCost * Time.deltaTime);
         }
     }
 
@@ -267,6 +265,48 @@ public class PlayerController : MonoBehaviour
         Audio.Stop();
         Audio.PlayOneShot(Sounds.StopEngine);
     }
+
+    private void AddScore(Reward.RewardType type, IRewardArgs entityRewardData)
+    {
+        var score = GameController.Instance.Rewards.GetReward(type, entityRewardData);
+        Stats.AddScore(score);
+    }
+
+    #endregion
+
+    #region public methods
+
+    public void StartMovement()
+    {
+        if (!this.isMoving)
+        {
+            this.StartEngine();
+            this.isMoving = true;
+        }
+    }
+
+    public void StopMovement()
+    {
+        if (this.isMoving)
+        {
+            this.StopEngine();
+            this.isMoving = false;
+        }
+    }
+
+    public void AddPassenger(NPCEntity entity)
+    {
+        entity.OnReachedDestination.AddListener(() => 
+            AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
+        this.Passengers.Add(entity);
+    }
+
+    public void RemovePassenger(NPCEntity entity)
+    {
+        this.Passengers.Remove(entity);
+    }
+
+    #endregion
 }
 
 [Serializable]
