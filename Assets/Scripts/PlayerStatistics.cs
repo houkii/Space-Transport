@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class PlayerStatistics
 {
     public int Score { get; private set; }
-
+    public float TotalFuelUsed { get; private set; }
     public float MaxFuel { get; private set; }
     [SerializeField]
     private float fuel;
@@ -17,9 +17,17 @@ public class PlayerStatistics
         get { return fuel; }
         private set
         {
+            if (value < fuel)
+            {
+                TotalFuelUsed += (fuel - value);
+            }
+
             fuel = fuel <= MaxFuel ? value : MaxFuel;
+
             if (fuel <= 0)
+            {
                 OnOutOfFuel.Invoke();
+            }
         }
     }
 

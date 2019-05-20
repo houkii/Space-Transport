@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private float acceleration = 70f;
     [SerializeField]
     private GameObject propulsionPS;
+    [SerializeField]
+    private GameObject explosionPrefab;
 
     private ParticleSystem.EmissionModule propulsionEmission;
     private Rigidbody rigidbody;
@@ -135,23 +137,24 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var colName = collision.contacts[0].thisCollider.name;
-        if(colName == "PlayerLander")
+        if(colName == "PlayerLander" && collision.gameObject.tag == "Landable")
         {
-            if(collision.gameObject.tag == "Landable")
-            {  
-                var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-                this.GetLandingData(ref this.landingData, collision.contacts[0]);
-                this.Land(currentPlanetHost);
-            }
-            else
-            {
-                OnPlayerDied?.Invoke();
-            }
+            var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
+            this.GetLandingData(ref this.landingData, collision.contacts[0]);
+            this.Land(currentPlanetHost);
         }
         else
         {
-            OnPlayerDied?.Invoke();
+            this.Kill();
         }
+    }
+
+    private void Kill()
+    {
+        var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(explosion, 1);
+        OnPlayerDied?.Invoke();
+        gameObject.SetActive(false);
     }
 
     private void OnCollisionExit(Collision collision)

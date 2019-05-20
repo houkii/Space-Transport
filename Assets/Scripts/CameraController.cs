@@ -67,15 +67,12 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     { 
-        //transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -100f);
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotateSpeed);
         effects.intensity = player.CurrentToMaximumVelocityMagnitudeRatio / 250;
     }
 
     private void FixedUpdate()
     {
-        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(10, 0, player.transform.rotation.eulerAngles.x+90f), .1f);
-        //transform.rotation = Quaternion.Euler(10, 0, player.transform.rotation.eulerAngles.x + 90f);
         if (!IsInCloseView)
         {
             //this.SetPosition();

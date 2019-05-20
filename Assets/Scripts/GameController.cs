@@ -17,7 +17,6 @@ public class GameController : Singleton<GameController>
     {
         Rewards = new RewardFactory();
         Settings = new GameSettings();
-        //MissionController.OnLevelCompleted.AddListener(SceneController.Instance.LoadMainMenu);
     }
 
     void Update()

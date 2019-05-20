@@ -14,9 +14,12 @@ public class MissionController
     public Mission CurrentMission { get; private set; }
     public List<PlanetController> MissionPlanets { get; private set; }
     public int CurrentMissionID { get; private set; }
-    public UnityEvent OnLevelCompleted { get; set; }
     public UnityAction<NPCEntity> OnEntitySpawned { get; set; }
+    public UnityEvent OnMissionCompleted = new UnityEvent();
+    public UnityEvent OnMissionInitialized = new UnityEvent();
+    public bool MissionCompleted => NpcsLeft == 0;
 
+    public int TotalNpcs { get; private set; }
     private int npcsLeft;
     public int NpcsLeft
     {
@@ -26,7 +29,7 @@ public class MissionController
             npcsLeft = value;
             if(npcsLeft <= 0)
             {
-                OnLevelCompleted?.Invoke();
+                OnMissionCompleted?.Invoke();
             }
         }
     }
@@ -38,6 +41,7 @@ public class MissionController
         CurrentMission = GameObject.Instantiate(AvailableMissions[CurrentMissionID]);
         InitializePlanets();
         InitializeNpcs();
+        OnMissionInitialized?.Invoke();
     }
 
     private void InitializePlanets()
@@ -58,8 +62,8 @@ public class MissionController
         {
             NpcsToSpawn.Enqueue(traveller);
         }
-        //GameController.Instance.StartCoroutine(SpawnNPCs());
-        this.NpcsLeft = NpcsToSpawn.Count;
+        this.TotalNpcs = NpcsToSpawn.Count;
+        this.npcsLeft = this.TotalNpcs;
         this.Spawn();
     }
 
@@ -75,7 +79,6 @@ public class MissionController
 
     private void Spawn()
     {
-        Debug.Log("Npcs to spawn: " + NpcsToSpawn.Count);
         if(this.NpcsToSpawn.Count > 1)
         {
             var spawnedNpcController = this.SpawnNPC(NpcsToSpawn.Dequeue());
@@ -84,7 +87,6 @@ public class MissionController
         else if(this.NpcsToSpawn.Count > 0)
         {
             SpawnNPC(NpcsToSpawn.Dequeue());
-            Debug.Log("No more npcs to spawn!");
         }
     }
 

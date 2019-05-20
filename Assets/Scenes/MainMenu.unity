@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 193673228}
   - component: {fileID: 193673229}
   - component: {fileID: 193673227}
+  - component: {fileID: 193673230}
   m_Layer: 0
   m_Name: MainControllers
   m_TagString: Untagged
@@ -153,6 +154,17 @@ MonoBehaviour:
   MissionController:
     AvailableMissions:
     - {fileID: 11400000, guid: 172b8822b7c2df54984d70e2ff362cbe, type: 2}
+    OnMissionCompleted:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    OnMissionInitialized:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  DevModeEnabled: 1
 --- !u!4 &193673228
 Transform:
   m_ObjectHideFlags: 0
@@ -177,6 +189,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d5d8c8c1ac697b449591e39dc1fecf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &193673230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193673226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f9fb19cc640f1b4e9f42d05dea1cf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &526522754
