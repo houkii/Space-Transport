@@ -623,7 +623,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7396060369201020853}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 35.4, y: 39.13, z: -1.7}
+  m_LocalPosition: {x: 48.8, y: 17.3, z: -1.7}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 8017094335080969872}
@@ -1216,9 +1216,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TravellerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
     type: 3}
-  CurrentTraveller: {fileID: 0}
   AsteroidPrefab: {fileID: 6341828145213981139, guid: 1c515d3412ad796419d60243c6a0fffe,
     type: 3}
+  miniMapIndex: {fileID: 8456395096323302117}
+  CurrentTraveller: {fileID: 0}
   LandingPlatform: {fileID: 8019968574123770143}
   PlanetBack: {fileID: 8017094334740201503}
   SpawnPosition: {fileID: 8017094334991764236}
@@ -1227,9 +1228,6 @@ MonoBehaviour:
   - {fileID: 8017094335932098722}
   - {fileID: 8017094334530421736}
   - {fileID: 8017094334555405957}
-  spawnPosition: {x: 0, y: 0, z: 0}
-  rotationSpeed: 0
-  miniMapIndex: {fileID: 8456395096323302117}
 --- !u!54 &8017094335169556450
 Rigidbody:
   m_ObjectHideFlags: 0

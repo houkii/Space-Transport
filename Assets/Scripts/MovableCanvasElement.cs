@@ -19,7 +19,28 @@ public class MovableCanvasElement : MonoBehaviour
 
     private RectTransform RT;
 
-    private void Awake()
+    protected virtual void Awake()
+    {
+        this.Initialize();
+    }
+
+    public virtual Sequence Show()
+    {
+        gameObject.SetActive(true);
+        Sequence showSequence = DOTween.Sequence();
+        showSequence.Append(RT.DOAnchorPos(activePosition, tweenTime).SetEase(showEase));
+        return showSequence;
+    }
+
+    public virtual Sequence Hide()
+    {
+        Sequence hideSequence = DOTween.Sequence();
+        hideSequence.Append(RT.DOAnchorPos(inactivePosition, tweenTime).SetEase(hideEase)
+            .OnComplete(() => gameObject.SetActive(false)));
+        return hideSequence;
+    }
+
+    protected void Initialize()
     {
         RT = GetComponent<RectTransform>();
         activePosition = RT.anchoredPosition;
@@ -28,19 +49,5 @@ public class MovableCanvasElement : MonoBehaviour
         {
             this.Show();
         }
-    }
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-        RT.DOAnchorPos(activePosition, tweenTime)
-            .SetEase(showEase);
-    }
-
-    public void Hide()
-    {
-        RT.DOAnchorPos(inactivePosition, tweenTime)
-            .SetEase(hideEase)
-            .OnComplete(() => gameObject.SetActive(false));
     }
 }

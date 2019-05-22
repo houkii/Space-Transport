@@ -6,14 +6,14 @@ namespace NpcActions
 {
     public class NpcWonderAction : Action
     {
-        private int CurrentWaypointID;
+        private int currentWaypointID;
         public override ActionType Type => ActionType.Wonder;
 
         public override void Process(NPCEntity npc)
         {
             base.Process(npc);
-            CurrentWaypointID = Random.Range(0, npc.HostPlanet.Waypoints.Count);
-            npc.MoveTo(npc.HostPlanet.Waypoints[CurrentWaypointID]);
+            currentWaypointID = Random.Range(0, npc.HostPlanet.Waypoints.Count);
+            npc.MoveTo(npc.HostPlanet.Waypoints[currentWaypointID]);
             Debug.Log("Wondering...");
         }
 
@@ -21,13 +21,13 @@ namespace NpcActions
         {
             if (other.gameObject.tag == "Waypoint")
             {
-                if (other.gameObject.transform == npc.HostPlanet.Waypoints[CurrentWaypointID])
+                if (other.gameObject.transform == npc.HostPlanet.Waypoints[currentWaypointID])
                 {
-                    CurrentWaypointID++;
-                    if (CurrentWaypointID >= npc.HostPlanet.Waypoints.Count)
-                        CurrentWaypointID = 0;
+                    currentWaypointID++;
+                    if (currentWaypointID >= npc.HostPlanet.Waypoints.Count)
+                        currentWaypointID = 0;
 
-                    npc.MoveTo(npc.HostPlanet.Waypoints[CurrentWaypointID]);
+                    npc.MoveTo(npc.HostPlanet.Waypoints[currentWaypointID]);
                 }
             }
         }

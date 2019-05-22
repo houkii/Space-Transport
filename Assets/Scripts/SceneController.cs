@@ -26,7 +26,7 @@ public class SceneController : Singleton<SceneController>
     {
         if(scene.name == "PlayScene")
         {
-            GameController.Instance.MissionController.InitializeMission(0);
+            GameController.Instance.InitializePlayScene();
         }
     }
 

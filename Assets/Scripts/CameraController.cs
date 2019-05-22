@@ -48,14 +48,19 @@ public class CameraController : MonoBehaviour
         PlayerController.Instance.OnPlayerTookOff -= (x) => SetStandardView();
     }
 
-    private void SetPosition()
+    //private void SetPosition()
+    //{
+    //    float angle = player.VelocityToDirectionAngle;
+    //    this.angleBuffer.Add(angle - 90f);
+    //    float verticalOffset = ((angleBuffer.AverageValue / 90f) * maximumVerticalOffset * player.CurrentToMaximumVelocityMagnitudeRatio);
+    //    float verticalPosition = defaultCameraPosition.z - verticalOffset;
+    //    Vector3 newPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, verticalPosition);
+    //    transform.localPosition = Vector3.Lerp(transform.localPosition, newPosition, interpolationValue);
+    //}
+
+    private void SetPosition(Vector3 position)
     {
-        float angle = player.VelocityToDirectionAngle;
-        this.angleBuffer.Add(angle - 90f);
-        float verticalOffset = ((angleBuffer.AverageValue / 90f) * maximumVerticalOffset * player.CurrentToMaximumVelocityMagnitudeRatio);
-        float verticalPosition = defaultCameraPosition.z - verticalOffset;
-        Vector3 newPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, verticalPosition);
-        transform.localPosition = Vector3.Lerp(transform.localPosition, newPosition, interpolationValue);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -100f), .05f);
     }
 
     private void SetSize(float ratio)
@@ -63,6 +68,11 @@ public class CameraController : MonoBehaviour
         float size = minCameraSize + (maxCameraSize - minCameraSize) * ratio;
         sizeBuffer.Add(size);
         Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, sizeBuffer.AverageValue, interpolationValue);
+    }
+
+    private void SetRotation()
+    {
+
     }
 
     private void Update()
@@ -75,8 +85,7 @@ public class CameraController : MonoBehaviour
     {
         if (!IsInCloseView)
         {
-            //this.SetPosition();
-            transform.position = Vector3.Lerp(transform.position, new Vector3(player.transform.position.x, player.transform.position.y, -100f), .05f);
+            this.SetPosition(player.transform.position);
             this.SetSize(player.CurrentToMaximumVelocityMagnitudeRatio);
         }
     }
@@ -97,7 +106,7 @@ public class CameraController : MonoBehaviour
     {
         closeViewSequence.Kill();
         standardViewSequence = DOTween.Sequence();
-        standardViewSequence.Append(transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(100, 0, 0)), 1f).SetEase(Ease.InOutSine))
+        standardViewSequence.Append(transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(90, 0, 0)), 1f).SetEase(Ease.InOutSine))
             .Join(transform.DOLocalMove(defaultCameraPosition, 1f).SetEase(Ease.InOutSine))
             .Join(camera.DOOrthoSize(80, 1f).SetEase(Ease.InOutSine))
             .AppendCallback(() => {

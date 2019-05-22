@@ -8,7 +8,8 @@ using UnityEngine.Events;
 public class MissionController
 {
     [SerializeField]
-    private List<Mission> AvailableMissions;
+    private List<Mission> availableMissions;
+    public List<Mission> AvailableMissions { get { return availableMissions; } }
     private Queue<TravellerInstance> NpcsToSpawn = new Queue<TravellerInstance>();
 
     public Mission CurrentMission { get; private set; }

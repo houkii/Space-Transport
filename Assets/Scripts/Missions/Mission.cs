@@ -6,7 +6,7 @@ using System;
 [CreateAssetMenu(fileName = "MissionData", menuName = "Mission", order = 1)]
 public class Mission : ScriptableObject
 {
-    int MissionID;
+    public string Name;
     public List<PlanetInstance> Planets;
     public List<TravellerInstance> NpcsToSpawn;
 }

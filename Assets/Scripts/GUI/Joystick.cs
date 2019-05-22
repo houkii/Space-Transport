@@ -94,7 +94,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     private Vector2 GetVirtualInput(PointerEventData eventData)
     {
-
         Vector2 position = Vector2.zero;
         Vector3 _VI;
 

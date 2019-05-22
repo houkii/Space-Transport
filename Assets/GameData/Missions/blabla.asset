@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 227f3720e46100743a9e95f49c5764ee, type: 3}
+  m_Name: blabla
+  m_EditorClassIdentifier: 
+  Name: 
+  Planets:
+  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+      type: 3}
+    Position: {x: 150, y: 0, z: 0}
+    rotationAngles: {x: 0, y: 0, z: 0}
+    RotationSpeed: 3
+    ID: 0
+    TravellerInstances:
+    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+        type: 3}
+      HostPlanet: 0
+      DestinationPlanet: 1
+      SpawnDelay: 0
+    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+        type: 3}
+      HostPlanet: 0
+      DestinationPlanet: 1
+      SpawnDelay: 0
+  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+      type: 3}
+    Position: {x: 300, y: 0, z: 0}
+    rotationAngles: {x: 0, y: 0, z: 90}
+    RotationSpeed: -7
+    ID: 1
+    TravellerInstances:
+    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+        type: 3}
+      HostPlanet: 0
+      DestinationPlanet: 2
+      SpawnDelay: 0
+    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+        type: 3}
+      HostPlanet: 0
+      DestinationPlanet: 2
+      SpawnDelay: 0
+  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+      type: 3}
+    Position: {x: 450, y: 0, z: 0}
+    rotationAngles: {x: 0, y: 0, z: 180}
+    RotationSpeed: 5
+    ID: 2
+    TravellerInstances:
+    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+        type: 3}
+      HostPlanet: 0
+      DestinationPlanet: 0
+      SpawnDelay: 0
+    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+        type: 3}
+      HostPlanet: 0
+      DestinationPlanet: 0
+      SpawnDelay: 0
+  NpcsToSpawn:
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 0
+    DestinationPlanet: 1
+    SpawnDelay: 3
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 0
+    DestinationPlanet: 1
+    SpawnDelay: 3
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 0
+    DestinationPlanet: 2
+    SpawnDelay: 3

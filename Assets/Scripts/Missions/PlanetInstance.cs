@@ -11,6 +11,7 @@ public class PlanetInstance
     [SerializeField]
     private Vector3 rotationAngles;
     public Quaternion Rotation => Quaternion.Euler(rotationAngles);
+    public float RotationSpeed;
     public int ID;
 
     [SerializeField]

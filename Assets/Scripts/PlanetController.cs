@@ -1,82 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlanetController : MonoBehaviour
 {
     [SerializeField]
     private GameObject TravellerPrefab;
+    [SerializeField]
+    private GameObject AsteroidPrefab;
+    [SerializeField]
+    private TextMeshPro miniMapIndex;
+    private PlanetInstance Data;
+
     public GameObject CurrentTraveller;
-
-    public GameObject AsteroidPrefab;
-
     public Transform LandingPlatform;
     public Transform PlanetBack;
     public Transform SpawnPosition;
     public Transform ReleaseSpot;
-
     public List<Transform> Waypoints;
 
-    public Vector3 spawnPosition;
+    private float angle = 0;
+    private float speed = (2 * Mathf.PI) / 25;
+    private float radius;
 
-    public float rotationSpeed;
-
-    private PlanetInstance Data;
-    private bool PlanetFree => CurrentTraveller == null;
-
-    public TMPro.TextMeshPro miniMapIndex;
 
     void Start()
     {
-        rotationSpeed = Random.Range(-5, 5);
         miniMapIndex.text = Data.ID.ToString();
-        spawnPosition = SpawnPosition.position;
-    }
-
-    private void Spawn()
-    {
-        StartCoroutine(SpawnTravelers());
-    }
-
-    private IEnumerator SpawnTravelers()
-    {
-        var travellerToSpawn = Data.GetNextTraveller();
-        if(travellerToSpawn != null)
-        {
-            yield return new WaitForSeconds(travellerToSpawn.SpawnDelay);
-            this.CurrentTraveller = InstantiateTraveller(travellerToSpawn);
-            yield return new WaitUntil(() => this.PlanetFree);
-            yield return SpawnTravelers();
-        }
-        else
-        {
-            yield break;
-        }
-        yield break;
-    }
-
-    private GameObject InstantiateTraveller(TravellerInstance traveller)
-    {
-        var spawnedTraveller = Instantiate(traveller.TravelerPrefab, spawnPosition, Quaternion.identity);
-
-        var travellerController = spawnedTraveller.GetComponent<NPCEntity>();
-        // Bind planet ID to Planet Controller
-        travellerController.DestinationPlanet =
-            GameController.Instance.MissionController.MissionPlanets[traveller.DestinationPlanet];
-        travellerController.HostPlanet = this;
-        return spawnedTraveller;
+        radius = Vector3.Distance(transform.position, Vector3.zero);
+        angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.right);
+        //speed = (2 * Mathf.PI) / Random.Range(75, 150);
+        speed = (2 * Mathf.PI) / (radius/5);
+        //speed = (2 * Mathf.PI) / 3;
+        Debug.Log(gameObject.name + "    angle: " + angle);
     }
 
     public PlanetController Initialize(PlanetInstance data)
     {
         this.Data = data;
-        //this.Spawn();
         return this;
     }
 
     private void FixedUpdate()
     {
-        transform.Rotate(transform.forward, rotationSpeed * Time.fixedDeltaTime);
+        transform.Rotate(transform.forward, Data.RotationSpeed * Time.fixedDeltaTime);
+        this.OrbitalMove();
+    }
+
+    private void OrbitalMove()
+    {
+        float x = Mathf.Cos(angle) * radius;
+        float y = Mathf.Sin(angle) * radius;
+        transform.position = new Vector3(x, y, transform.position.z);
+        angle += speed * Time.fixedDeltaTime;
     }
 
     //private void LateUpdate()

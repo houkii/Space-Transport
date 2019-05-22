@@ -37,6 +37,7 @@ public class NPCEntity : MonoBehaviour
     public event Action OnExitShip;
 
     private bool IsAboard => HostPlanet == null;
+    public string CurrentActionString;
 
     private void Awake()
     {
@@ -64,6 +65,7 @@ public class NPCEntity : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Animator.enabled = true;
         if (collision.gameObject.tag == "Planet")
         {
             if (HostPlanet == DestinationPlanet)
@@ -95,6 +97,11 @@ public class NPCEntity : MonoBehaviour
         {
             CurrentAction.ProcessTriggerCollision(other);
         }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        Animator.enabled = false;
     }
 
     #region private methods
@@ -160,6 +167,7 @@ public class NPCEntity : MonoBehaviour
         {
             currentAction = action;
             currentAction.Process(this);
+            CurrentActionString = currentAction.ToString();
         }
     }
 
@@ -185,7 +193,7 @@ public class NPCEntity : MonoBehaviour
         PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
         HostPlanet = planet;
         transform.rotation = Quaternion.identity;
-        transform.position = HostPlanet.ReleaseSpot.position;
+        transform.position = HostPlanet.Waypoints[UnityEngine.Random.Range(0,HostPlanet.Waypoints.Count)].position;
         gameObject.SetActive(true);
         this.DeliveryRewardData.DeliveryTime = Time.time;
         this.OnExitShip?.Invoke();

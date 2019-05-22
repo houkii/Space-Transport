@@ -24,8 +24,8 @@ public class SummaryPanelController : MonoBehaviour
     void Awake()
     {
         MainMenuButton.onClick.AddListener(SceneController.Instance.LoadMainMenu);
-        RestartButton.onClick.AddListener(SceneController.Instance.LoadLevel);
-        NextMissionButton.onClick.AddListener(SceneController.Instance.LoadLevel);
+        RestartButton.onClick.AddListener(GameController.Instance.RestartMission);
+        NextMissionButton.onClick.AddListener(GameController.Instance.PlayNextMission);
     }
 
     public void Show(bool missionCompleted)
