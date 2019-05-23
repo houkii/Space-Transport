@@ -48,9 +48,8 @@ public class MainMenuPanel : MovableCanvasElement
     public override Sequence Show()
     {
         var mainMenuPanelSequence = base.Show().Append(
-            RT.DOSizeDelta(defaultDeltaSize, .5f).SetEase(Ease.InExpo)).
-            Append(
-                    DOTween.To(() => buttonGroup.spacing,
+            RT.DOSizeDelta(defaultDeltaSize, .5f).SetEase(Ease.InExpo))
+            .Append(DOTween.To(() => buttonGroup.spacing,
                     x => buttonGroup.spacing = x,
                     defaultLayoutGroupSpacing,
                     .2f).SetEase(Ease.InExpo))
@@ -62,5 +61,4 @@ public class MainMenuPanel : MovableCanvasElement
 
         return mainMenuPanelSequence;
     }
-
 }

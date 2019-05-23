@@ -11,6 +11,7 @@ public class NPCEntity : MonoBehaviour
     private float speedModifier = 0.2f;
     private Animator Animator;
     private Transform movementTarget = null;
+    private TargetIndicator targetIndicator;
 
     private PlanetController hostPlanet;
     public PlanetController HostPlanet
@@ -44,7 +45,8 @@ public class NPCEntity : MonoBehaviour
         gameObject.name = NpcNames.RandomName;
         Animator = GetComponent<Animator>();
         Animator.enabled = false;
-        this.View = PlaySceneCanvasController.Instance.AddNpcCanvas(this);
+        View = PlaySceneCanvasController.Instance.AddNpcCanvas(this);
+        targetIndicator = GetComponent<TargetIndicator>();
     }
 
     private void OnEnable()
@@ -71,6 +73,7 @@ public class NPCEntity : MonoBehaviour
             if (HostPlanet == DestinationPlanet)
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
+                Destroy(targetIndicator);
             }
             else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
             {
@@ -191,10 +194,10 @@ public class NPCEntity : MonoBehaviour
     public void ExitShip(PlanetController planet)
     {
         PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
-        HostPlanet = planet;
-        transform.rotation = Quaternion.identity;
-        transform.position = HostPlanet.Waypoints[UnityEngine.Random.Range(0,HostPlanet.Waypoints.Count)].position;
-        gameObject.SetActive(true);
+        this.HostPlanet = planet;
+        this.transform.rotation = Quaternion.identity;
+        this.transform.position = HostPlanet.Waypoints[UnityEngine.Random.Range(0,HostPlanet.Waypoints.Count)].position;
+        this.gameObject.SetActive(true);
         this.DeliveryRewardData.DeliveryTime = Time.time;
         this.OnExitShip?.Invoke();
     }

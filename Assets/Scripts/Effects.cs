@@ -6,10 +6,11 @@ public class Effects : MonoBehaviour
 {
     public float intensity;
     private Material material;
+    [SerializeField] private Shader chromaticAberrationShader;
 
     void Awake()
     {
-        material = new Material(Shader.Find("Custom/ChromaticAberrationShader"));
+        material = new Material(chromaticAberrationShader);
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)

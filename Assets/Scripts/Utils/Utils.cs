@@ -12,4 +12,9 @@ public class Utils : MonoBehaviour
         float y = vec.x * sin + vec.y * cos;
         return new Vector2(x, y);
     }
+
+    public static bool IsOutOfView(Vector3 position)
+    {
+            return (position.x > Screen.width || position.y > Screen.height || position.x < 0 || position.y < 0);
+    }
 }

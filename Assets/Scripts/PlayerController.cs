@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
             this.Move();
         }
 
-        if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 100f)
+        if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 80f)
         {
             //rigidbody.velocity += transform.parent.GetComponent<Rigidbody>().velocity;
             //rigidbody.angularVelocity += transform.parent.GetComponent<Rigidbody>().angularVelocity;

@@ -9,6 +9,18 @@ public class MainMenuCanvasController : Singleton<MainMenuCameraController>
     [SerializeField] private MenuGameTitle menuGameTitle;
     [SerializeField] private MissionChoosePanelController missionChoosePanel;
 
+    public void Start()
+    {
+        if(GameController.Instance.DevModeEnabled)
+        {
+            menuGameTitle.ShowIntro().Complete(true);
+        }
+        else
+        {
+            menuGameTitle.ShowIntro();
+        }
+    }
+
     public void ShowMissions()
     {
         menuGameTitle.Hide();

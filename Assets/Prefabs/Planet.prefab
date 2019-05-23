@@ -1103,6 +1103,7 @@ GameObject:
   - component: {fileID: 8017094335169556449}
   - component: {fileID: 8017094335169556450}
   - component: {fileID: 8017094335169556448}
+  - component: {fileID: 2377195921062072404}
   m_Layer: 11
   m_Name: Planet
   m_TagString: Planet
@@ -1257,6 +1258,26 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2377195921062072404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017094335169556457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6b7c4c5486d894eb84baca81f2e3e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_targetIconOnScreen: {fileID: 21300000, guid: 1a490243a766aaf47b6c11ef4abc36d8,
+    type: 3}
+  m_targetIconOffScreen: {fileID: 21300000, guid: 1a490243a766aaf47b6c11ef4abc36d8,
+    type: 3}
+  m_edgeBuffer: 34.5
+  ShowDebugLines: 1
+  minScale: 0.3
+  maxScale: 1
 --- !u!1 &8017094335695493115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,7 +1502,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1799557203254782, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_Name
-      value: floor_tile01
+      value: Platform
       objectReference: {fileID: 0}
     - target: {fileID: 1799557203254782, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_TagString
@@ -1497,7 +1518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.48699996
+      value: 0.46
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1537,17 +1558,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.099999994
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.10000004
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.05000002
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 95559486236550918, guid: 1009ea8ecb4cdd34c93752b56ffa4c50,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b72e801581f94ab44a72f1d2e7feb52c, type: 2}
+    m_RemovedComponents:
+    - {fileID: 95559486236550918, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
 --- !u!1 &8017555648324287121 stripped
 GameObject:

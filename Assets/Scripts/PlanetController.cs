@@ -12,6 +12,7 @@ public class PlanetController : MonoBehaviour
     [SerializeField]
     private TextMeshPro miniMapIndex;
     private PlanetInstance Data;
+    private TargetIndicator targetIndicator;
 
     public GameObject CurrentTraveller;
     public Transform LandingPlatform;
@@ -24,16 +25,19 @@ public class PlanetController : MonoBehaviour
     private float speed = (2 * Mathf.PI) / 25;
     private float radius;
 
+    private void Awake()
+    {
+        GameController.Instance.MissionController.OnEntitySpawned += SetCallbacks;
+    }
 
     void Start()
     {
         miniMapIndex.text = Data.ID.ToString();
+        targetIndicator = GetComponent<TargetIndicator>();
+        targetIndicator.enabled = false;
         radius = Vector3.Distance(transform.position, Vector3.zero);
         angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.right);
-        //speed = (2 * Mathf.PI) / Random.Range(75, 150);
         speed = (2 * Mathf.PI) / (radius/5);
-        //speed = (2 * Mathf.PI) / 3;
-        Debug.Log(gameObject.name + "    angle: " + angle);
     }
 
     public PlanetController Initialize(PlanetInstance data)
@@ -54,6 +58,15 @@ public class PlanetController : MonoBehaviour
         float y = Mathf.Sin(angle) * radius;
         transform.position = new Vector3(x, y, transform.position.z);
         angle += speed * Time.fixedDeltaTime;
+    }
+
+    private void SetCallbacks(NPCEntity entity)
+    {
+        if(entity.DestinationPlanet == this)
+        {
+            entity.OnGotAboard.AddListener(() => targetIndicator.enabled = true);
+            entity.OnReachedDestination.AddListener(() => targetIndicator.enabled = false);
+        }
     }
 
     //private void LateUpdate()

@@ -17,7 +17,6 @@ public class MenuGameTitle : MovableCanvasElement
     {
         base.Awake();
         titleGroup = GetComponent<GridLayoutGroup>();
-        this.GetTitleSequence();
     }
 
     private Sequence GetTitleSequence()
@@ -26,8 +25,17 @@ public class MenuGameTitle : MovableCanvasElement
         titleSequence.Append(top.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 2f).SetEase(Ease.OutElastic))
                     .Join(bottom.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 2f).SetEase(Ease.OutElastic))
                     .AppendCallback(() => mainMenu.Show())
-                    .Join(DOTween.To(() => titleGroup.cellSize, x => titleGroup.cellSize = x, defaultCellSize, 15f).SetEase(Ease.InOutSine));
+                    .Join(DOTween.To(() => titleGroup.cellSize, 
+                                    x => titleGroup.cellSize = x, 
+                                    defaultCellSize, 15f)
+                                    .SetEase(Ease.InOutSine)
+                                    .SetLoops(System.Int32.MaxValue, LoopType.Yoyo));
 
         return titleSequence;
+    }
+
+    public Sequence ShowIntro()
+    {
+        return GetTitleSequence();
     }
 }
