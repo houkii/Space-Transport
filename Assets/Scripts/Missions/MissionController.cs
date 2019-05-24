@@ -40,19 +40,42 @@ public class MissionController
         CurrentMissionID = missionID;
         MissionPlanets = new List<PlanetController>();
         CurrentMission = GameObject.Instantiate(AvailableMissions[CurrentMissionID]);
-        InitializePlanets();
+        InitializePlanets(ref CurrentMission.Planets);
         InitializeNpcs();
         OnMissionInitialized?.Invoke();
     }
 
-    private void InitializePlanets()
+    //private void InitializePlanets()
+    //{
+    //    foreach(PlanetInstance planetData in CurrentMission.Planets)
+    //    {
+    //        var planetObject = GameObject.Instantiate(planetData.Prefab, planetData.Position, planetData.Rotation);
+    //        planetObject.name = String.Format("Planet {0}", planetData.ID);
+    //        var planetController = planetObject.GetComponent<PlanetController>().Initialize(planetData);
+    //        MissionPlanets.Add(planetController);
+    //    }
+    //}
+
+    private void InitializePlanets(ref List<PlanetInstance> planets, Transform centralPlanet = null)
     {
-        foreach(PlanetInstance planetData in CurrentMission.Planets)
+        foreach (PlanetInstance planetData in planets)
         {
+            if(centralPlanet != null)
+            {
+                planetData.CentralObject = centralPlanet;
+                planetData.Position += centralPlanet.position;
+                planetData.Center = centralPlanet.position;
+            }
+
             var planetObject = GameObject.Instantiate(planetData.Prefab, planetData.Position, planetData.Rotation);
             planetObject.name = String.Format("Planet {0}", planetData.ID);
             var planetController = planetObject.GetComponent<PlanetController>().Initialize(planetData);
             MissionPlanets.Add(planetController);
+
+            if(planetData.Satellites.Count > 0)
+            {
+                InitializePlanets(ref planetData.Satellites, planetObject.transform);
+            }
         }
     }
 

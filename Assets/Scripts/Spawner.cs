@@ -41,7 +41,7 @@ public class Spawner : MonoBehaviour
             DestroyEntities();
             foreach (Mesh mesh in meshesToRender)
             {
-                Spawn(75, mesh, 600, 900, -15, 45);
+                Spawn(75, mesh, 1000, 1300, -15, 45);
             }
         }
         else if(scene.name == "MainMenu")

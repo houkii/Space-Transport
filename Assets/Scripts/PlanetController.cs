@@ -30,7 +30,6 @@ public class PlanetController : MonoBehaviour
 
     void Start()
     {
-        miniMapIndex.text = Data.ID.ToString();
         targetIndicator = GetComponent<TargetIndicator>();
         targetIndicator.enabled = false;
 
@@ -40,6 +39,13 @@ public class PlanetController : MonoBehaviour
     public PlanetController Initialize(PlanetInstance data)
     {
         this.Data = data;
+        this.GetComponent<Rigidbody>().mass = this.Data.Mass;
+        this.transform.localScale = Vector3.one * this.Data.Scale;
+        this.miniMapIndex.text = this.Data.ID.ToString();
+        if(this.Data.CentralObject != null)
+        {
+            Data.Center = Data.CentralObject.position;
+        }
         return this;
     }
 
@@ -54,6 +60,7 @@ public class PlanetController : MonoBehaviour
         float x = Mathf.Cos(angle) * Data.Radius;
         float y = Mathf.Sin(angle) * Data.Radius;
         transform.position = new Vector3(x, y, transform.position.z);
+        transform.position += Data.CentralObject != null ? Data.CentralObject.position : Vector3.zero;
         angle += Data.AngularFrequency * Time.fixedDeltaTime;
     }
 

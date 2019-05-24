@@ -16,61 +16,64 @@ MonoBehaviour:
   Planets:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
-    Position: {x: 150, y: 0, z: 0}
+    Position: {x: 300, y: 0, z: 0}
+    Mass: 450
+    Scale: 100
     ID: 0
     rotationAngles: {x: 0, y: 0, z: 0}
     RotationSpeed: 5
+    CentralObject: {fileID: 0}
     Center: {x: 0, y: 0, z: 0}
-    Period: 20
-    TravellerInstances:
-    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-        type: 3}
-      HostPlanet: 0
-      DestinationPlanet: 1
-      SpawnDelay: 0
-    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-        type: 3}
-      HostPlanet: 0
-      DestinationPlanet: 1
-      SpawnDelay: 0
-  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
-      type: 3}
-    Position: {x: 300, y: 0, z: 0}
-    ID: 1
-    rotationAngles: {x: 0, y: 0, z: 90}
-    RotationSpeed: 7
-    Center: {x: 0, y: 0, z: 0}
-    Period: 30
-    TravellerInstances:
-    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-        type: 3}
-      HostPlanet: 0
-      DestinationPlanet: 2
-      SpawnDelay: 0
-    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-        type: 3}
-      HostPlanet: 0
-      DestinationPlanet: 2
-      SpawnDelay: 0
+    Period: 25
+    Satellites: []
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 450, y: 0, z: 0}
+    Mass: 550
+    Scale: 125
+    ID: 1
+    rotationAngles: {x: 0, y: 0, z: 90}
+    RotationSpeed: 7
+    CentralObject: {fileID: 0}
+    Center: {x: 0, y: 0, z: 0}
+    Period: 35
+    Satellites: []
+  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+      type: 3}
+    Position: {x: 750, y: 0, z: 0}
+    Mass: 500
+    Scale: 100
     ID: 2
     rotationAngles: {x: 0, y: 0, z: 180}
-    RotationSpeed: -7
+    RotationSpeed: -12
+    CentralObject: {fileID: 0}
     Center: {x: 0, y: 0, z: 0}
-    Period: 40
-    TravellerInstances:
-    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+    Period: 55
+    Satellites:
+    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
-      HostPlanet: 0
-      DestinationPlanet: 0
-      SpawnDelay: 0
-    - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-        type: 3}
-      HostPlanet: 0
-      DestinationPlanet: 0
-      SpawnDelay: 0
+      Position: {x: 125, y: 0, z: 0}
+      Mass: 33
+      Scale: 27
+      ID: 22
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 18
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 8
+      Satellites:
+      - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+          type: 3}
+        Position: {x: 50, y: 0, z: 0}
+        Mass: 10
+        Scale: 20
+        ID: 222
+        rotationAngles: {x: 0, y: 0, z: 0}
+        RotationSpeed: 50
+        CentralObject: {fileID: 0}
+        Center: {x: 0, y: 0, z: 0}
+        Period: 1
+        Satellites: []
   NpcsToSpawn:
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}

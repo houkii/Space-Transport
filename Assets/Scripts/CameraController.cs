@@ -118,7 +118,7 @@ public class CameraController : MonoBehaviour
         transform.SetParent(null);
         closeViewSequence.Kill();
         endGameViewSequence = DOTween.Sequence();
-        endGameViewSequence.Append(camera.DOOrthoSize(1000, 10f).SetEase(Ease.InOutSine))
+        endGameViewSequence.Append(camera.DOOrthoSize(1250, 10f).SetEase(Ease.InOutSine))
             .Join(camera.transform.DOMove(new Vector3(0,0, camera.transform.position.z), 6.0f).SetEase(Ease.InOutSine));
     }
 
