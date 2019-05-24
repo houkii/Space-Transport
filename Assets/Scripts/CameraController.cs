@@ -5,20 +5,13 @@ using DG.Tweening;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerController player;
-    [SerializeField]
-    private float minCameraSize = 120f;
-    [SerializeField]
-    private float maxCameraSize = 150f;
-    [SerializeField]
-    private Vector3 defaultCameraPosition = new Vector3(0, 20, 4);
-    [SerializeField]
-    private float maximumVerticalOffset = 9f;
-    [SerializeField]
-    private float interpolationValue = 0.05f;
-    [SerializeField]
-    private float skyboxRotateSpeed = 1.5f;
+    [SerializeField] private PlayerController player;
+    [SerializeField] private float minCameraSize = 120f;
+    [SerializeField] private float maxCameraSize = 150f;
+    [SerializeField] private Vector3 defaultCameraPosition = new Vector3(0, 20, 4);
+    [SerializeField] private float maximumVerticalOffset = 9f;
+    [SerializeField] private float interpolationValue = 0.05f;
+    [SerializeField] private float skyboxRotateSpeed = 1.5f;
 
     private Camera camera;
     private Effects effects;
@@ -29,6 +22,7 @@ public class CameraController : MonoBehaviour
 
     private Sequence closeViewSequence;
     private Sequence standardViewSequence;
+    private Sequence endGameViewSequence;
 
     private void Awake()
     {
@@ -40,13 +34,14 @@ public class CameraController : MonoBehaviour
     {
         PlayerController.Instance.OnPlayerLanded += (x) => SetCloseView();
         PlayerController.Instance.OnPlayerTookOff += (x) => SetStandardView();
+        PlayerController.Instance.OnPlayerDied.AddListener(SetEndGameView);
     }
 
-    private void OnDisable()
-    {
-        PlayerController.Instance.OnPlayerLanded -= (x) => SetCloseView();
-        PlayerController.Instance.OnPlayerTookOff -= (x) => SetStandardView();
-    }
+    //private void OnDisable()
+    //{
+    //    PlayerController.Instance.OnPlayerLanded -= (x) => SetCloseView();
+    //    PlayerController.Instance.OnPlayerTookOff -= (x) => SetStandardView();
+    //}
 
     //private void SetPosition()
     //{
@@ -60,7 +55,7 @@ public class CameraController : MonoBehaviour
 
     private void SetPosition(Vector3 position)
     {
-        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -100f), .05f);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -100f), .1f);
     }
 
     private void SetSize(float ratio)
@@ -83,7 +78,7 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsInCloseView)
+        if (!IsInCloseView && player.gameObject.activeSelf)
         {
             this.SetPosition(player.transform.position);
             this.SetSize(player.CurrentToMaximumVelocityMagnitudeRatio);
@@ -114,7 +109,17 @@ public class CameraController : MonoBehaviour
                 sizeBuffer.Clear();
                 IsInCloseView = false;
                 transform.SetParent(null);
+                player.transform.SetParent(null);
             });
+    }
+
+    private void SetEndGameView()
+    {
+        transform.SetParent(null);
+        closeViewSequence.Kill();
+        endGameViewSequence = DOTween.Sequence();
+        endGameViewSequence.Append(camera.DOOrthoSize(1000, 10f).SetEase(Ease.InOutSine))
+            .Join(camera.transform.DOMove(new Vector3(0,0, camera.transform.position.z), 6.0f).SetEase(Ease.InOutSine));
     }
 
     public class CircularBuffer

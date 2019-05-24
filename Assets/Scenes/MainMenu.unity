@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 143946655}
   m_Layer: 5
   m_Name: Play
-  m_TagString: Untagged
+  m_TagString: ForwardButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 193673229}
   - component: {fileID: 193673227}
   - component: {fileID: 193673230}
+  - component: {fileID: 193673231}
   m_Layer: 0
   m_Name: MainControllers
   m_TagString: Untagged
@@ -338,6 +339,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f9fb19cc640f1b4e9f42d05dea1cf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &193673231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193673226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f10155be5910a214ebdb70144772f361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuForwardButton: {fileID: 8300000, guid: b35106b1e7e413846b1441ffa46c9db1, type: 3}
+  menuBackButton: {fileID: 8300000, guid: dc124b091bd686e47a9840913a9e0efb, type: 3}
+  menuThemeIntro: {fileID: 8300000, guid: f2c2257ad5bf40d4da985be0411df8b4, type: 3}
+  menuTheme: {fileID: 8300000, guid: d3e18686b01efee408255361d795f180, type: 3}
 --- !u!1 &282255865
 GameObject:
   m_ObjectHideFlags: 0
@@ -2065,7 +2082,7 @@ GameObject:
   - component: {fileID: 1826556113}
   m_Layer: 5
   m_Name: BackButton
-  m_TagString: Untagged
+  m_TagString: BackButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2355,7 +2372,7 @@ GameObject:
   - component: {fileID: 1863156012}
   m_Layer: 5
   m_Name: Quit
-  m_TagString: Untagged
+  m_TagString: BackButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -1,19 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-using UnityEngine.Events;
-using System.Linq;
+﻿using UnityEngine;
 
 public class GameController : Singleton<GameController>
 {
-    [SerializeField]
     public MissionController MissionController;
-    [SerializeField]
-    public bool DevModeEnabled = true;
     public RewardFactory Rewards { get; private set; }
     public GameSettings Settings { get; private set; }
     public int MissionID { get; private set; }
+    public bool DevModeEnabled = true;
 
     private void Start()
     {
@@ -21,9 +14,9 @@ public class GameController : Singleton<GameController>
         Settings = new GameSettings();
     }
 
-    void Update()
+    private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneController.Instance.LoadMainMenu();
         }
@@ -31,9 +24,9 @@ public class GameController : Singleton<GameController>
         {
             RestartMission();
         }
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            PlayerController.Instance.Stats.AddScore(Rewards.GetReward(Reward.RewardType.DeliveryReward, new DeliveryRewardArgs(5,5)));
+            PlayerController.Instance.Stats.AddScore(Rewards.GetReward(Reward.RewardType.DeliveryReward, new DeliveryRewardArgs(5, 5)));
         }
     }
 
@@ -44,7 +37,7 @@ public class GameController : Singleton<GameController>
 
     public void RestartMission()
     {
-        if(MissionID >= 0)
+        if (MissionID >= 0)
         {
             SceneController.Instance.LoadLevel();
         }
@@ -53,7 +46,7 @@ public class GameController : Singleton<GameController>
     public void PlayNextMission()
     {
         MissionID++;
-        if(MissionController.AvailableMissions.Count < MissionID)
+        if (MissionController.AvailableMissions.Count < MissionID)
         {
             PlayMission(MissionID);
         }
@@ -71,8 +64,9 @@ public class GameController : Singleton<GameController>
 
     public void PlayMission(string missionName)
     {
-        var mission = MissionController.AvailableMissions.Find(x => x.name == missionName);
-        var id = MissionController.AvailableMissions.FindIndex(x => x == mission);
+        var allMissions = MissionController.AvailableMissions;
+        var mission = allMissions.Find(x => x.name == missionName);
+        var id = allMissions.FindIndex(x => x == mission);
         PlayMission(id);
     }
 }

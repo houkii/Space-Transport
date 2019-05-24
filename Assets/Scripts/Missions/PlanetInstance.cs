@@ -6,16 +6,22 @@ using System;
 [Serializable]
 public class PlanetInstance
 {
+    [Space(10), Header("Basic")]
     public GameObject Prefab;
     public Vector3 Position;
-    [SerializeField]
-    private Vector3 rotationAngles;
+    public int ID;
+    [SerializeField] private Vector3 rotationAngles;
     public Quaternion Rotation => Quaternion.Euler(rotationAngles);
     public float RotationSpeed;
-    public int ID;
 
-    [SerializeField]
-    private List<TravellerInstance> TravellerInstances = new List<TravellerInstance>();
+    [Space(10), Header("Orbit")]
+    public Vector3 Center;
+    public float Period;
+    public float Radius => Vector3.Distance(Position, Center);
+    public float AngularFrequency => 2 * Mathf.PI * (1 / Period);
+
+    [Space(10), Header("Npcs")]
+    [SerializeField] private List<TravellerInstance> TravellerInstances = new List<TravellerInstance>();
     private Queue<TravellerInstance> TravellersQueue;
     private bool Initialized = false;
 
@@ -33,7 +39,7 @@ public class PlanetInstance
 
     public TravellerInstance GetNextTraveller()
     {
-        //if (!Initialized)
+        if (!Initialized)
             Initialize();
 
         if (TravellersQueue.Count > 0)

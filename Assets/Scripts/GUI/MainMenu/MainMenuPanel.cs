@@ -25,8 +25,9 @@ public class MainMenuPanel : MovableCanvasElement
         defaultDeltaSize = RT.sizeDelta;
         RT.sizeDelta = new Vector2(250, 65);
 
-        //playButton.onClick.AddListener(StartGame);
+        playButton.onClick.AddListener(SoundManager.Instance.PlayForwardButton);
         quitButton.onClick.AddListener(QuitGame);
+        quitButton.onClick.AddListener(SoundManager.Instance.PlayBackButton);
 
         buttonGroup = GetComponent<GridLayoutGroup>();
         defaultLayoutGroupCellSize = buttonGroup.cellSize;

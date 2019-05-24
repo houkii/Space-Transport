@@ -11,6 +11,8 @@ TagManager:
   - Landable
   - Waypoint
   - NPC
+  - ForwardButton
+  - BackButton
   layers:
   - Default
   - TransparentFX

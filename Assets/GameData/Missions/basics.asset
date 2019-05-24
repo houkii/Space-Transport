@@ -17,9 +17,11 @@ MonoBehaviour:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 150, y: 0, z: 0}
-    rotationAngles: {x: 0, y: 0, z: 0}
-    RotationSpeed: 3
     ID: 0
+    rotationAngles: {x: 0, y: 0, z: 0}
+    RotationSpeed: 5
+    Center: {x: 0, y: 0, z: 0}
+    Period: 20
     TravellerInstances:
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
@@ -34,9 +36,11 @@ MonoBehaviour:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 300, y: 0, z: 0}
-    rotationAngles: {x: 0, y: 0, z: 90}
-    RotationSpeed: -7
     ID: 1
+    rotationAngles: {x: 0, y: 0, z: 90}
+    RotationSpeed: 7
+    Center: {x: 0, y: 0, z: 0}
+    Period: 30
     TravellerInstances:
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}
@@ -51,9 +55,11 @@ MonoBehaviour:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 450, y: 0, z: 0}
-    rotationAngles: {x: 0, y: 0, z: 180}
-    RotationSpeed: 5
     ID: 2
+    rotationAngles: {x: 0, y: 0, z: 180}
+    RotationSpeed: -7
+    Center: {x: 0, y: 0, z: 0}
+    Period: 40
     TravellerInstances:
     - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
         type: 3}

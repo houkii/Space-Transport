@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using System.Linq;
 
 public class MainMenuCanvasController : Singleton<MainMenuCameraController>
 {

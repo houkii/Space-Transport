@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Utils : MonoBehaviour
 {
@@ -15,6 +14,6 @@ public class Utils : MonoBehaviour
 
     public static bool IsOutOfView(Vector3 position)
     {
-            return (position.x > Screen.width || position.y > Screen.height || position.x < 0 || position.y < 0);
+        return (position.x > Screen.width || position.y > Screen.height || position.x < 0 || position.y < 0);
     }
 }

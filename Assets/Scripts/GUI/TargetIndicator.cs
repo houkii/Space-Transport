@@ -124,7 +124,7 @@ public class TargetIndicator : MonoBehaviour
         {
             float distance = Vector3.Distance(screenCenter, pos);
             float scaler = Screen.height / distance;
-            Debug.Log(scaler);
+            //Debug.Log(scaler);
             Vector3 newScale = Vector3.one * maxScale * Mathf.Clamp(scaler, minScale, maxScale);
             m_icon.localScale = Vector3.Lerp(m_icon.localScale, newScale, 0.1f);
         }
