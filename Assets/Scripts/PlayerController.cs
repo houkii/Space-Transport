@@ -85,11 +85,11 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Rotate(-Vector3.up);
+            transform.Rotate(-Vector3.up * 5);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Rotate(Vector3.up);
+            transform.Rotate(Vector3.up * 5);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {

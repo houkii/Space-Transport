@@ -132,12 +132,21 @@ public class Spawner : MonoBehaviour
 
     private void DestroyEntities()
     {
-        var entityManager = World.Active.EntityManager;
-        var entityArray = entityManager.GetAllEntities();
-        foreach (var e in entityArray)
-            entityManager.DestroyEntity(e);
-        entityArray.Dispose();
-    }
+        EntityManager entityManager;
+        try
+        {
+            entityManager = World.Active.EntityManager;
+            var entityArray = entityManager.GetAllEntities();
+            foreach (var e in entityArray)
+                entityManager.DestroyEntity(e);
+            entityArray.Dispose();
+        }
+        catch(System.NullReferenceException e)
+        {
+            Debug.LogWarning("No entity manager available!");
+        }
+    }    
+      
 
     private Mesh GetScaledMesh(Mesh mesh, float scale)
     {

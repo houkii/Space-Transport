@@ -353,7 +353,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuForwardButton: {fileID: 8300000, guid: b35106b1e7e413846b1441ffa46c9db1, type: 3}
   menuBackButton: {fileID: 8300000, guid: dc124b091bd686e47a9840913a9e0efb, type: 3}
-  menuThemeIntro: {fileID: 8300000, guid: f2c2257ad5bf40d4da985be0411df8b4, type: 3}
   menuTheme: {fileID: 8300000, guid: d3e18686b01efee408255361d795f180, type: 3}
 --- !u!1 &282255865
 GameObject:
@@ -1449,6 +1448,7 @@ MonoBehaviour:
   missionInstanceUIprefab: {fileID: 8804976543853811038, guid: c9f99812d77b0564b8d324530a4562c0,
     type: 3}
   missionContainer: {fileID: 617695989}
+  backToMainButton: {fileID: 1826556113}
 --- !u!1 &1600486272
 GameObject:
   m_ObjectHideFlags: 0

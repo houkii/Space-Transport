@@ -90,6 +90,7 @@ public class TargetIndicator : MonoBehaviour
     {
         pos.x = Mathf.Clamp(pos.x, m_edgeBuffer, Screen.width - m_edgeBuffer);
         pos.y = Mathf.Clamp(pos.y, m_edgeBuffer, Screen.height - m_edgeBuffer);
+        pos.z = 0;
         m_icon.transform.position = pos;
     }
 
@@ -172,5 +173,10 @@ public class TargetIndicator : MonoBehaviour
         max = vector.z > max ? vector.z : max;
         returnVector /= max;
         return returnVector;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(m_icon);
     }
 }
