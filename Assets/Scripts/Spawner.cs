@@ -39,9 +39,20 @@ public class Spawner : MonoBehaviour
         if (scene.name == "PlayScene")
         {
             DestroyEntities();
+
             foreach (Mesh mesh in meshesToRender)
             {
-                Spawn(75, mesh, 1000, 1300, -15, 45);
+                Spawn(65, mesh, 1000, 1300, -15, 45);
+            }
+
+            foreach (Mesh mesh in meshesToRender)
+            {
+                Spawn(3, mesh, 200, 1200, -50, -150);
+            }
+
+            foreach (Mesh mesh in meshesToRender)
+            {
+                Spawn(3, mesh, 200, 1200, 50, 150);
             }
         }
         else if(scene.name == "MainMenu")
@@ -58,7 +69,7 @@ public class Spawner : MonoBehaviour
     {
         foreach(Mesh mesh in meshes)
         {
-            meshesToRender.Add(GetScaledMesh(mesh, Random.Range(5f,25f)));
+            meshesToRender.Add(GetScaledMesh(mesh, Random.Range(10f,20f)));
         }
     }
 

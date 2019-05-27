@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System;
 
 public class TargetIndicator : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class TargetIndicator : MonoBehaviour
 
     private void OnDisable()
     {
-        m_iconImage.enabled = false;   
+        m_iconImage.enabled = false;
     }
 
     void Update()
@@ -52,7 +53,6 @@ public class TargetIndicator : MonoBehaviour
 
         UpdateTargetIcon();
     }
-
 
     private void InstainateTargetIcon()
     {
@@ -163,7 +163,6 @@ public class TargetIndicator : MonoBehaviour
         Debug.DrawLine(forwardPlaneCenter, forwardPlaneCenter + cameraRight, Color.red);
     }
 
-
     public Vector3 Vector3Maxamize(Vector3 vector)
     {
         Vector3 returnVector = vector;
@@ -175,8 +174,9 @@ public class TargetIndicator : MonoBehaviour
         return returnVector;
     }
 
-    private void OnDestroy()
+    public void DestroySelf()
     {
-        Destroy(m_icon);
+        Destroy(m_icon.gameObject);
+        Destroy(this);
     }
 }

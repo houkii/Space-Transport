@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool isLocked = false;
     private bool isMoving = false;
     private bool hasLanded = false;
+    private bool isDead = false;
     private bool joystickAvailable => !(this.transform.parent != null || (this.isLocked || this.hasLanded) || Joystick.Instance.Input.magnitude < .2f);
 
     public UnityEvent OnPlayerDied;
@@ -142,13 +143,13 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var colName = collision.contacts[0].thisCollider.name;
-        if(colName == "PlayerLander" && collision.gameObject.tag == "Landable")
+        if(colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
         {
             var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            this.GetLandingData(ref this.landingData, collision.contacts[0]);
+            this.GetLandingData(ref this.landingData, collision.contacts[0], currentPlanetHost);
             this.Land(currentPlanetHost);
         }
-        else
+        else if(!this.hasLanded && !this.isDead)
         {
             this.Kill();
         }
@@ -159,6 +160,9 @@ public class PlayerController : MonoBehaviour
         var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         Destroy(explosion, 1);
         OnPlayerDied?.Invoke();
+        var colliders = transform.GetComponents<Collider>();
+        foreach (Collider coll in colliders) Destroy(coll);
+        this.isDead = true;
         gameObject.SetActive(false);
     }
 
@@ -185,13 +189,16 @@ public class PlayerController : MonoBehaviour
             this.ReleasePassengers(HostPlanet);
         }
 
+        PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
         OnPlayerLanded?.Invoke(planet);
     }
 
-    private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint)
+    private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
     {
         var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
-        landingData = new LandingRewardArgs(angle, 0, 0);
+        var distance = Vector3.Distance(planet.LandingPlatform.transform.position, landingPoint.point);
+        Debug.LogError("angle: " + angle + "\ndistance: " + distance + "\nvelocity: " + rigidbody.velocity.magnitude);
+        landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude, distance);
     }
 
     private IEnumerator FuelLoadingCR()
@@ -232,6 +239,7 @@ public class PlayerController : MonoBehaviour
             if (leavers.Count > 0)
             {
                 this.AddScore(Reward.RewardType.LandingReward, this.landingData);
+                //PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
                 StartCoroutine(ReleasePassengersCR(leavers, planet));
             }
         }

@@ -36,7 +36,7 @@ public class NpcEntityCanvas : MonoBehaviour
     {
         this.Target = target;
         this.name.text = target.name;
-        this.Target.OnGotAboard.AddListener(() => this.SpeechBubble.Hide());
+        //this.Target.OnGotAboard.AddListener(() => this.SpeechBubble.Hide());
     }
 
     public void Show()
@@ -46,6 +46,10 @@ public class NpcEntityCanvas : MonoBehaviour
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        transform.DOScale(Vector3.zero, .35f).SetEase(Ease.InExpo).OnComplete(() =>
+        {
+            transform.localScale = Vector3.one * .7f;
+            gameObject.SetActive(false);
+        });
     }
 }

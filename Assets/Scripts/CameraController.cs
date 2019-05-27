@@ -42,14 +42,16 @@ public class CameraController : MonoBehaviour
 
         PlayerController.Instance.OnPlayerDied.AddListener(() => 
         {
-            transform.SetParent(null);
+            if(transform.parent != null)
+                transform.SetParent(null);
+
             CameraViews.SetActive(CameraView.CameraViewType.Distant);
         });
     }
 
     private void SetPosition(Vector3 position)
     {
-        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -100f), .1f);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -200f), .1f);
     }
 
     private void SetSize(float ratio)

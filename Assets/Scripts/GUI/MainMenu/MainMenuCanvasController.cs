@@ -7,7 +7,7 @@ using System.Linq;
 
 public class MainMenuCanvasController : Singleton<MainMenuCameraController>
 {
-    [SerializeField] private MainMenuPanel mainMenuPanel;
+    [SerializeField] private MainMenuPanel menuPanel;
     [SerializeField] private MenuGameTitle menuGameTitle;
     [SerializeField] private MissionChoosePanelController missionChoosePanel;
 
@@ -26,7 +26,7 @@ public class MainMenuCanvasController : Singleton<MainMenuCameraController>
     public void ShowMissions()
     {
         menuGameTitle.Hide();
-        mainMenuPanel.Hide().AppendCallback(() => missionChoosePanel.Show());
+        menuPanel.Hide().AppendCallback(() => missionChoosePanel.Show());
     }
 
     public void ShowMain()
@@ -34,7 +34,7 @@ public class MainMenuCanvasController : Singleton<MainMenuCameraController>
         missionChoosePanel.Hide().AppendCallback(() =>
         {
             menuGameTitle.Show();
-            mainMenuPanel.Show();
+            menuPanel.Show();
         });
     }
 }

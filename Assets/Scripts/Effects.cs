@@ -5,12 +5,15 @@ using System.Collections;
 public class Effects : MonoBehaviour
 {
     public float intensity;
-    private Material material;
+    private Material chromaticAberrationmaterial;
+    //private Material outlineMaterial;
     [SerializeField] private Shader chromaticAberrationShader;
+    //[SerializeField] private Shader outlineShader;
 
     void Awake()
     {
-        material = new Material(chromaticAberrationShader);
+        chromaticAberrationmaterial = new Material(chromaticAberrationShader);
+        //outlineMaterial = new Material(outlineShader);
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -21,7 +24,7 @@ public class Effects : MonoBehaviour
             return;
         }
 
-        material.SetFloat("_Amount", intensity);
-        Graphics.Blit(source, destination, material);
+        chromaticAberrationmaterial.SetFloat("_Amount", intensity);
+        Graphics.Blit(source, destination, chromaticAberrationmaterial);
     }
 }

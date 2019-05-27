@@ -5,13 +5,12 @@ using System.Linq;
 
 public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
 {
-    [SerializeField]
-    private GameObject npcEntityCanvasPrefab;
-    [SerializeField]
-    private GameObject npcCanvasHolder;
-    [SerializeField]
-    private SummaryPanelController summaryWindow;
+    [SerializeField] private GameObject npcEntityCanvasPrefab;
+    [SerializeField] private GameObject npcCanvasHolder;
+    [SerializeField] private SummaryPanelController summaryWindow;
+    [SerializeField] private LandingInfo landingInfo;
     private List<MovableCanvasElement> movableElements = new List<MovableCanvasElement>();
+    
 
     public TravellersPanelController TravellersPanelController { get; private set; }
 
@@ -30,6 +29,11 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
         var npcCanvasCtrl = npcCanvasObj.GetComponent<NpcEntityCanvas>();
         npcCanvasCtrl.Initialize(Target);
         return npcCanvasCtrl;
+    }
+
+    public void ShowLandingInfo(LandingRewardArgs info)
+    {
+        landingInfo.ShowLandingInfo(info);
     }
 
     private void HideAllMovableElements()

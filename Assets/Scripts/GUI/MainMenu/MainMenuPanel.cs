@@ -6,16 +6,13 @@ using UnityEngine.UI;
 
 public class MainMenuPanel : MovableCanvasElement
 {
-    [SerializeField]
-    private Button playButton;
-    [SerializeField]
-    private Button quitButton;
+    [SerializeField] private Button playButton;
+    [SerializeField] private Button quitButton;
 
     private Vector2 defaultDeltaSize;
     private GridLayoutGroup buttonGroup;
     private Vector2 defaultLayoutGroupSpacing;
     private Vector2 defaultLayoutGroupCellSize;
-    private RectTransform RT;
 
     protected override void Awake()
     {

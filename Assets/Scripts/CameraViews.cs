@@ -37,14 +37,14 @@ public abstract class CameraView : ICameraView
 
 public class StandardView : CameraView
 {
-    private Vector3 defaultCameraPosition = new Vector3(0, 20, 2);
+    private Vector3 defaultCameraPosition = new Vector3(0, 60, -2);
 
     protected override Sequence GetSequence()
     {
         var seq = DOTween.Sequence();
         seq.Append(Cam.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(90, 0, 0)), 1f).SetEase(Ease.InOutSine))
             .Join(Cam.transform.DOLocalMove(defaultCameraPosition, 1f).SetEase(Ease.InOutSine))
-            .Join(Cam.DOOrthoSize(80, 1f).SetEase(Ease.InOutSine));
+            .Join(Cam.DOOrthoSize(100, 1f).SetEase(Ease.InOutSine));
 
         return seq;
     }
@@ -59,9 +59,9 @@ public class CloseView : CameraView
     protected override Sequence GetSequence()
     {
         var seq = DOTween.Sequence();
-        seq.Append(Cam.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(140, 0, 0)), 2f).SetEase(Ease.OutSine))
-            .Join(Cam.transform.DOLocalMove(new Vector3(0, 20, 12), 2f).SetEase(Ease.OutSine))
-            .Join(Cam.DOOrthoSize(65, 2f).SetEase(Ease.OutSine));
+        seq.Append(Cam.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(140, 0, 0)), 1.65f).SetEase(Ease.OutSine))
+            .Join(Cam.transform.DOLocalMove(new Vector3(0, 66.5f, 70), 1.65f).SetEase(Ease.OutSine))
+            .Join(Cam.DOOrthoSize(116, 2f).SetEase(Ease.OutSine));
 
         return seq;
     }
@@ -110,11 +110,10 @@ public static class CameraViews
     {
         if (ActiveView != null)
         {
-            ActiveView.Disable();
-            GC.SuppressFinalize((object)ActiveView);
-
             if (ActiveView.GetType() != view.GetType())
             {
+                ActiveView.Disable();
+                GC.SuppressFinalize((object)ActiveView);
                 ActiveView = view;
                 ActiveView.Enable(onViewSetupCompleted);
             }

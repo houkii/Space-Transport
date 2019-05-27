@@ -38,6 +38,7 @@ public class NPCEntity : MonoBehaviour
     public event Action OnExitShip;
 
     private bool IsAboard => HostPlanet == null;
+    private bool isAttached;
     public string CurrentActionString;
 
     private void Awake()
@@ -68,12 +69,12 @@ public class NPCEntity : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Animator.enabled = true;
-        if (collision.gameObject.tag == "Planet")
+        if (collision.gameObject.tag == "Planet" && !isAttached)
         {
             if (HostPlanet == DestinationPlanet)
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
-                Destroy(targetIndicator);
+                targetIndicator.DestroySelf();
             }
             else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
             {
@@ -83,6 +84,8 @@ public class NPCEntity : MonoBehaviour
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.Wonder);
             }
+
+            isAttached = true;
         }
     }
 
@@ -187,7 +190,7 @@ public class NPCEntity : MonoBehaviour
         this.HostPlanet.CurrentTraveller = null;
         this.Animator.enabled = false;
         this.OnGotAboard?.Invoke();
-        
+        this.isAttached = false;
         gameObject.SetActive(false);
     }
 

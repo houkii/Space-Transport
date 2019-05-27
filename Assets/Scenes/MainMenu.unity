@@ -2065,7 +2065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e409c02b78ed5c644a745b75c8de6236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuPanel: {fileID: 1738239421}
+  menuPanel: {fileID: 1738239421}
   menuGameTitle: {fileID: 282255868}
   missionChoosePanel: {fileID: 1201827585}
 --- !u!1 &1826556111

@@ -18,6 +18,9 @@ public interface IReward
 public abstract class Reward : IReward
 {
     public enum RewardType { LandingReward, DeliveryReward, FuelReward };
+    public delegate void RewardGranted(int rewardValue);
+    public static event RewardGranted OnRewardGranted;
+
     protected IRewardArgs Args;
     protected Type argsType;
     public int GetReward(IRewardArgs args)
@@ -31,7 +34,9 @@ public abstract class Reward : IReward
         {
             this.Args = args;
             if (args == null) throw new ArgumentException();
-            return this.CalculateReward();
+            int rewardValue = this.CalculateReward();
+            //OnRewardGranted(rewardValue);
+            return rewardValue;
         }
     }
 
@@ -66,6 +71,7 @@ public class LandingReward : Reward
     protected override int CalculateReward()
     {
         //dynamic data = Convert.ChangeType(Args, argsType);
+        
         var data = Args as LandingRewardArgs;
         int score = (int)(45 - data.Angle);
         return score;
