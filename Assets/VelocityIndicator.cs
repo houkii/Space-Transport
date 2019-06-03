@@ -22,6 +22,4 @@ public class VelocityIndicator : MonoBehaviour
         transform.localScale = Vector3.one * currentSize * size;
         transform.position = PlayerController.Instance.transform.position + transform.forward * offsetRadius;
     }
-
-    
 }

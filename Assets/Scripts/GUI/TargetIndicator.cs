@@ -16,7 +16,7 @@ public class TargetIndicator : MonoBehaviour
     public Sprite m_targetIconOnScreen;
     public Sprite m_targetIconOffScreen;
     [Space]
-    [Range(0, 100)]
+    [Range(0, 300)]
     public float m_edgeBuffer;
     //public Vector3 m_targetIconScale;
     [Space]
@@ -83,6 +83,7 @@ public class TargetIndicator : MonoBehaviour
         this.SetIcon(newPos);
         this.SetScale(newPos);
         this.SetColor(newPos);
+        this.SetRotation();
         this.SetPosition(ref newPos);
     }
 
@@ -139,12 +140,31 @@ public class TargetIndicator : MonoBehaviour
     {
         if(Utils.IsOutOfView(pos))
         {
-            m_iconImage.color = new Color(1, 1, 1, Mathf.Lerp(m_iconImage.color.a, .6f, .02f));
+            m_iconImage.color = new Color(1, 1, 1, Mathf.Lerp(m_iconImage.color.a, .35f, .02f));
         }
         else
         {
-            m_iconImage.color = new Color(1, 1, 1, Mathf.Lerp(m_iconImage.color.a, .25f, .02f));
+            m_iconImage.color = new Color(1, 1, 1, Mathf.Lerp(m_iconImage.color.a, .125f, .02f));
         }
+    }
+
+    private void SetRotation()
+    {
+        float zRotation;
+        if(transform.parent != null)
+        {
+            zRotation = transform.parent.transform.rotation.eulerAngles.z;
+        }
+        else
+        {
+            zRotation = transform.rotation.eulerAngles.z;
+        }
+
+        m_icon.localRotation = Quaternion.Euler(new Vector3(
+            0, 
+            0, 
+            zRotation - Camera.main.transform.rotation.eulerAngles.z
+        ));
     }
 
     public void DrawDebugLines()

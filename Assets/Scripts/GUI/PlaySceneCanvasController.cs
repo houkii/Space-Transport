@@ -9,9 +9,9 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
     [SerializeField] private GameObject npcCanvasHolder;
     [SerializeField] private SummaryPanelController summaryWindow;
     [SerializeField] private LandingInfo landingInfo;
+    [SerializeField] private GameObject indicatorsHolder;
     private List<MovableCanvasElement> movableElements = new List<MovableCanvasElement>();
     
-
     public TravellersPanelController TravellersPanelController { get; private set; }
 
     public override void Awake()
@@ -20,6 +20,8 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
         TravellersPanelController = GetComponentInChildren<TravellersPanelController>();
         movableElements = GetComponentsInChildren<MovableCanvasElement>().ToList();
         PlayerController.Instance.OnPlayerDied.AddListener(ShowEndGameUI);
+        PlayerController.Instance.OnPlayerLanded += (x) => { HideIndicators(); };
+        PlayerController.Instance.OnPlayerTookOff += (x) => { ShowIndicators(); };
         GameController.Instance.MissionController.OnMissionCompleted.AddListener(ShowEndGameUI);
     }
 
@@ -34,6 +36,16 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
     public void ShowLandingInfo(LandingRewardArgs info)
     {
         landingInfo.ShowLandingInfo(info);
+    }
+
+    public void HideIndicators()
+    {
+        indicatorsHolder.SetActive(false);
+    }
+
+    public void ShowIndicators()
+    {
+        indicatorsHolder.SetActive(true);
     }
 
     private void HideAllMovableElements()
@@ -61,6 +73,7 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
     private IEnumerator ShowEndGameUICR()
     {
         HideAllMovableElements();
+        HideIndicators();
         yield return new WaitForSeconds(2f);
         ShowSummary();
     }

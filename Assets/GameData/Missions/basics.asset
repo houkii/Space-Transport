@@ -50,7 +50,7 @@ MonoBehaviour:
     Center: {x: 0, y: 0, z: 0}
     Period: 55
     Satellites:
-    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
       Position: {x: 125, y: 0, z: 0}
       Mass: 33
@@ -62,7 +62,7 @@ MonoBehaviour:
       Center: {x: 0, y: 0, z: 0}
       Period: 8
       Satellites:
-      - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+      - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
           type: 3}
         Position: {x: 50, y: 0, z: 0}
         Mass: 10

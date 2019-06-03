@@ -70,6 +70,7 @@ public class CameraController : MonoBehaviour
         sizeBuffer.Clear();
         transform.SetParent(null);
         player.transform.SetParent(null);
+        CameraViews.SetActive(CameraView.CameraViewType.Standard);
     }
 
     private void RegisterCallbacks()
@@ -82,7 +83,7 @@ public class CameraController : MonoBehaviour
 
         PlayerController.Instance.OnPlayerTookOff += (x) =>
         {
-            CameraViews.SetActive(CameraView.CameraViewType.Standard, SetStandardViewParams);
+            CameraViews.SetActive(CameraView.CameraViewType.NormalLook, SetStandardViewParams);
         };
 
         PlayerController.Instance.OnPlayerDied.AddListener(() =>
@@ -100,5 +101,28 @@ public class CameraController : MonoBehaviour
 
         //    CameraViews.SetActive(CameraView.CameraViewType.Distant, null, true);
         //});
+    }
+
+    CameraView previousView;
+
+    public void ShowQuickDistantView()
+    {
+        PlaySceneCanvasController.Instance.HideIndicators();
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+        previousView = CameraViews.ActiveView;
+        CameraViews.SetActive(CameraView.CameraViewType.QuickDistant);
+    }
+
+    public void ShowPreviousView()
+    {
+        PlaySceneCanvasController.Instance.ShowIndicators();
+        if(previousView is CloseView)
+        {
+            CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
+        }
+        else
+        {
+            CameraViews.SetActive(CameraView.CameraViewType.Standard);
+        }
     }
 }

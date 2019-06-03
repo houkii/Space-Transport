@@ -191,7 +191,7 @@ MonoBehaviour:
   m_targetIconOnScreen: {fileID: 0}
   m_targetIconOffScreen: {fileID: 21300000, guid: 546b118ac7509f042860aa3019cd2687,
     type: 3}
-  m_edgeBuffer: 33
+  m_edgeBuffer: 199
   ShowDebugLines: 0
   minScale: 0.402
   maxScale: 0.801
