@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.009645479, g: 0.035345446, b: 0.05325924, a: 1}
+  m_IndirectSpecularColor: {r: 0.04604838, g: 0.1360504, b: 0.17765328, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1865,7 +1865,7 @@ MonoBehaviour:
   maxCameraSize: 400
   defaultCameraPosition: {x: 0, y: 20, z: 2}
   maximumVerticalOffset: 15
-  interpolationValue: 0.05
+  interpolationValue: 0.075
   skyboxRotateSpeed: 1.5
 --- !u!114 &534669907
 MonoBehaviour:

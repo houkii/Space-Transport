@@ -47,7 +47,7 @@ public class NPCEntity : MonoBehaviour
         Animator = GetComponent<Animator>();
         Animator.enabled = false;
         View = PlaySceneCanvasController.Instance.AddNpcCanvas(this);
-        targetIndicator = GetComponent<TargetIndicator>();
+        //targetIndicator = GetComponent<TargetIndicator>();
     }
 
     private void OnEnable()
@@ -74,7 +74,7 @@ public class NPCEntity : MonoBehaviour
             if (HostPlanet == DestinationPlanet)
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
-                targetIndicator.DestroySelf();
+                //targetIndicator.DestroySelf();
             }
             else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
             {

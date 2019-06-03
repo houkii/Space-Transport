@@ -79,9 +79,9 @@ public class CloseView : CameraView
     protected override Sequence GetSequence()
     {
         var seq = DOTween.Sequence();
-        seq.Append(Cam.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(140, 0, 0)), 1.0f).SetEase(Ease.OutSine))
-            .Join(Cam.transform.DOLocalMove(new Vector3(0, 66.5f, 70), 1.0f).SetEase(Ease.OutSine))
-            .Join(Cam.DOOrthoSize(116, 2f).SetEase(Ease.OutSine));
+        seq.Append(Cam.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(140, 0, 0)), 1.2f).SetEase(Ease.OutSine))
+            .Join(Cam.transform.DOLocalMove(new Vector3(0, 66.5f, 70), 1.2f).SetEase(Ease.OutSine))
+            .Join(Cam.DOOrthoSize(116, 1.2f).SetEase(Ease.OutSine));
 
         return seq;
     }
