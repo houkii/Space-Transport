@@ -12,9 +12,13 @@
 
 			Pass
 			{
-				CGPROGRAM
+				HLSLPROGRAM
+				#pragma prefer_hlslcc gles
+				#pragma exclude_renderers d3d11_9x
+				#pragma target 3.5
 				#pragma vertex vert
 				#pragma fragment frag
+				
 
 				#include "UnityCG.cginc"
 
@@ -48,7 +52,7 @@
 					float colB = tex2D(_MainTex, float2(i.uv.x + _Amount, i.uv.y + _Amount)).b;
 					return fixed4(colR, colG, colB, 1);
 				}
-				ENDCG
+				ENDHLSL
 			}
 		}
 }

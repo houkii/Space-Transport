@@ -11,7 +11,7 @@ public class PlanetInstance
     public Vector3 Position;
     public float Mass;
     public float Scale;
-    public int ID;
+    public string ID;
     [SerializeField] private Vector3 rotationAngles;
     public Quaternion Rotation => Quaternion.Euler(rotationAngles);
     public float RotationSpeed;

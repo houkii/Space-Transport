@@ -13,7 +13,7 @@ public class MissionController
     private Queue<TravellerInstance> NpcsToSpawn = new Queue<TravellerInstance>();
 
     public Mission CurrentMission { get; private set; }
-    public List<PlanetController> MissionPlanets { get; private set; }
+    public Dictionary<string, PlanetController> MissionPlanets { get; private set; }
     public int CurrentMissionID { get; private set; }
     public UnityAction<NPCEntity> OnEntitySpawned { get; set; }
     public UnityEvent OnMissionCompleted = new UnityEvent();
@@ -38,7 +38,7 @@ public class MissionController
     public void InitializeMission(int missionID)
     {
         CurrentMissionID = missionID;
-        MissionPlanets = new List<PlanetController>();
+        MissionPlanets = new Dictionary<string, PlanetController>();
         CurrentMission = GameObject.Instantiate(AvailableMissions[CurrentMissionID]);
         InitializePlanets(ref CurrentMission.Planets);
         InitializeNpcs();
@@ -68,9 +68,10 @@ public class MissionController
             }
 
             var planetObject = GameObject.Instantiate(planetData.Prefab, planetData.Position, planetData.Rotation);
-            planetObject.name = String.Format("Planet {0}", planetData.ID);
+            //planetObject.name = String.Format("Planet {0}", planetData.ID);
+            planetObject.name = planetData.ID;
             var planetController = planetObject.GetComponent<PlanetController>().Initialize(planetData);
-            MissionPlanets.Add(planetController);
+            MissionPlanets.Add(planetObject.name, planetController);
 
             if(planetData.Satellites.Count > 0)
             {

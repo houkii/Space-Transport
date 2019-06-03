@@ -12,7 +12,7 @@ public class Effects : MonoBehaviour
 
     void Awake()
     {
-        chromaticAberrationmaterial = new Material(chromaticAberrationShader);
+        //chromaticAberrationmaterial = new Material(chromaticAberrationShader);
         //outlineMaterial = new Material(outlineShader);
     }
 

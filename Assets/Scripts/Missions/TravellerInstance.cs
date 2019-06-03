@@ -7,8 +7,8 @@ using System;
 public class TravellerInstance
 {
     public GameObject TravelerPrefab;
-    public int HostPlanet;
-    public int DestinationPlanet;
+    public string HostPlanet;
+    public string DestinationPlanet;
     public float SpawnDelay;
 }
 

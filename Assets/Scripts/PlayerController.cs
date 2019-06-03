@@ -10,16 +10,14 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
     public float CurrentToMaximumVelocityMagnitudeRatio => (rigidbody.velocity.magnitude / maxVelocityMagnitude);
     public float VelocityToDirectionAngle => Vector3.Angle(rigidbody.velocity.normalized, transform.forward);
+    public float VelocityToDirectionSignedAngle => Vector3.SignedAngle(transform.forward, rigidbody.velocity.normalized, transform.up);
     public PlanetController HostPlanet { get; private set; }
 
-    [SerializeField]
-    private float maxVelocityMagnitude = 30f;
-    [SerializeField]
-    private float acceleration = 70f;
-    [SerializeField]
-    private GameObject propulsionPS;
-    [SerializeField]
-    private GameObject explosionPrefab;
+    [SerializeField] private float maxVelocityMagnitude = 30f;
+    [SerializeField] private float acceleration = 70f;
+    [SerializeField] private GameObject propulsionPS;
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private ShipThruster shipThruster;
 
     private ParticleSystem.EmissionModule propulsionEmission;
     private Rigidbody rigidbody;
@@ -72,6 +70,9 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         this.HandleJoystickInput();
+        ProcessMovementBuffer();
+        Debug.DrawLine(transform.position, transform.position + averagedMovementVector*100, Color.red);
+        Debug.DrawLine(transform.position, transform.position + transform.forward);
     }
 
     #region private methods
@@ -268,17 +269,19 @@ public class PlayerController : MonoBehaviour
 
     private void StartEngine()
     {
-        propulsionEmission.enabled = true;
+        //propulsionEmission.enabled = true;
+        shipThruster.SetActive(true);
         Audio.Stop();
-        Audio.pitch = Sounds.engineStartPitch;
+        Audio.pitch = Sounds.engineStartPitch + Sounds.RandomPitch;
         Sounds.pitchTween.Kill();
-        Sounds.pitchTween = Audio.DOPitch(Sounds.engineEndPitch, Sounds.tweenTime);
+        Sounds.pitchTween = Audio.DOPitch(Sounds.engineEndPitch + Sounds.RandomPitch, Sounds.tweenTime);
         Audio.PlayOneShot(Sounds.Running);
     }
 
     private void StopEngine()
     {
-        propulsionEmission.enabled = false;
+        //propulsionEmission.enabled = false;
+        shipThruster.SetActive(false);
         Sounds.pitchTween.Kill();
         Audio.Stop();
         Audio.PlayOneShot(Sounds.StopEngine);
@@ -325,6 +328,46 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    #region trashcoding
+
+    public float averagedVelocityMagnitude;
+    public Vector3 averagedMovementVector;
+    private static readonly int averagedMovementVectorArraySize = 30;
+    private static Vector3[] emptyMovementVectorArray = new Vector3[averagedMovementVectorArraySize];
+    private CircularBuffer<Vector3> movementBuff = new CircularBuffer<Vector3>(averagedMovementVectorArraySize, emptyMovementVectorArray);
+
+    private void ProcessMovementBuffer()
+    {
+        movementBuff.PopBack();
+        movementBuff.PushFront(transform.forward);
+        averagedVelocityMagnitude = GetAveragedVelocityMagnitude();
+        averagedMovementVector = GetAveragedMovementVector();
+    }
+
+    private float GetAveragedVelocityMagnitude()
+    {
+        float averagedVel = 0;
+        foreach (Vector3 each in movementBuff)
+        {
+            averagedVel += each.magnitude;
+        }
+        return (averagedVel / movementBuff.Capacity);
+    }
+
+    Vector3 GetAveragedMovementVector()
+    {
+        Vector3 vectorSum = Vector3.zero;
+        foreach (Vector3 movementVec in movementBuff)
+        {
+            vectorSum += movementVec;
+        }
+        return (vectorSum / movementBuff.Capacity);
+    }
+
+    public float DelayedForwardAngle => Vector3.SignedAngle(transform.forward, averagedMovementVector, transform.up);
+
+    #endregion
 }
 
 [Serializable]
@@ -337,6 +380,8 @@ public class ShipSounds
     public float engineStartPitch = 0.75f;
     public float engineEndPitch = 1.1f;
     public float tweenTime = 4f;
+
+    public float RandomPitch => UnityEngine.Random.Range(-.05f, .05f);
 
     public Tween pitchTween;
 }

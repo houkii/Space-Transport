@@ -16,11 +16,16 @@ public abstract class CameraView : ICameraView
 {
     public enum CameraViewType { Standard, CloseLook, Distant }
     public static Camera Cam;
+    public bool IsSet { get; private set; }
     protected Sequence activeSequence;
 
     public void Enable(Action onCompleted = null)
     {
-        activeSequence = GetSequence().OnComplete(() => onCompleted?.Invoke());
+        IsSet = false;
+        activeSequence = GetSequence().OnComplete(() => {
+            onCompleted?.Invoke();
+            IsSet = true;
+        });
     }
 
     public void Disable()
@@ -91,8 +96,16 @@ public static class CameraViews
 {
     public static CameraView ActiveView { get; private set; }
 
-    public static void SetActive(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null)
+    public static void SetActive(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)
     {
+        GameController.Instance.StartCoroutine(SetCameraViewType(cameraViewType, onViewSetupCompleted, finishPreviousViewTransition));
+    }
+
+    private static IEnumerator SetCameraViewType(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)
+    {
+        if(finishPreviousViewTransition)
+            yield return new WaitUntil(() => ActiveView.IsSet == true);
+
         switch (cameraViewType)
         {
             case CameraView.CameraViewType.Standard:

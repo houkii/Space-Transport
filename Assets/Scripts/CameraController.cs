@@ -29,24 +29,7 @@ public class CameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.Instance.OnPlayerLanded += (x) =>
-        {
-            transform.SetParent(player.transform);
-            CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
-        };
-
-        PlayerController.Instance.OnPlayerTookOff += (x) =>
-        {
-            CameraViews.SetActive(CameraView.CameraViewType.Standard, SetStandardViewParams);
-        };
-
-        PlayerController.Instance.OnPlayerDied.AddListener(() => 
-        {
-            if(transform.parent != null)
-                transform.SetParent(null);
-
-            CameraViews.SetActive(CameraView.CameraViewType.Distant);
-        });
+        this.RegisterCallbacks();
     }
 
     private void SetPosition(Vector3 position)
@@ -87,5 +70,35 @@ public class CameraController : MonoBehaviour
         sizeBuffer.Clear();
         transform.SetParent(null);
         player.transform.SetParent(null);
+    }
+
+    private void RegisterCallbacks()
+    {
+        PlayerController.Instance.OnPlayerLanded += (x) =>
+        {
+            transform.SetParent(player.transform);
+            CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
+        };
+
+        PlayerController.Instance.OnPlayerTookOff += (x) =>
+        {
+            CameraViews.SetActive(CameraView.CameraViewType.Standard, SetStandardViewParams);
+        };
+
+        PlayerController.Instance.OnPlayerDied.AddListener(() =>
+        {
+            if (transform.parent != null)
+                transform.SetParent(null);
+
+            CameraViews.SetActive(CameraView.CameraViewType.Distant);
+        });
+
+        //GameController.Instance.MissionController.OnMissionCompleted.AddListener(() =>
+        //{
+        //    if (transform.parent != null)
+        //        transform.SetParent(null);
+
+        //    CameraViews.SetActive(CameraView.CameraViewType.Distant, null, true);
+        //});
     }
 }
