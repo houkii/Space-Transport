@@ -20,8 +20,8 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
         TravellersPanelController = GetComponentInChildren<TravellersPanelController>();
         movableElements = GetComponentsInChildren<MovableCanvasElement>().ToList();
         PlayerController.Instance.OnPlayerDied.AddListener(ShowEndGameUI);
-        PlayerController.Instance.OnPlayerLanded += (x) => { HideIndicators(); };
-        PlayerController.Instance.OnPlayerTookOff += (x) => { ShowIndicators(); };
+        //PlayerController.Instance.OnPlayerLanded += (x) => { HideIndicators(); };
+        //PlayerController.Instance.OnPlayerTookOff += (x) => { ShowIndicators(); };
         GameController.Instance.MissionController.OnMissionCompleted.AddListener(ShowEndGameUI);
     }
 

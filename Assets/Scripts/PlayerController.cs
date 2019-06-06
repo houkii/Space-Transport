@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     public PlayerStatistics Stats = new PlayerStatistics(1000,1200);
 
     private List<NPCEntity> Passengers = new List<NPCEntity>();
+    private ShipModelController shipModelController;
     private Coroutine fuelLoading;
     //private Dictionary<NPCEntity, DeliveryRewardArgs> PassengerRewardDict = new Dictionary<NPCEntity, DeliveryRewardArgs>()
 
@@ -58,8 +59,10 @@ public class PlayerController : MonoBehaviour
         Audio = gameObject.AddComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody>();
         cameraController = GetComponentInChildren<CameraController>();
+        shipModelController = GetComponentInChildren<ShipModelController>();
         propulsionEmission = propulsionPS.GetComponent<ParticleSystem>().emission;
         defaultRotationAngles = transform.rotation.eulerAngles;
+        shipModelController.CurrentState = ShipModelController.ShipModelState.Idle;
     }
 
     private void Update()
@@ -190,6 +193,7 @@ public class PlayerController : MonoBehaviour
             this.ReleasePassengers(HostPlanet);
         }
 
+        shipModelController.CurrentState = ShipModelController.ShipModelState.Landed; 
         PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
         OnPlayerLanded?.Invoke(planet);
     }
@@ -270,6 +274,7 @@ public class PlayerController : MonoBehaviour
     private void StartEngine()
     {
         //propulsionEmission.enabled = true;
+        shipModelController.CurrentState = ShipModelController.ShipModelState.Moving;
         shipThruster.SetActive(true);
         Audio.Stop();
         Audio.pitch = Sounds.engineStartPitch + Sounds.RandomPitch;
@@ -281,6 +286,7 @@ public class PlayerController : MonoBehaviour
     private void StopEngine()
     {
         //propulsionEmission.enabled = false;
+        shipModelController.CurrentState = ShipModelController.ShipModelState.Idle;
         shipThruster.SetActive(false);
         Sounds.pitchTween.Kill();
         Audio.Stop();

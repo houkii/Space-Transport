@@ -22,8 +22,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_Sand_Base_1024
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _NORMALMAP
-  m_LightmapFlags: 6
+  m_ShaderKeywords: _SPECULAR_SETUP
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2050
@@ -34,11 +34,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 5915e39dd8918b042b339369b8e42b1e, type: 3}
-        m_Scale: {x: 1, y: 2}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: 15f3320357184f6408c812c0a2cf648b, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 1, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 4e0438d806d1c234283aac918d31b31e, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -54,11 +54,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 57e5290933011fa46835e5c4233577e0, type: 3}
         m_Scale: {x: 1, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5915e39dd8918b042b339369b8e42b1e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 15f3320357184f6408c812c0a2cf648b, type: 3}
         m_Scale: {x: 1, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -73,38 +73,64 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_FC2FF506_Texture:
+        m_Texture: {fileID: 2800000, guid: d13e2316d832d0645883ad63c32cd6d2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_4B1FDE94_Out:
+        m_Texture: {fileID: 2800000, guid: 1ea9cc186f3eeae4f96753b86787e28a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_B164F796: 1
+    - Vector1_DE52ED2F: 0
     - _AlphaClip: 0
+    - _Amount: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
+    - _DisplacementNoiseDivider: 25
+    - _DisplacementNoiseScale: 3
+    - _DisplacementTimeDivider: 30
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FresnelPower: 3.25
     - _GlossMapScale: 1
     - _Glossiness: 0.125
+    - _GlossinessSource: 0
     - _GlossyReflections: 1
+    - _GlowPower: 24.1
+    - _LightnessDifference: 0.09
     - _Metallic: 0
     - _Mode: 0
+    - _NoiseScale: 80
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.125
+    - _SampleGI: 0
+    - _Shininess: 0
+    - _Smoothness: 0
+    - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
-    - _WorkflowMode: 1
+    - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - Vector2_5887E36A: {r: 30, g: 30, b: 0, a: 0}
+    - _BaseColor: {r: 0.73101974, g: 1, b: 0.4669811, a: 1}
+    - _Color: {r: 1, g: 0.9071337, b: 0, a: 1}
+    - _EmissionColor: {r: 1024, g: 1024, b: 1024, a: 1}
+    - _NoiseScrollingSpeed: {r: 0.03, g: 0.05, b: 0, a: 0}
+    - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TextureScrollingSpeed: {r: 0.3, g: 0.05, b: 0, a: 0}

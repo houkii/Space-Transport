@@ -24,6 +24,10 @@ public class TargetIndicator : MonoBehaviour
 
     [SerializeField, Range(0f, 1f)] private float minScale;
     [SerializeField, Range(0f, 2f)] private float maxScale;
+    [SerializeField, Range(0f, 1f)] private float onScreenAlpha;
+    [SerializeField, Range(0f, 1f)] private float offScreenAlpha;
+    [SerializeField] private Color color;
+    [SerializeField] private bool hideable;
     private Vector3 screenCenter;
 
     private TextMeshProUGUI iconText;
@@ -34,6 +38,7 @@ public class TargetIndicator : MonoBehaviour
         screenCenter = new Vector3(0.5f * Screen.height, 0.5f * Screen.width);
         targetsHolder = GameObject.Find("IndicatorsHolder");
         InstainateTargetIcon();
+        SetupCallbacks();
     }
 
     private void OnEnable()
@@ -64,7 +69,7 @@ public class TargetIndicator : MonoBehaviour
         //iconText.text = transform.name;
         m_iconImage = m_icon.gameObject.AddComponent<Image>();
         m_iconImage.sprite = m_targetIconOnScreen;
-        m_iconImage.color = new Color(1, 1, 1, .6f);
+        m_iconImage.color = color;
     }
 
     private void UpdateTargetIcon()
@@ -125,7 +130,7 @@ public class TargetIndicator : MonoBehaviour
         if (Utils.IsOutOfView(pos))
         {
             float distance = Vector3.Distance(screenCenter, pos);
-            float scaler = Screen.height / distance;
+            float scaler = Screen.height / Mathf.Pow(distance, 2);
             //Debug.Log(scaler);
             Vector3 newScale = Vector3.one * maxScale * Mathf.Clamp(scaler, minScale, maxScale);
             m_icon.localScale = Vector3.Lerp(m_icon.localScale, newScale, 0.1f);
@@ -140,11 +145,11 @@ public class TargetIndicator : MonoBehaviour
     {
         if(Utils.IsOutOfView(pos))
         {
-            m_iconImage.color = new Color(1, 1, 1, Mathf.Lerp(m_iconImage.color.a, .35f, .02f));
+            m_iconImage.color = new Color(color.r, color.g, color.b, Mathf.Lerp(m_iconImage.color.a, offScreenAlpha, .02f));
         }
         else
         {
-            m_iconImage.color = new Color(1, 1, 1, Mathf.Lerp(m_iconImage.color.a, .125f, .02f));
+            m_iconImage.color = new Color(color.r, color.g, color.b, Mathf.Lerp(m_iconImage.color.a, onScreenAlpha, .02f));
         }
     }
 
@@ -165,6 +170,26 @@ public class TargetIndicator : MonoBehaviour
             0, 
             zRotation - Camera.main.transform.rotation.eulerAngles.z
         ));
+    }
+
+    private void SetupCallbacks()
+    {
+        if (hideable)
+        {
+            CameraViews.OnCameraViewChanged += (view) =>
+            {
+                if (this == null) return;
+
+                if (view is DistantView || view is CloseView)
+                {
+                    this.enabled = false;
+                }
+                else
+                {
+                    this.enabled = true;
+                }
+            };
+        }
     }
 
     public void DrawDebugLines()

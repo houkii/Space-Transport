@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singleton<CameraController>
 {
     [SerializeField] private PlayerController player;
     [SerializeField] private float minCameraSize = 120f;
@@ -19,8 +19,11 @@ public class CameraController : MonoBehaviour
     private CircularBuffer angleBuffer = new CircularBuffer(50);
     private CircularBuffer sizeBuffer = new CircularBuffer(50);
 
-    private void Awake()
+    public float currentToMaxCameraSizeRation => camera.orthographicSize / maxCameraSize;
+
+    public override void Awake()
     {
+        base.Awake();
         camera = Camera.main;
         CameraViews.Initialize();
         CameraView.Cam = camera;
@@ -41,7 +44,7 @@ public class CameraController : MonoBehaviour
     {
         float size = minCameraSize + (maxCameraSize - minCameraSize) * ratio;
         sizeBuffer.Add(size);
-        Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, sizeBuffer.AverageValue, interpolationValue);
+        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, sizeBuffer.AverageValue, interpolationValue);
     }
 
     private void SetRotation()
@@ -107,7 +110,7 @@ public class CameraController : MonoBehaviour
 
     public void ShowQuickDistantView()
     {
-        PlaySceneCanvasController.Instance.HideIndicators();
+        //PlaySceneCanvasController.Instance.HideIndicators();
         transform.rotation = Quaternion.Euler(Vector3.zero);
         previousView = CameraViews.ActiveView;
         CameraViews.SetActive(CameraView.CameraViewType.QuickDistant);
@@ -115,13 +118,13 @@ public class CameraController : MonoBehaviour
 
     public void ShowPreviousView()
     {
-        PlaySceneCanvasController.Instance.ShowIndicators();
         if(previousView is CloseView)
         {
             CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
         }
         else
         {
+            //PlaySceneCanvasController.Instance.ShowIndicators();
             CameraViews.SetActive(CameraView.CameraViewType.Standard);
         }
     }

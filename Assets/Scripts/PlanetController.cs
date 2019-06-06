@@ -21,11 +21,14 @@ public class PlanetController : MonoBehaviour
     public Transform ReleaseSpot;
     public List<Transform> Waypoints;
 
+    private Material planetMaterial;
+
     private float angle = 0;
 
     private void Awake()
     {
         GameController.Instance.MissionController.OnEntitySpawned += SetCallbacks;
+        this.SetRandomColor();
     }
 
     void Start()
@@ -73,8 +76,28 @@ public class PlanetController : MonoBehaviour
         }
     }
 
+    private void SetRandomColor()
+    {
+        var renderer = transform.GetComponent<MeshRenderer>();
+        planetMaterial = new Material(renderer.sharedMaterials[0]);
+        Color color = PlanetColors.Colors[Random.Range(0, PlanetColors.Colors.Count)];
+        planetMaterial.SetVector("_BaseColor", new Vector4(color.r, color.g, color.b, color.a));
+        renderer.sharedMaterials = new Material[] { planetMaterial };
+    }
+
     //private void LateUpdate()
     //{
     //    miniMapIndex.transform.rotation = Quaternion.identity;
     //}
+}
+
+public static class PlanetColors
+{
+    public static Color32 Grey = new Color32(0x8A, 0xFF, 0xB7, 0xFF);
+    public static Color32 Yellow = new Color32(0xFF, 0xE8, 0xB7, 0xFF);
+    public static Color32 Orange = new Color32(0xFF, 0xBE, 0x87, 0xFF);
+    public static Color32 LightRed = new Color32(0xE3, 0x8A, 0x74, 0xFF);
+    public static Color32 DarkRed = new Color32(0xBF, 0x59, 0x67, 0xFF);
+
+    public static List<Color32> Colors = new List<Color32> { Grey, Yellow, Orange, LightRed, DarkRed };
 }
