@@ -45,4 +45,16 @@ public class MovableCanvasElement : MonoBehaviour
             this.Show();
         }
     }
+
+    public void Toggle()
+    {
+        if(gameObject.activeSelf)
+        {
+            Hide();
+        }
+        else
+        {
+            Show();
+        }
+    }
 }

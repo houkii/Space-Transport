@@ -40,6 +40,8 @@ public class MissionController
         CurrentMissionID = missionID;
         MissionPlanets = new Dictionary<string, PlanetController>();
         CurrentMission = GameObject.Instantiate(AvailableMissions[CurrentMissionID]);
+        PlayerController.Instance.transform.position = CurrentMission.PlayerPosition;
+        InitializePlanetarySystems(ref CurrentMission.PlanetarySystems);
         InitializePlanets(ref CurrentMission.Planets);
         InitializeNpcs();
         OnMissionInitialized?.Invoke();
@@ -55,6 +57,15 @@ public class MissionController
     //        MissionPlanets.Add(planetController);
     //    }
     //}
+
+    private void InitializePlanetarySystems(ref List<PlanetarySystemInstance> systems)
+    {
+        foreach(PlanetarySystemInstance system in systems)
+        {
+            var centralObject = GameObject.Instantiate(system.CentralObjectPrefab, system.Origin, Quaternion.identity);
+            InitializePlanets(ref system.Planets, centralObject.transform);
+        }
+    }
 
     private void InitializePlanets(ref List<PlanetInstance> planets, Transform centralPlanet = null)
     {

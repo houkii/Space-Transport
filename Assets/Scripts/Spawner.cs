@@ -40,20 +40,20 @@ public class Spawner : MonoBehaviour
         {
             DestroyEntities();
 
-            foreach (Mesh mesh in meshesToRender)
-            {
-                Spawn(65, mesh, 1000, 1300, -15, 45);
-            }
+            //foreach (Mesh mesh in meshesToRender)
+            //{
+            //    Spawn(65, mesh, 1000, 1300, -15, 45);
+            //}
 
-            foreach (Mesh mesh in meshesToRender)
-            {
-                Spawn(3, mesh, 200, 1200, -50, -150);
-            }
+            //foreach (Mesh mesh in meshesToRender)
+            //{
+            //    Spawn(3, mesh, 200, 1200, 100, 200);
+            //}
 
-            foreach (Mesh mesh in meshesToRender)
-            {
-                Spawn(3, mesh, 200, 1200, 50, 150);
-            }
+            //foreach (Mesh mesh in meshesToRender)
+            //{
+            //    Spawn(3, mesh, 200, 1200, 100, 200);
+            //}
         }
         else if(scene.name == "MainMenu")
         {

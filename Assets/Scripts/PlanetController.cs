@@ -8,8 +8,6 @@ public class PlanetController : MonoBehaviour
     [SerializeField]
     private GameObject TravellerPrefab;
     [SerializeField]
-    private GameObject AsteroidPrefab;
-    [SerializeField]
     private TextMeshPro miniMapIndex;
     private PlanetInstance Data;
     private TargetIndicator targetIndicator;

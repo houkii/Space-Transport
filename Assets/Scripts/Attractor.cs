@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Attractor : MonoBehaviour
 {
-    const float G = 667.4f;
+    //const float G = 667.4f;
     public Rigidbody rb;
     public bool isAffectedByPull = true;
     public bool isPulling = true;
@@ -21,7 +21,7 @@ public class Attractor : MonoBehaviour
         Rigidbody rbToAttract = objectToAttract.rb;
         Vector3 direction = transform.position - rbToAttract.transform.position;
         float distance = direction.magnitude;
-        float forceMagnitude = G * (rb.mass * rbToAttract.mass) / Mathf.Pow(distance, 2);
+        float forceMagnitude = GameController.Instance.Settings.G * (rb.mass * rbToAttract.mass) / Mathf.Pow(GameController.Instance.Settings.DistanceScaler * distance, 2);
         Vector3 force = direction.normalized * forceMagnitude;
         rbToAttract.AddForce(force);
     }

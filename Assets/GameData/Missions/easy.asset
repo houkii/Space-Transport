@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: easy
   m_EditorClassIdentifier: 
   Name: 
+  PlanetarySystems:
+  - Origin: {x: 0, y: 0, z: 0}
+    CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
+      type: 3}
+    Planets: []
   Planets:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}

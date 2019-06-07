@@ -26,7 +26,7 @@ public class DestinationIndicator : MonoBehaviour
             var destinationVector = Destination.position;
 
             float distance = Vector3.Distance(PlayerController.Instance.transform.position, Destination.position);
-            Debug.LogError(distance);
+            //Debug.LogError(distance);
             if (distance <= ( 200f + 100 * CameraController.Instance.currentToMaxCameraSizeRation))
             {
                 var landingPlatform = Destination.gameObject.GetComponent<PlanetController>().LandingPlatform;

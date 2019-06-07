@@ -10,52 +10,52 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 227f3720e46100743a9e95f49c5764ee, type: 3}
-  m_Name: moon
+  m_Name: twosuns
   m_EditorClassIdentifier: 
   Name: 
+  PlayerPosition: {x: -500, y: 750, z: 0}
   PlanetarySystems:
+  - Origin: {x: -1000, y: 0, z: 0}
+    CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
+      type: 3}
+    Planets:
+    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+        type: 3}
+      Position: {x: 450, y: 0, z: 0}
+      Mass: 350
+      Scale: 125
+      ID: 1
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 10
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 30
+      Satellites: []
   - Origin: {x: 0, y: 0, z: 0}
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
       type: 3}
-    Planets: []
-  Planets:
-  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
-      type: 3}
-    Position: {x: 600, y: 0, z: 0}
-    Mass: 700
-    Scale: 175
-    ID: 1
-    rotationAngles: {x: 0, y: 0, z: 0}
-    RotationSpeed: 3
-    CentralObject: {fileID: 0}
-    Center: {x: 0, y: 0, z: 0}
-    Period: 999
-    Satellites:
+    Planets:
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
-      Position: {x: 300, y: 0, z: 0}
-      Mass: 450
-      Scale: 100
+      Position: {x: 450, y: 0, z: 0}
+      Mass: 350
+      Scale: 125
       ID: 2
-      rotationAngles: {x: 0, y: 0, z: 90}
-      RotationSpeed: 6
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: -10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 60
+      Period: 30
       Satellites: []
+  Planets: []
   NpcsToSpawn:
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}
     HostPlanet: 1
     DestinationPlanet: 2
-    SpawnDelay: 3
+    SpawnDelay: 0
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}
     HostPlanet: 2
     DestinationPlanet: 1
-    SpawnDelay: 3
-  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-      type: 3}
-    HostPlanet: 1
-    DestinationPlanet: 2
-    SpawnDelay: 3
+    SpawnDelay: 0

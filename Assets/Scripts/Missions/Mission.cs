@@ -7,6 +7,8 @@ using System;
 public class Mission : ScriptableObject
 {
     public string Name;
+    public Vector3 PlayerPosition;
+    public List<PlanetarySystemInstance> PlanetarySystems;
     public List<PlanetInstance> Planets;
     public List<TravellerInstance> NpcsToSpawn;
 }
