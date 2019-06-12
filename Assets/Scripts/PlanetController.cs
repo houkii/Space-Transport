@@ -33,8 +33,7 @@ public class PlanetController : MonoBehaviour
     {
         targetIndicator = GetComponent<TargetIndicator>();
         targetIndicator.enabled = false;
-
-        angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.right);
+        angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.forward) * Mathf.Deg2Rad;
     }
 
     public PlanetController Initialize(PlanetInstance data)

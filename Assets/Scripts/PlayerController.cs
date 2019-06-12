@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour
             this.ReleasePassengers(HostPlanet);
         }
 
-        shipModelController.CurrentState = ShipModelController.ShipModelState.Landed; 
+        shipModelController.CurrentState = ShipModelController.ShipModelState.Landed;
         PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
         OnPlayerLanded?.Invoke(planet);
     }
@@ -203,8 +203,10 @@ public class PlayerController : MonoBehaviour
     private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
     {
         var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
-        var distance = Vector3.Distance(planet.LandingPlatform.transform.position, landingPoint.point);
-        Debug.LogError("angle: " + angle + "\ndistance: " + distance + "\nvelocity: " + rigidbody.velocity.magnitude);
+        var platformScale = planet.transform.localScale;
+        Vector3 platformLandingPoint = planet.LandingPlatform.InverseTransformPoint(landingPoint.point);
+        float distance = Vector3.Distance(Vector3.Scale(planet.LandingPlatform.localPosition, new Vector3(1,0,0)), platformLandingPoint);
+        //Debug.LogError("angle: " + angle + "\ndistance: " + distance + "\nvelocity: " + rigidbody.velocity.magnitude);
         landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude, distance);
     }
 

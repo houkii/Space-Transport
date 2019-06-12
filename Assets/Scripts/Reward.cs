@@ -73,6 +73,7 @@ public class LandingReward : Reward
         //dynamic data = Convert.ChangeType(Args, argsType);
         
         var data = Args as LandingRewardArgs;
+        
         int score = (int)(45 - data.Angle);
         return score;
     }
