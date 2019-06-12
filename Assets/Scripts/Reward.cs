@@ -18,12 +18,13 @@ public interface IReward
 public abstract class Reward : IReward
 {
     public enum RewardType { LandingReward, DeliveryReward, FuelReward };
-    public delegate void RewardGranted(int rewardValue);
+    public delegate void RewardGranted(Reward reward);
     public static event RewardGranted OnRewardGranted;
+    public int Value { get; private set; }
 
     protected IRewardArgs Args;
     protected Type argsType;
-    public int GetReward(IRewardArgs args)
+    public virtual int GetReward(IRewardArgs args)
     {
         if (args.GetType() != argsType)
         {
@@ -34,13 +35,14 @@ public abstract class Reward : IReward
         {
             this.Args = args;
             if (args == null) throw new ArgumentException();
-            int rewardValue = this.CalculateReward();
-            //OnRewardGranted(rewardValue);
-            return rewardValue;
+            Value = this.CalculateReward();
+            OnRewardGranted(this);
+            return Value;
         }
     }
 
     protected abstract int CalculateReward();
+    //protected abstract string GetName();
 
     public Reward(Type typeOfArgs)
     {
@@ -71,10 +73,8 @@ public class LandingReward : Reward
     protected override int CalculateReward()
     {
         //dynamic data = Convert.ChangeType(Args, argsType);
-        
         var data = Args as LandingRewardArgs;
-        
-        int score = (int)(45 - data.Angle);
+        int score = (int)(45 - data.Angle) * GameController.Instance.Settings.LandingRewardMultiplier;
         return score;
     }
 }
@@ -87,11 +87,19 @@ public class DeliveryRewardArgs : IRewardArgs
 {
     public float MaximumTime { get; set; }
     public float DeliveryTime { get; set; }
+    public float CurrentTime { get; private set; }
+    public float CurrentToMaxTimeRatio => CurrentTime / MaximumTime;
 
     public DeliveryRewardArgs(float _maxTime, float _deliveryTime = 0)
     {
         MaximumTime = _maxTime;
         DeliveryTime = _deliveryTime;
+        CurrentTime = _maxTime;
+    }
+
+    public void Process()
+    {
+        CurrentTime -= Time.deltaTime;
     }
 }
 
@@ -102,7 +110,8 @@ public class DeliveryReward : Reward
     protected override int CalculateReward()
     {
         var data = Args as DeliveryRewardArgs;
-        int score = (int)(data.MaximumTime - data.DeliveryTime);
+        //int score = (int)(data.MaximumTime - data.DeliveryTime);
+        int score = (int)(data.MaximumTime - data.DeliveryTime) * GameController.Instance.Settings.DeliveryRewardMultiplier;
         return score;
     }
 }
@@ -115,6 +124,14 @@ public class FuelRewardArgs : IRewardArgs
 {
     public float MaxFuel { get; set; }
     public float RemainingFuel { get; set; }
+    public float TotalFuelUsed { get; set; }
+
+    public FuelRewardArgs(float maxFuel, float remainingFuel, float totalFuelUsed = 0)
+    {
+        MaxFuel = maxFuel;
+        RemainingFuel = remainingFuel;
+        TotalFuelUsed = totalFuelUsed;
+    }
 }
 
 public class FuelReward : Reward
@@ -124,7 +141,11 @@ public class FuelReward : Reward
     protected override int CalculateReward()
     {
         var data = Args as FuelRewardArgs;
-        int score = (int)(data.MaxFuel - data.RemainingFuel);
+        int score = (int)((data.RemainingFuel / data.MaxFuel) * GameController.Instance.Settings.MaxRewardForRemainingFuel);
+        if(data.TotalFuelUsed > 0)
+        {
+            score += (int)(GameController.Instance.Settings.MaxRewardForTotalFuelUsed / data.TotalFuelUsed);
+        }
         return score;
     }
 }

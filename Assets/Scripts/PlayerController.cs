@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public PlanetController HostPlanet { get; private set; }
 
     [SerializeField] private float maxVelocityMagnitude = 30f;
-    [SerializeField] private float acceleration = 70f;
     [SerializeField] private GameObject propulsionPS;
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private ShipThruster shipThruster;
@@ -65,6 +64,16 @@ public class PlayerController : MonoBehaviour
         shipModelController.CurrentState = ShipModelController.ShipModelState.Idle;
     }
 
+    private void Start()
+    {
+        GameController.Instance.MissionController.OnMissionCompleted.AddListener(() =>
+        {
+            var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
+                new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
+            Stats.AddScore(endgameLandingScore);
+        });
+    }
+
     private void Update()
     {
         this.HandleInput();
@@ -76,6 +85,11 @@ public class PlayerController : MonoBehaviour
         ProcessMovementBuffer();
         Debug.DrawLine(transform.position, transform.position + averagedMovementVector*100, Color.red);
         Debug.DrawLine(transform.position, transform.position + transform.forward);
+
+        if (this.isMoving)
+        {
+            this.Move();
+        }
     }
 
     #region private methods
@@ -114,11 +128,6 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Q))
         {
             this.ReleasePassengers(this.HostPlanet, true);
-        }
-
-        if(this.isMoving)
-        {
-            this.Move();
         }
 
         //if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 80f)
@@ -248,6 +257,7 @@ public class PlayerController : MonoBehaviour
             if (leavers.Count > 0)
             {
                 this.AddScore(Reward.RewardType.LandingReward, this.landingData);
+                this.AddScore(Reward.RewardType.FuelReward, new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel));
                 //PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
                 StartCoroutine(ReleasePassengersCR(leavers, planet));
             }
@@ -270,8 +280,8 @@ public class PlayerController : MonoBehaviour
     {
         if (rigidbody.velocity.magnitude < maxVelocityMagnitude)
         {
-            rigidbody.AddForce(transform.forward * acceleration * Time.deltaTime, ForceMode.Acceleration);
-            Stats.AddFuel(GameController.Instance.Settings.FuelCost * Time.deltaTime);
+            rigidbody.AddForce(transform.forward * GameController.Instance.Settings.PlayerAccel * Time.deltaTime, ForceMode.Acceleration);
+            Stats.AddFuel(GameController.Instance.Settings.FuelCost * Time.fixedDeltaTime);
         }
     }
 

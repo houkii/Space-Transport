@@ -9,6 +9,9 @@ public class GameController : Singleton<GameController>
     public int MissionID { get; private set; }
     public bool DevModeEnabled = true;
 
+    public ColorPalette ColorPaletteDarkPink;
+    public ColorPalette ColorPaletteLightPink;
+
     private void Start()
     {
         Rewards = new RewardFactory();
@@ -85,11 +88,19 @@ public class GameSettings
     public float DistanceScaler = 1.0f;
     public float PlayerDrag = 0.2f;
     public float PlayerMass = 1f;
+    public float PlayerAccel = 7000f;
+
+    public int MaxRewardForTotalFuelUsed = 1000000;
+    public int MaxRewardForRemainingFuel = 1000;
+    public int DeliveryRewardMultiplier = 5;
+    public int LandingRewardMultiplier = 5;
 
     public Slider GSlider;
     public Slider DistanceSlider;
     public Slider DragSlider;
     public Slider PlayerMassSlider;
+
+    
 
     public void Init()
     {

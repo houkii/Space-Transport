@@ -11,7 +11,7 @@ public class NpcEntityCanvas : MonoBehaviour
     private TextMeshProUGUI name;
     [SerializeField]
     private Vector3 offset = new Vector3(40, 80, 0);
-    private NPCEntity Target;
+    private NPCEntity target;
 
     public SpeechBubble SpeechBubble { get; private set; }
 
@@ -22,9 +22,9 @@ public class NpcEntityCanvas : MonoBehaviour
 
     void Update()
     {
-        if(Target != null)
+        if(target != null)
         {
-            this.transform.position = Camera.main.WorldToScreenPoint(Target.transform.position) + offset;
+            this.transform.position = Camera.main.WorldToScreenPoint(target.transform.position) + offset;
         }
         else
         {
@@ -34,7 +34,7 @@ public class NpcEntityCanvas : MonoBehaviour
 
     public void Initialize(NPCEntity target)
     {
-        this.Target = target;
+        this.target = target;
         this.name.text = target.name;
         //this.Target.OnGotAboard.AddListener(() => this.SpeechBubble.Hide());
     }

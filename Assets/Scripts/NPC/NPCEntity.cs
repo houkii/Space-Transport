@@ -186,7 +186,7 @@ public class NPCEntity : MonoBehaviour
         StopAllCoroutines();
         PlaySceneCanvasController.Instance.TravellersPanelController.AddEntry(this);
         PlayerController.Instance.AddPassenger(this);
-        this.DeliveryRewardData = new DeliveryRewardArgs(Time.time + 120);
+        this.DeliveryRewardData = new DeliveryRewardArgs(Time.time + 60);
         this.HostPlanet.CurrentTraveller = null;
         this.Animator.enabled = false;
         this.OnGotAboard?.Invoke();

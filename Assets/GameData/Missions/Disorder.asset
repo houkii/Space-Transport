@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 227f3720e46100743a9e95f49c5764ee, type: 3}
-  m_Name: test
+  m_Name: Disorder
   m_EditorClassIdentifier: 
   Name: 
   PlayerPosition: {x: 0, y: -400, z: 0}
@@ -29,7 +29,7 @@ MonoBehaviour:
       RotationSpeed: 10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 20
+      Period: 30
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
@@ -41,7 +41,7 @@ MonoBehaviour:
       RotationSpeed: -10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -20
+      Period: -30
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
@@ -53,7 +53,7 @@ MonoBehaviour:
       RotationSpeed: 10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 30
+      Period: 40
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
@@ -65,7 +65,7 @@ MonoBehaviour:
       RotationSpeed: -10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -30
+      Period: -40
       Satellites: []
   Planets: []
   NpcsToSpawn:

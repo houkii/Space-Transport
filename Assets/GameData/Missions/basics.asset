@@ -23,7 +23,7 @@ MonoBehaviour:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 300, y: 0, z: 0}
-    Mass: 450
+    Mass: 500
     Scale: 100
     ID: 1
     rotationAngles: {x: 0, y: 0, z: 0}

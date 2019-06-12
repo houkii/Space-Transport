@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.UI;
 
 public class TravellerUIEntry : MonoBehaviour
 {
@@ -10,13 +11,28 @@ public class TravellerUIEntry : MonoBehaviour
     private TextMeshProUGUI astronautName;
     [SerializeField]
     private TextMeshProUGUI destinationName;
+    private Slider timeSlider;
 
     public NPCEntity Npc { get; private set; }
+
+    private void Awake()
+    {
+        timeSlider = GetComponentInChildren<Slider>();
+    }
 
     public void Initialize(NPCEntity entity)
     {
         Npc = entity;
         astronautName.text = Npc.name;
         destinationName.text = Npc.DestinationPlanet.name;
+    }
+
+    private void Update()
+    {
+        if (Npc.DeliveryRewardData != null)
+        {
+            Npc.DeliveryRewardData.Process();
+            timeSlider.value = Npc.DeliveryRewardData.CurrentToMaxTimeRatio;
+        }
     }
 }
