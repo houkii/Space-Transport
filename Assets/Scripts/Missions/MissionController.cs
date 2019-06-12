@@ -64,6 +64,7 @@ public class MissionController
         {
             var centralObject = GameObject.Instantiate(system.CentralObjectPrefab, system.Origin, Quaternion.identity);
             InitializePlanets(ref system.Planets, centralObject.transform);
+            //Spawner.Instance.SpawnAsteroids(system.Origin);
         }
     }
 

@@ -100,9 +100,10 @@ public class DistantView : CameraView
     protected override Sequence GetSequence()
     {
         var seq = DOTween.Sequence();
-        
-        seq.Append(Cam.DOOrthoSize(1250, tweenTime).SetEase(Ease.InOutSine))
-            .Join(Cam.transform.DOMove(new Vector3(0, 0, Cam.transform.position.z), tweenTime).SetEase(Ease.InOutSine));
+
+        var camPos = new Vector3(0, 0, Cam.transform.position.z);
+        seq.Append(Cam.DOOrthoSize(1550, tweenTime).SetEase(Ease.InOutSine))
+            .Join(Cam.transform.DOMove(camPos, tweenTime).SetEase(Ease.InOutSine));
 
         return seq;
     }

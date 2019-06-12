@@ -167,6 +167,8 @@ public class PlayerController : MonoBehaviour
         var colliders = transform.GetComponents<Collider>();
         foreach (Collider coll in colliders) Destroy(coll);
         this.isDead = true;
+        SoundManager.Instance.PlayExplosion();
+        SoundManager.Instance.PlayMissionFailedTheme();
         gameObject.SetActive(false);
     }
 

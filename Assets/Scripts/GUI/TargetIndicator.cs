@@ -48,7 +48,8 @@ public class TargetIndicator : MonoBehaviour
 
     private void OnDisable()
     {
-        m_iconImage.enabled = false;
+        if(m_iconImage != null)
+            m_iconImage.enabled = false;
     }
 
     void Update()

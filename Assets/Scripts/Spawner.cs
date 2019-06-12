@@ -18,8 +18,9 @@ public class Spawner : MonoBehaviour
 
     private List<Mesh> meshesToRender = new List<Mesh>();
     
-    private void Awake()
+    public void Awake()
     {
+        //base.Awake();
         DontDestroyOnLoad(gameObject);
         PrepareMeshes();
     }
@@ -39,6 +40,21 @@ public class Spawner : MonoBehaviour
         if (scene.name == "PlayScene")
         {
             DestroyEntities();
+
+            foreach(PlanetarySystemInstance system in GameController.Instance.MissionController.CurrentMission.PlanetarySystems)
+            {
+                SpawnAsteroids(system.Origin);
+            }
+
+            foreach (Mesh mesh in meshesToRender)
+            {
+                Spawn(5, mesh, 1200, 1500, -50, -100, Vector2.zero);
+            }
+
+            foreach (Mesh mesh in meshesToRender)
+            {
+                Spawn(25, mesh, 1200, 1500, 50, 100, Vector2.zero);
+            }
 
             //foreach (Mesh mesh in meshesToRender)
             //{
@@ -60,7 +76,7 @@ public class Spawner : MonoBehaviour
             DestroyEntities();
             foreach (Mesh mesh in meshesToRender)
             {
-                Spawn(10, mesh, 350, 650, 250, 550);
+                Spawn(10, mesh, 350, 650, 250, 550, Vector2.zero);
             }
         }
     }
@@ -73,7 +89,20 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void Spawn(int numToSpawn, Mesh mesh, float innerRadius, float outerRadius, float zMin, float zMax)
+    public void SpawnAsteroids(Vector2 origin)
+    {
+        foreach (Mesh mesh in meshesToRender)
+        {
+            Spawn(1, mesh, 200, 1200, 100, 200, origin);
+        }
+
+        foreach (Mesh mesh in meshesToRender)
+        {
+            Spawn(1, mesh, 200, 1200, -100, -200, origin);
+        }
+    }
+
+    private void Spawn(int numToSpawn, Mesh mesh, float innerRadius, float outerRadius, float zMin, float zMax, Vector2 origin)
     {
         EntityManager entityManager = World.Active.EntityManager;
 
@@ -92,11 +121,17 @@ public class Spawner : MonoBehaviour
         {
             Entity entity = entityArray[i];
             var position = RandomInRing(innerRadius, outerRadius);
+            
 
             entityManager.SetComponentData(entity, new MoveComponent
             {
-                rotationSpeeds = RandomRotationSpeed
+                rotationSpeeds = RandomRotationSpeed,
+                origin = new Unity.Mathematics.float2(origin.x, origin.y),
+                current = position
             });
+
+            position.x += origin.x;
+            position.y += origin.y;
 
             entityManager.SetComponentData(entity, new Translation
             {
@@ -188,6 +223,8 @@ public class Spawner : MonoBehaviour
 public struct MoveComponent : IComponentData
 {
     public Unity.Mathematics.float3 rotationSpeeds;
+    public Unity.Mathematics.float2 origin;
+    public Unity.Mathematics.float2 current;
 }
 
 public class MoveSystem : ComponentSystem
@@ -196,9 +233,15 @@ public class MoveSystem : ComponentSystem
     {
         Entities.ForEach((ref Translation translation, ref Rotation rotation, ref MoveComponent moveData) =>
         {
-            var entityPos = new Vector2(translation.Value.x, translation.Value.y);
+            //var entityPos = new Vector2(translation.Value.x, translation.Value.y);
+            //var newPosXY = Utils.GetRotatedPosition(entityPos, translation.Value.z / 50 * Time.deltaTime);
+            //translation.Value = new Unity.Mathematics.float3(newPosXY.x + moveData.origin.x, newPosXY.y + moveData.origin.y, translation.Value.z);
+
+
+            var entityPos = new Vector2(moveData.current.x, moveData.current.y);
             var newPosXY = Utils.GetRotatedPosition(entityPos, translation.Value.z / 50 * Time.deltaTime);
-            translation.Value = new Unity.Mathematics.float3(newPosXY.x, newPosXY.y, translation.Value.z);
+            moveData.current = new Unity.Mathematics.float2(newPosXY.x, newPosXY.y);
+            translation.Value = new Unity.Mathematics.float3(newPosXY.x + moveData.origin.x, newPosXY.y + moveData.origin.y, translation.Value.z);
 
             rotation.Value = Unity.Mathematics.quaternion.Euler(
                 moveData.rotationSpeeds.x * Time.unscaledTime, 

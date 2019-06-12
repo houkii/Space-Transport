@@ -37,7 +37,7 @@ public class CameraController : Singleton<CameraController>
 
     private void SetPosition(Vector3 position)
     {
-        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -200f), .1f);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -300f), .1f);
     }
 
     private void SetSize(float ratio)
@@ -96,14 +96,6 @@ public class CameraController : Singleton<CameraController>
 
             CameraViews.SetActive(CameraView.CameraViewType.Distant);
         });
-
-        //GameController.Instance.MissionController.OnMissionCompleted.AddListener(() =>
-        //{
-        //    if (transform.parent != null)
-        //        transform.SetParent(null);
-
-        //    CameraViews.SetActive(CameraView.CameraViewType.Distant, null, true);
-        //});
     }
 
     CameraView previousView;
@@ -111,6 +103,7 @@ public class CameraController : Singleton<CameraController>
     public void ShowQuickDistantView()
     {
         //PlaySceneCanvasController.Instance.HideIndicators();
+        transform.parent = null;
         transform.rotation = Quaternion.Euler(Vector3.zero);
         previousView = CameraViews.ActiveView;
         CameraViews.SetActive(CameraView.CameraViewType.QuickDistant);
@@ -120,12 +113,25 @@ public class CameraController : Singleton<CameraController>
     {
         if(previousView is CloseView)
         {
+            transform.parent = PlayerController.Instance.transform;
             CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
         }
         else
         {
             //PlaySceneCanvasController.Instance.ShowIndicators();
             CameraViews.SetActive(CameraView.CameraViewType.Standard);
+        }
+    }
+
+    public void ToggleView()
+    {
+        if (CameraViews.ActiveView is DistantView)
+        {
+            this.ShowPreviousView();
+        }
+        else
+        {
+            this.ShowQuickDistantView();
         }
     }
 }

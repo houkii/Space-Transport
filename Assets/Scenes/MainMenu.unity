@@ -447,9 +447,9 @@ MonoBehaviour:
   Settings:
     FuelCost: -50
     FuelLoading: 150
-    G: 500
+    G: 667
     DistanceScaler: 0.8
-    PlayerDrag: 0.2
+    PlayerDrag: 0.1
     PlayerMass: 1
     GSlider: {fileID: 2012814751}
     DistanceSlider: {fileID: 1544079275}
@@ -510,6 +510,11 @@ MonoBehaviour:
   menuForwardButton: {fileID: 8300000, guid: b35106b1e7e413846b1441ffa46c9db1, type: 3}
   menuBackButton: {fileID: 8300000, guid: dc124b091bd686e47a9840913a9e0efb, type: 3}
   menuTheme: {fileID: 8300000, guid: d3e18686b01efee408255361d795f180, type: 3}
+  missionFailedTheme: {fileID: 8300000, guid: 0744e34e1e06d1f40adba60605db6e17, type: 3}
+  Explosions:
+  - {fileID: 8300000, guid: fad53cd9ed5f2ee459264414f010bf84, type: 3}
+  - {fileID: 8300000, guid: 462ac3ecacc6ea04fb61524930099f4d, type: 3}
+  - {fileID: 8300000, guid: 8ab93f6912462cd438ced93857c3d2b3, type: 3}
 --- !u!1 &282255865
 GameObject:
   m_ObjectHideFlags: 0

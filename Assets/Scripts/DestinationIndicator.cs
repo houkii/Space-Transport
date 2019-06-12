@@ -62,8 +62,8 @@ public class DestinationIndicator : MonoBehaviour
         //entity.OnExitShip += () => gameObject.SetActive(false);
     }
 
-    private void OnDestroy()
-    {
-        GameController.Instance.MissionController.OnEntitySpawned -= HandleRoute;
-    }
+    //private void OnDestroy()
+    //{
+    //    GameController.Instance.MissionController.OnEntitySpawned -= HandleRoute;
+    //}
 }

@@ -15,14 +15,14 @@ MonoBehaviour:
   Name: 
   PlayerPosition: {x: -500, y: 750, z: 0}
   PlanetarySystems:
-  - Origin: {x: -1000, y: 0, z: 0}
+  - Origin: {x: -500, y: 0, z: 0}
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
       type: 3}
     Planets:
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
-      Position: {x: 450, y: 0, z: 0}
-      Mass: 350
+      Position: {x: 400, y: 0, z: 0}
+      Mass: 450
       Scale: 125
       ID: 1
       rotationAngles: {x: 0, y: 0, z: 0}
@@ -31,14 +31,14 @@ MonoBehaviour:
       Center: {x: 0, y: 0, z: 0}
       Period: 30
       Satellites: []
-  - Origin: {x: 0, y: 0, z: 0}
+  - Origin: {x: 500, y: 0, z: 0}
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
       type: 3}
     Planets:
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
-      Position: {x: 450, y: 0, z: 0}
-      Mass: 350
+      Position: {x: 400, y: 0, z: 0}
+      Mass: 450
       Scale: 125
       ID: 2
       rotationAngles: {x: 0, y: 0, z: 0}

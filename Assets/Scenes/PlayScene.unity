@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.12172712, g: 0.052689858, b: 0.06654351, a: 1}
+  m_IndirectSpecularColor: {r: 0.075667195, g: 0.02870108, b: 0.041335255, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -765,14 +765,25 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 244080478}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 534669906}
+        m_MethodName: ToggleView
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onDown:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 534669906}
-        m_MethodName: ShowQuickDistantView
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -788,7 +799,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 534669906}
-        m_MethodName: ShowPreviousView
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5923,6 +5934,10 @@ MonoBehaviour:
     StartEngine: {fileID: 8300000, guid: bc1b970fe9fac6d43909ae5e2961c43d, type: 3}
     Running: {fileID: 8300000, guid: e07bfdb447626d64fbcf4175330c4fac, type: 3}
     StopEngine: {fileID: 8300000, guid: 99d0df1ed1a41d943bec63c5462de2fd, type: 3}
+    Explosions:
+    - {fileID: 8300000, guid: fad53cd9ed5f2ee459264414f010bf84, type: 3}
+    - {fileID: 8300000, guid: 462ac3ecacc6ea04fb61524930099f4d, type: 3}
+    - {fileID: 8300000, guid: 8ab93f6912462cd438ced93857c3d2b3, type: 3}
     engineStartPitch: 0.75
     engineEndPitch: 1.1
     tweenTime: 4

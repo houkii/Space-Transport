@@ -14,6 +14,8 @@ public class SoundManager : Singleton<SoundManager>
     [SerializeField] private AudioClip menuForwardButton;
     [SerializeField] private AudioClip menuBackButton;
     [SerializeField] private AudioClip menuTheme;
+    [SerializeField] private AudioClip missionFailedTheme;
+    [SerializeField] private List<AudioClip> Explosions;
 
     public override void Awake()
     {
@@ -61,5 +63,17 @@ public class SoundManager : Singleton<SoundManager>
         musicAudio.clip = menuTheme;
         musicAudio.DOFade(1, 3f).SetEase(Ease.InExpo);
         musicAudio.Play();
+    }
+
+    public void PlayMissionFailedTheme()
+    {
+        musicAudio.volume = 1.1f;
+        musicAudio.clip = missionFailedTheme;
+        musicAudio.Play();
+    }
+
+    public void PlayExplosion()
+    {
+        actionAudio.PlayOneShot(Explosions[UnityEngine.Random.Range(0, Explosions.Count)]);
     }
 }
