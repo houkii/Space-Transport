@@ -455,10 +455,11 @@ MonoBehaviour:
     DistanceScaler: 0.75
     PlayerDrag: 0.1
     PlayerMass: 1
+    PlayerAccel: 7000
     MaxRewardForTotalFuelUsed: 1000000
     MaxRewardForRemainingFuel: 1000
-    DeliveryRewardMultiplier: 5
-    LandingRewardMultiplier: 5
+    DeliveryRewardMultiplier: 1000
+    LandingRewardMultiplier: 1000
     GSlider: {fileID: 2012814751}
     DistanceSlider: {fileID: 1544079275}
     DragSlider: {fileID: 626333001}

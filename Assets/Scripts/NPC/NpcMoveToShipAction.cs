@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NpcActions
 {
@@ -11,7 +9,8 @@ namespace NpcActions
         public override void Process(NPCEntity npc)
         {
             base.Process(npc);
-            npc.MoveTo(npc.HostPlanet.LandingPlatform);
+            //npc.MoveTo(npc.HostPlanet.LandingPlatform);
+            npc.MoveTo(PlayerController.Instance.transform);
             npc.View.SpeechBubble.ShowInfo(npc.DestinationPlanet.transform.name);
         }
 

@@ -22,11 +22,11 @@ MonoBehaviour:
   m_MSAA: 4
   m_RenderScale: 1
   m_MainLightRenderingMode: 1
-  m_MainLightShadowsSupported: 1
+  m_MainLightShadowsSupported: 0
   m_MainLightShadowmapResolution: 512
   m_AdditionalLightsRenderingMode: 1
   m_AdditionalLightsPerObjectLimit: 4
-  m_AdditionalLightShadowsSupported: 1
+  m_AdditionalLightShadowsSupported: 0
   m_AdditionalLightsShadowmapResolution: 512
   m_ShadowDistance: 50
   m_ShadowCascades: 0
@@ -35,9 +35,9 @@ MonoBehaviour:
   m_ShadowDepthBias: 1
   m_ShadowNormalBias: 1
   m_SoftShadowsSupported: 0
-  m_UseSRPBatcher: 1
-  m_SupportsDynamicBatching: 1
-  m_MixedLightingSupported: 1
+  m_UseSRPBatcher: 0
+  m_SupportsDynamicBatching: 0
+  m_MixedLightingSupported: 0
   m_ShadowType: 1
   m_LocalShadowsSupported: 0
   m_LocalShadowsAtlasResolution: 256

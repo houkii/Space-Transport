@@ -1,8 +1,6 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using DG.Tweening;
-using System;
 
 public class TargetIndicator : MonoBehaviour
 {
@@ -15,9 +13,11 @@ public class TargetIndicator : MonoBehaviour
     private Vector3 m_cameraOffsetForward;
     public Sprite m_targetIconOnScreen;
     public Sprite m_targetIconOffScreen;
+
     [Space]
     [Range(0, 300)]
     public float m_edgeBuffer;
+
     //public Vector3 m_targetIconScale;
     [Space]
     public bool ShowDebugLines;
@@ -32,7 +32,7 @@ public class TargetIndicator : MonoBehaviour
 
     private TextMeshProUGUI iconText;
 
-    void Awake()
+    private void Awake()
     {
         mainCamera = Camera.main;
         screenCenter = new Vector3(0.5f * Screen.height, 0.5f * Screen.width);
@@ -43,16 +43,16 @@ public class TargetIndicator : MonoBehaviour
 
     private void OnEnable()
     {
-        this.SetIcon(mainCamera.WorldToViewportPoint(transform.position));
+        SetIcon(mainCamera.WorldToViewportPoint(transform.position));
     }
 
     private void OnDisable()
     {
-        if(m_iconImage != null)
+        if (m_iconImage != null)
             m_iconImage.enabled = false;
     }
 
-    void Update()
+    private void Update()
     {
         if (ShowDebugLines)
             DrawDebugLines();
@@ -86,11 +86,11 @@ public class TargetIndicator : MonoBehaviour
         }
         newPos = mainCamera.ViewportToScreenPoint(newPos);
 
-        this.SetIcon(newPos);
-        this.SetScale(newPos);
-        this.SetColor(newPos);
-        this.SetRotation();
-        this.SetPosition(ref newPos);
+        SetIcon(newPos);
+        SetScale(newPos);
+        SetColor(newPos);
+        SetRotation();
+        SetPosition(ref newPos);
     }
 
     private void SetPosition(ref Vector3 pos)
@@ -103,19 +103,19 @@ public class TargetIndicator : MonoBehaviour
 
     private void SetIcon(Vector3 pos)
     {
-        if(Utils.IsOutOfView(pos))
+        if (Utils.IsOutOfView(pos))
         {
-            this.ChangeSprite(m_targetIconOffScreen);
+            ChangeSprite(m_targetIconOffScreen);
         }
         else
         {
-            this.ChangeSprite(m_targetIconOnScreen);
+            ChangeSprite(m_targetIconOnScreen);
         }
     }
 
     private void ChangeSprite(Sprite _sprite)
     {
-        if(_sprite != null)
+        if (_sprite != null)
         {
             m_iconImage.sprite = _sprite;
             m_iconImage.enabled = true;
@@ -144,7 +144,7 @@ public class TargetIndicator : MonoBehaviour
 
     private void SetColor(Vector3 pos)
     {
-        if(Utils.IsOutOfView(pos))
+        if (Utils.IsOutOfView(pos))
         {
             m_iconImage.color = new Color(color.r, color.g, color.b, Mathf.Lerp(m_iconImage.color.a, offScreenAlpha, .02f));
         }
@@ -157,9 +157,9 @@ public class TargetIndicator : MonoBehaviour
     private void SetRotation()
     {
         float zRotation;
-        if(transform.parent != null)
+        if (transform.parent != null)
         {
-            zRotation = transform.parent.transform.rotation.eulerAngles.z;
+            zRotation = transform.parent.transform.rotation.eulerAngles.z + transform.rotation.eulerAngles.z;
         }
         else
         {
@@ -167,8 +167,8 @@ public class TargetIndicator : MonoBehaviour
         }
 
         m_icon.localRotation = Quaternion.Euler(new Vector3(
-            0, 
-            0, 
+            0,
+            0,
             zRotation - Camera.main.transform.rotation.eulerAngles.z
         ));
     }
@@ -183,11 +183,11 @@ public class TargetIndicator : MonoBehaviour
 
                 if (view is DistantView || view is CloseView)
                 {
-                    this.enabled = false;
+                    enabled = false;
                 }
                 else
                 {
-                    this.enabled = true;
+                    enabled = true;
                 }
             };
         }

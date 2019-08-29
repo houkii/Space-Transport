@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
-using System;
+﻿using UnityEngine;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -32,7 +28,7 @@ public class CameraController : Singleton<CameraController>
 
     private void OnEnable()
     {
-        this.RegisterCallbacks();
+        RegisterCallbacks();
     }
 
     private void SetPosition(Vector3 position)
@@ -49,11 +45,10 @@ public class CameraController : Singleton<CameraController>
 
     private void SetRotation()
     {
-
     }
 
     private void Update()
-    { 
+    {
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotateSpeed);
         effects.intensity = player.CurrentToMaximumVelocityMagnitudeRatio / 250;
     }
@@ -62,8 +57,8 @@ public class CameraController : Singleton<CameraController>
     {
         if (CameraViews.ActiveView is StandardView)
         {
-            this.SetPosition(player.transform.position);
-            this.SetSize(player.CurrentToMaximumVelocityMagnitudeRatio);
+            SetPosition(player.transform.position);
+            SetSize(player.CurrentToMaximumVelocityMagnitudeRatio);
         }
     }
 
@@ -98,7 +93,7 @@ public class CameraController : Singleton<CameraController>
         });
     }
 
-    CameraView previousView;
+    private CameraView previousView;
 
     public void ShowQuickDistantView()
     {
@@ -111,7 +106,7 @@ public class CameraController : Singleton<CameraController>
 
     public void ShowPreviousView()
     {
-        if(previousView is CloseView)
+        if (previousView is CloseView)
         {
             transform.parent = PlayerController.Instance.transform;
             CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
@@ -127,11 +122,11 @@ public class CameraController : Singleton<CameraController>
     {
         if (CameraViews.ActiveView is DistantView)
         {
-            this.ShowPreviousView();
+            ShowPreviousView();
         }
         else
         {
-            this.ShowQuickDistantView();
+            ShowQuickDistantView();
         }
     }
 }

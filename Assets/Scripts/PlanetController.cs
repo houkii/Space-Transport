@@ -1,19 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 
 public class PlanetController : MonoBehaviour
 {
     [SerializeField]
     private GameObject TravellerPrefab;
+
     [SerializeField]
     private TextMeshPro miniMapIndex;
+
     private PlanetInstance Data;
     private TargetIndicator targetIndicator;
 
     public GameObject CurrentTraveller;
-    public Transform LandingPlatform;
+    public PlatformController[] LandingPlatforms;
     public Transform PlanetBack;
     public Transform SpawnPosition;
     public Transform ReleaseSpot;
@@ -26,11 +27,12 @@ public class PlanetController : MonoBehaviour
     private void Awake()
     {
         GameController.Instance.MissionController.OnEntitySpawned += SetCallbacks;
-        this.SetRandomColor();
+        SetRandomColor();
     }
 
-    void Start()
+    private void Start()
     {
+        LandingPlatforms = GetComponentsInChildren<PlatformController>();
         targetIndicator = GetComponent<TargetIndicator>();
         targetIndicator.enabled = false;
         angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.forward) * Mathf.Deg2Rad;
@@ -38,11 +40,11 @@ public class PlanetController : MonoBehaviour
 
     public PlanetController Initialize(PlanetInstance data)
     {
-        this.Data = data;
-        this.GetComponent<Rigidbody>().mass = this.Data.Mass;
-        this.transform.localScale = Vector3.one * this.Data.Scale;
-        this.miniMapIndex.text = this.Data.ID.ToString();
-        if(this.Data.CentralObject != null)
+        Data = data;
+        GetComponent<Rigidbody>().mass = Data.Mass;
+        transform.localScale = Vector3.one * Data.Scale;
+        miniMapIndex.text = Data.ID.ToString();
+        if (Data.CentralObject != null)
         {
             Data.Center = Data.CentralObject.position;
         }
@@ -52,7 +54,7 @@ public class PlanetController : MonoBehaviour
     private void FixedUpdate()
     {
         transform.Rotate(transform.forward, Data.RotationSpeed * Time.fixedDeltaTime);
-        this.OrbitalMove();
+        OrbitalMove();
     }
 
     private void OrbitalMove()
@@ -80,6 +82,22 @@ public class PlanetController : MonoBehaviour
         Color color = PlanetColors.Colors[Random.Range(0, PlanetColors.Colors.Count)];
         planetMaterial.SetVector("_BaseColor", new Vector4(color.r, color.g, color.b, color.a));
         renderer.sharedMaterials = new Material[] { planetMaterial };
+    }
+
+    public Transform GetNearestPlantformTransform(Vector3 position)
+    {
+        Transform nearestPlatform = transform;
+        float currentLowestDistance = 9999;
+        foreach (var platform in LandingPlatforms)
+        {
+            var distanceToPlatform = Vector3.Distance(position, platform.transform.position);
+            if (distanceToPlatform < currentLowestDistance)
+            {
+                currentLowestDistance = distanceToPlatform;
+                nearestPlatform = platform.transform;
+            }
+        }
+        return nearestPlatform;
     }
 
     //private void LateUpdate()

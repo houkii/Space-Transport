@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,13 +27,13 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private bool hasLanded = false;
     private bool isDead = false;
-    private bool joystickAvailable => !(this.transform.parent != null || (this.isLocked || this.hasLanded) || Joystick.Instance.Input.magnitude < .2f);
+    private bool joystickAvailable => !(transform.parent != null || (isLocked || hasLanded) || Joystick.Instance.Input.magnitude < .2f);
 
     public UnityEvent OnPlayerDied;
     public UnityAction<PlanetController> OnPlayerLanded;
     public UnityAction<PlanetController> OnPlayerTookOff;
 
-    public PlayerStatistics Stats = new PlayerStatistics(1000,1200);
+    public PlayerStatistics Stats = new PlayerStatistics(1000, 1200);
 
     private List<NPCEntity> Passengers = new List<NPCEntity>();
     private ShipModelController shipModelController;
@@ -41,12 +41,13 @@ public class PlayerController : MonoBehaviour
     //private Dictionary<NPCEntity, DeliveryRewardArgs> PassengerRewardDict = new Dictionary<NPCEntity, DeliveryRewardArgs>()
 
     private AudioSource Audio;
+
     [SerializeField]
     private ShipSounds Sounds;
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -76,19 +77,19 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        this.HandleInput();
+        HandleInput();
     }
 
     private void FixedUpdate()
     {
-        this.HandleJoystickInput();
+        HandleJoystickInput();
         ProcessMovementBuffer();
-        Debug.DrawLine(transform.position, transform.position + averagedMovementVector*100, Color.red);
+        Debug.DrawLine(transform.position, transform.position + averagedMovementVector * 100, Color.red);
         Debug.DrawLine(transform.position, transform.position + transform.forward);
 
-        if (this.isMoving)
+        if (isMoving)
         {
-            this.Move();
+            Move();
         }
     }
 
@@ -96,11 +97,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        if (this.isLocked) return;
+        if (isLocked) return;
 
         if (Input.GetKey(KeyCode.Space))
         {
-            this.Move();
+            Move();
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -112,22 +113,22 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            this.StartEngine();
+            StartEngine();
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            this.StopEngine();
+            StopEngine();
         }
-        if(Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            foreach(NPCEntity trav in Passengers)
+            foreach (NPCEntity trav in Passengers)
             {
-                trav.DestinationPlanet = this.HostPlanet;
+                trav.DestinationPlanet = HostPlanet;
             }
         }
-        if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            this.ReleasePassengers(this.HostPlanet, true);
+            ReleasePassengers(HostPlanet, true);
         }
 
         //if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 80f)
@@ -143,7 +144,7 @@ public class PlayerController : MonoBehaviour
     {
         if (joystickAvailable)
         {
-            this.JoystickRotate();
+            JoystickRotate();
         }
     }
 
@@ -156,15 +157,15 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var colName = collision.contacts[0].thisCollider.name;
-        if(colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
+        if (colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
         {
             var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            this.GetLandingData(ref this.landingData, collision.contacts[0], currentPlanetHost);
-            this.Land(currentPlanetHost);
+            GetLandingData(ref landingData, collision.contacts[0], currentPlanetHost);
+            Land(currentPlanetHost);
         }
-        else if(!this.hasLanded && !this.isDead)
+        else if (!hasLanded && !isDead)
         {
-            this.Kill();
+            Kill();
         }
     }
 
@@ -175,7 +176,7 @@ public class PlayerController : MonoBehaviour
         OnPlayerDied?.Invoke();
         var colliders = transform.GetComponents<Collider>();
         foreach (Collider coll in colliders) Destroy(coll);
-        this.isDead = true;
+        isDead = true;
         SoundManager.Instance.PlayExplosion();
         SoundManager.Instance.PlayMissionFailedTheme();
         gameObject.SetActive(false);
@@ -183,17 +184,17 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.tag == "Landable")
+        if (collision.gameObject.tag == "Landable")
         {
             var previousPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            this.TakeOff(previousPlanetHost);
+            TakeOff(previousPlanetHost);
         }
     }
 
     private void Land(PlanetController planet)
     {
-        this.hasLanded = true;
-        this.HostPlanet = planet;
+        hasLanded = true;
+        HostPlanet = planet;
         fuelLoading = StartCoroutine(FuelLoadingCR());
         transform.SetParent(HostPlanet.transform);
         rigidbody.velocity = Vector3.zero;
@@ -201,27 +202,27 @@ public class PlayerController : MonoBehaviour
 
         if (Passengers.Count > 0)
         {
-            this.ReleasePassengers(HostPlanet);
+            ReleasePassengers(HostPlanet);
         }
 
         shipModelController.CurrentState = ShipModelController.ShipModelState.Landed;
-        PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
+        PlaySceneCanvasController.Instance.ShowLandingInfo(landingData);
         OnPlayerLanded?.Invoke(planet);
     }
 
     private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
     {
         var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
-        var platformScale = planet.transform.localScale;
-        Vector3 platformLandingPoint = planet.LandingPlatform.InverseTransformPoint(landingPoint.point);
-        float distance = Vector3.Distance(Vector3.Scale(planet.LandingPlatform.localPosition, new Vector3(1,0,0)), platformLandingPoint);
+        //var platformScale = planet.transform.localScale;
+        //Vector3 platformLandingPoint = planet.LandingPlatform.InverseTransformPoint(landingPoint.point);
+        //float distance = Vector3.Distance(Vector3.Scale(planet.LandingPlatform.localPosition, new Vector3(1,0,0)), platformLandingPoint);
         //Debug.LogError("angle: " + angle + "\ndistance: " + distance + "\nvelocity: " + rigidbody.velocity.magnitude);
-        landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude, distance);
+        landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude);
     }
 
     private IEnumerator FuelLoadingCR()
     {
-        while(this.hasLanded)
+        while (hasLanded)
         {
             Stats.AddFuel(GameController.Instance.Settings.FuelLoading * Time.deltaTime);
             yield return null;
@@ -230,25 +231,25 @@ public class PlayerController : MonoBehaviour
 
     private void TakeOff(PlanetController planet)
     {
-        this.hasLanded = false;
-        this.HostPlanet = null;
-        StopCoroutine(this.fuelLoading);
+        hasLanded = false;
+        HostPlanet = null;
+        StopCoroutine(fuelLoading);
         OnPlayerTookOff?.Invoke(planet);
     }
 
     private void ReleasePassengerToPlanet(NPCEntity entity, PlanetController planet)
     {
         entity.ExitShip(planet);
-        this.RemovePassenger(entity);
+        RemovePassenger(entity);
     }
 
     private void ReleasePassengers(PlanetController planet, bool releaseAll = false)
     {
-        if(releaseAll)
+        if (releaseAll)
         {
-            for(int i = Passengers.Count-1; i >= 0; i--)
-            { 
-                ReleasePassengerToPlanet(Passengers[i], this.HostPlanet);
+            for (int i = Passengers.Count - 1; i >= 0; i--)
+            {
+                ReleasePassengerToPlanet(Passengers[i], HostPlanet);
             }
         }
         else
@@ -256,8 +257,8 @@ public class PlayerController : MonoBehaviour
             var leavers = Passengers.FindAll(x => x.DestinationPlanet == planet);
             if (leavers.Count > 0)
             {
-                this.AddScore(Reward.RewardType.LandingReward, this.landingData);
-                this.AddScore(Reward.RewardType.FuelReward, new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel));
+                AddScore(Reward.RewardType.LandingReward, landingData);
+                AddScore(Reward.RewardType.FuelReward, new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel));
                 //PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
                 StartCoroutine(ReleasePassengersCR(leavers, planet));
             }
@@ -266,14 +267,14 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator ReleasePassengersCR(List<NPCEntity> leavers, PlanetController planet)
     {
-        this.isLocked = true;
+        isLocked = true;
         yield return new WaitForSeconds(0.5f);
         foreach (NPCEntity leaver in leavers)
         {
             ReleasePassengerToPlanet(leaver, planet);
-             yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.5f);
         }
-        this.isLocked = false;
+        isLocked = false;
     }
 
     private void Move()
@@ -313,41 +314,41 @@ public class PlayerController : MonoBehaviour
         Stats.AddScore(score);
     }
 
-    #endregion
+    #endregion private methods
 
     #region public methods
 
     public void StartMovement()
     {
-        if (!this.isMoving)
+        if (!isMoving)
         {
-            this.StartEngine();
-            this.isMoving = true;
+            StartEngine();
+            isMoving = true;
         }
     }
 
     public void StopMovement()
     {
-        if (this.isMoving)
+        if (isMoving)
         {
-            this.StopEngine();
-            this.isMoving = false;
+            StopEngine();
+            isMoving = false;
         }
     }
 
     public void AddPassenger(NPCEntity entity)
     {
-        entity.OnReachedDestination.AddListener(() => 
+        entity.OnReachedDestination.AddListener(() =>
             AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
-        this.Passengers.Add(entity);
+        Passengers.Add(entity);
     }
 
     public void RemovePassenger(NPCEntity entity)
     {
-        this.Passengers.Remove(entity);
+        Passengers.Remove(entity);
     }
 
-    #endregion
+    #endregion public methods
 
     #region trashcoding
 
@@ -375,7 +376,7 @@ public class PlayerController : MonoBehaviour
         return (averagedVel / movementBuff.Capacity);
     }
 
-    Vector3 GetAveragedMovementVector()
+    private Vector3 GetAveragedMovementVector()
     {
         Vector3 vectorSum = Vector3.zero;
         foreach (Vector3 movementVec in movementBuff)
@@ -387,7 +388,7 @@ public class PlayerController : MonoBehaviour
 
     public float DelayedForwardAngle => Vector3.SignedAngle(transform.forward, averagedMovementVector, transform.up);
 
-    #endregion
+    #endregion trashcoding
 }
 
 [Serializable]

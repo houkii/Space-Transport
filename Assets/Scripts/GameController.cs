@@ -17,6 +17,7 @@ public class GameController : Singleton<GameController>
         Rewards = new RewardFactory();
         //Settings = new GameSettings();
         Settings.Init();
+        Authentication.Login();
     }
 
     private void Update()
@@ -76,6 +77,7 @@ public class GameController : Singleton<GameController>
     }
 
     public void SetG(float val) => Settings.G = val;
+
     public void SetDistanceScaler(float val) => Settings.DistanceScaler = val;
 }
 
@@ -100,15 +102,12 @@ public class GameSettings
     public Slider DragSlider;
     public Slider PlayerMassSlider;
 
-    
-
     public void Init()
     {
         GSlider.value = G;
         DistanceSlider.value = DistanceScaler;
         DragSlider.value = PlayerDrag;
         PlayerMassSlider.value = PlayerMass;
-
 
         GSlider.onValueChanged.AddListener(delegate { G = GSlider.value; });
         DistanceSlider.onValueChanged.AddListener(delegate { DistanceScaler = DistanceSlider.value; });

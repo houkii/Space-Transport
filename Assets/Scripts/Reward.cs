@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-
-
 
 public interface IRewardArgs
 {
@@ -18,12 +13,16 @@ public interface IReward
 public abstract class Reward : IReward
 {
     public enum RewardType { LandingReward, DeliveryReward, FuelReward };
+
     public delegate void RewardGranted(Reward reward);
+
     public static event RewardGranted OnRewardGranted;
+
     public int Value { get; private set; }
 
     protected IRewardArgs Args;
     protected Type argsType;
+
     public virtual int GetReward(IRewardArgs args)
     {
         if (args.GetType() != argsType)
@@ -33,15 +32,16 @@ public abstract class Reward : IReward
         }
         else
         {
-            this.Args = args;
+            Args = args;
             if (args == null) throw new ArgumentException();
-            Value = this.CalculateReward();
+            Value = CalculateReward();
             OnRewardGranted(this);
             return Value;
         }
     }
 
     protected abstract int CalculateReward();
+
     //protected abstract string GetName();
 
     public Reward(Type typeOfArgs)
@@ -56,30 +56,30 @@ public class LandingRewardArgs : IRewardArgs
 {
     public float Angle { get; set; }
     public float Velocity { get; set; }
-    public float Distance { get; set; }
 
-    public LandingRewardArgs(float _angle, float _velocity, float _distance)
+    public LandingRewardArgs(float _angle, float _velocity)
     {
         Angle = _angle;
         Velocity = _velocity;
-        Distance = _distance;
     }
 }
 
 public class LandingReward : Reward
 {
-    public LandingReward(Type typeOfArgs) : base(typeOfArgs) { }
+    public LandingReward(Type typeOfArgs) : base(typeOfArgs)
+    {
+    }
 
     protected override int CalculateReward()
     {
         //dynamic data = Convert.ChangeType(Args, argsType);
         var data = Args as LandingRewardArgs;
-        int score = (int)(45 - data.Angle) * GameController.Instance.Settings.LandingRewardMultiplier;
+        int score = (int)(((45 - data.Angle) / 45.0f) * GameController.Instance.Settings.LandingRewardMultiplier);
         return score;
     }
 }
 
-#endregion
+#endregion LandingReward
 
 #region DeliveryReward
 
@@ -105,18 +105,21 @@ public class DeliveryRewardArgs : IRewardArgs
 
 public class DeliveryReward : Reward
 {
-    public DeliveryReward(Type typeOfArgs) : base(typeOfArgs) { }
+    public DeliveryReward(Type typeOfArgs) : base(typeOfArgs)
+    {
+    }
 
     protected override int CalculateReward()
     {
         var data = Args as DeliveryRewardArgs;
+        int score = (int)(data.CurrentToMaxTimeRatio * GameController.Instance.Settings.DeliveryRewardMultiplier);
         //int score = (int)(data.MaximumTime - data.DeliveryTime);
-        int score = (int)(data.MaximumTime - data.DeliveryTime) * GameController.Instance.Settings.DeliveryRewardMultiplier;
+        //int score = (int)((float)(data.MaximumTime - data.DeliveryTime) / data.MaximumTime) * GameController.Instance.Settings.DeliveryRewardMultiplier;
         return score;
     }
 }
 
-#endregion
+#endregion DeliveryReward
 
 #region FuelReward
 
@@ -136,13 +139,15 @@ public class FuelRewardArgs : IRewardArgs
 
 public class FuelReward : Reward
 {
-    public FuelReward(Type typeOfArgs) : base(typeOfArgs) { }
+    public FuelReward(Type typeOfArgs) : base(typeOfArgs)
+    {
+    }
 
     protected override int CalculateReward()
     {
         var data = Args as FuelRewardArgs;
         int score = (int)((data.RemainingFuel / data.MaxFuel) * GameController.Instance.Settings.MaxRewardForRemainingFuel);
-        if(data.TotalFuelUsed > 0)
+        if (data.TotalFuelUsed > 0)
         {
             score += (int)(GameController.Instance.Settings.MaxRewardForTotalFuelUsed / data.TotalFuelUsed);
         }
@@ -150,7 +155,7 @@ public class FuelReward : Reward
     }
 }
 
-#endregion
+#endregion FuelReward
 
 #region RewardFactory
 
@@ -158,18 +163,21 @@ public class RewardFactory
 {
     public int GetReward(Reward.RewardType rewardType, IRewardArgs rewardArgs)
     {
-        switch(rewardType)
+        switch (rewardType)
         {
             case Reward.RewardType.DeliveryReward:
                 return new DeliveryReward(typeof(DeliveryRewardArgs)).GetReward(rewardArgs);
+
             case Reward.RewardType.LandingReward:
                 return new LandingReward(typeof(LandingRewardArgs)).GetReward(rewardArgs);
+
             case Reward.RewardType.FuelReward:
                 return new FuelReward(typeof(FuelRewardArgs)).GetReward(rewardArgs);
+
             default:
                 throw new System.NotImplementedException();
         }
     }
 }
 
-#endregion
+#endregion RewardFactory
