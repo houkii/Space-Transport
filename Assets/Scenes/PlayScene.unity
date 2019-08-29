@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.07084472, g: 0.026632002, b: 0.038410854, a: 1}
+  m_IndirectSpecularColor: {r: 0.09387847, g: 0.03846131, b: 0.052685454, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5914,7 +5914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxVelocityMagnitude: 500
-  acceleration: 6000
   propulsionPS: {fileID: 311097086}
   explosionPrefab: {fileID: 100002, guid: f7efb0d9df2264096af57128df85dddb, type: 3}
   shipThruster: {fileID: 1079448570}
@@ -6697,7 +6696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 352122034}
-  minCameraSize: 110
+  minCameraSize: 130
   maxCameraSize: 400
   defaultCameraPosition: {x: 0, y: 20, z: 2}
   maximumVerticalOffset: 15

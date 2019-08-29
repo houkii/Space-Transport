@@ -156,17 +156,14 @@ public class TargetIndicator : MonoBehaviour
 
     private void SetRotation()
     {
-        float zRotation;
+        //float zRotation = 0;
+        float zRotation = transform.localRotation.eulerAngles.x + 90;
         if (transform.parent != null)
         {
-            zRotation = transform.parent.transform.rotation.eulerAngles.z + transform.rotation.eulerAngles.z;
-        }
-        else
-        {
-            zRotation = transform.rotation.eulerAngles.z;
+            zRotation += transform.parent.transform.rotation.eulerAngles.z;
         }
 
-        m_icon.localRotation = Quaternion.Euler(new Vector3(
+        m_icon.rotation = Quaternion.Euler(new Vector3(
             0,
             0,
             zRotation - Camera.main.transform.rotation.eulerAngles.z
