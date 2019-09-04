@@ -72,10 +72,13 @@ public class PlayerController : MonoBehaviour
             var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
                 new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
             Stats.AddScore(endgameLandingScore);
-            VFX.PlayTeleportEffect(transform);
+            //VFX.PlayTeleportEffect(transform);
+            playerEffects.PlayOutroSequence();
         });
 
         Stats.OnFuelFull.AddListener(StopLoadingFuel);
+
+        playerEffects.PlayIntroSequence();
     }
 
     private void Update()
@@ -178,13 +181,12 @@ public class PlayerController : MonoBehaviour
 
     private void Kill()
     {
-        var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        Destroy(explosion, 1);
+        playerEffects.ShowExplosion(transform.position, transform.rotation);
         OnPlayerDied?.Invoke();
         var colliders = transform.GetComponents<Collider>();
         foreach (Collider coll in colliders) Destroy(coll);
         isDead = true;
-        SoundManager.Instance.PlayExplosion();
+        //SoundManager.Instance.PlayExplosion();
         SoundManager.Instance.PlayMissionFailedTheme();
         gameObject.SetActive(false);
     }
@@ -454,6 +456,9 @@ public class PlayerEffects
 {
     public GameObject LandingFX;
     public GameObject FuelLoadingFX;
+    public GameObject ExplosionFX;
+    public GameObject BlackHoleFX;
+
     private GameObject fuelLoadingFX;
 
     public void ShowLandingFX(Vector3 position, Quaternion rotation)
@@ -481,5 +486,70 @@ public class PlayerEffects
     public void HideFuelLoading()
     {
         fuelLoadingFX.SetActive(false);
+    }
+
+    public void ShowExplosion(Vector3 position, Quaternion rotation)
+    {
+        var obj = GameObject.Instantiate(ExplosionFX, position, rotation);
+        GameObject.Destroy(obj, 2.5f);
+    }
+
+    public void PlayIntroSequence()
+    {
+        var player = PlayerController.Instance.transform;
+        var defaultPlayerScale = player.localScale;
+        var obj = GameObject.Instantiate(BlackHoleFX, player.position + new Vector3(0, 0, 75f), player.rotation);
+        obj.transform.localScale = Vector3.zero;
+        player.localScale = Vector3.zero;
+
+        Sequence BHSeq = DOTween.Sequence();
+        BHSeq.Append(obj.transform.DOScale(220, .75f).SetEase(Ease.OutBack))
+            .AppendInterval(.35f)
+            .Append(obj.transform.DOScale(0, .45f).SetEase(Ease.InBack))
+            .AppendCallback(() => GameObject.Destroy(obj));
+
+        Sequence playerSeq = DOTween.Sequence();
+        playerSeq.AppendInterval(1.2f)
+            .Append(player.DOScale(defaultPlayerScale.x, 1f).SetEase(Ease.OutElastic));
+    }
+
+    public void PlayOutroSequence()
+    {
+        var player = PlayerController.Instance.transform;
+
+        Rigidbody[] rbs = player.GetComponentsInChildren<Rigidbody>();
+        Collider[] colls = player.GetComponentsInChildren<Collider>();
+        var attractor = player.GetComponent<Attractor>();
+        attractor.isAffectedByPull = false;
+        attractor.isPulling = false;
+
+        foreach (var rb in rbs)
+        {
+            rb.isKinematic = true;
+        }
+
+        foreach (var coll in colls)
+        {
+            coll.enabled = false;
+        }
+
+        var obj = GameObject.Instantiate(BlackHoleFX, player.position, player.rotation);
+        obj.transform.localScale = Vector3.zero;
+
+        Sequence BHSeq = DOTween.Sequence();
+        BHSeq.Append(obj.transform.DOScale(220, .75f).SetEase(Ease.OutBack))
+            .AppendInterval(.35f)
+            .Append(obj.transform.DOScale(0, .45f).SetEase(Ease.InBack))
+            .AppendCallback(() => GameObject.Destroy(obj));
+
+        Sequence playerSeq = DOTween.Sequence();
+        playerSeq.AppendInterval(.6f)
+            .AppendCallback(() =>
+            {
+                CameraController.Instance.StopAllCoroutines();
+                CameraViews.ActiveView.Disable();
+                Camera.main.transform.SetParent(null);
+            })
+            .Append(player.DOScale(0, 1f).SetEase(Ease.InElastic));
     }
 }

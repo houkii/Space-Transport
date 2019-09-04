@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5917,11 +5917,6 @@ MonoBehaviour:
   propulsionPS: {fileID: 311097086}
   explosionPrefab: {fileID: 100002, guid: f7efb0d9df2264096af57128df85dddb, type: 3}
   shipThruster: {fileID: 1079448570}
-  playerEffects:
-    LandingFX: {fileID: 1095767987829304, guid: bbdffbb5bb33e0942a03dd0c4a2b87f4,
-      type: 3}
-    FuelLoadingFX: {fileID: 1832608762662134, guid: 89a5880db63937c4db5ac8be1cce8406,
-      type: 3}
   OnPlayerDied:
     m_PersistentCalls:
       m_Calls: []
@@ -5939,6 +5934,15 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+  playerEffects:
+    LandingFX: {fileID: 1095767987829304, guid: bbdffbb5bb33e0942a03dd0c4a2b87f4,
+      type: 3}
+    FuelLoadingFX: {fileID: 1832608762662134, guid: 89a5880db63937c4db5ac8be1cce8406,
+      type: 3}
+    ExplosionFX: {fileID: 1822773341328252, guid: 8aea2a892ad46aa439b8be49adccdcad,
+      type: 3}
+    BlackHoleFX: {fileID: 1721409791827648, guid: 12683014616796e4980e298c021ecd9e,
+      type: 3}
   Sounds:
     StartEngine: {fileID: 8300000, guid: bc1b970fe9fac6d43909ae5e2961c43d, type: 3}
     Running: {fileID: 8300000, guid: e07bfdb447626d64fbcf4175330c4fac, type: 3}
