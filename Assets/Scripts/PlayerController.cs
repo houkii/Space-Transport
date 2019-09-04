@@ -42,8 +42,8 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource Audio;
 
-    [SerializeField]
-    private ShipSounds Sounds;
+    [SerializeField] private PlayerEffects playerEffects;
+    [SerializeField] private ShipSounds Sounds;
 
     private void Awake()
     {
@@ -72,7 +72,10 @@ public class PlayerController : MonoBehaviour
             var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
                 new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
             Stats.AddScore(endgameLandingScore);
+            VFX.PlayTeleportEffect(transform);
         });
+
+        Stats.OnFuelFull.AddListener(StopLoadingFuel);
     }
 
     private void Update()
@@ -129,6 +132,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             ReleasePassengers(HostPlanet, true);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            VFX.PlayTeleportEffect(transform);
         }
 
         //if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 80f)
@@ -195,7 +202,7 @@ public class PlayerController : MonoBehaviour
     {
         hasLanded = true;
         HostPlanet = planet;
-        fuelLoading = StartCoroutine(FuelLoadingCR());
+        LoadFuel();
         transform.SetParent(HostPlanet.transform);
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
@@ -207,17 +214,26 @@ public class PlayerController : MonoBehaviour
 
         shipModelController.CurrentState = ShipModelController.ShipModelState.Landed;
         PlaySceneCanvasController.Instance.ShowLandingInfo(landingData);
+        playerEffects.ShowLandingFX(shipThruster.transform.position, transform.rotation);
         OnPlayerLanded?.Invoke(planet);
     }
 
     private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
     {
         var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
-        //var platformScale = planet.transform.localScale;
-        //Vector3 platformLandingPoint = planet.LandingPlatform.InverseTransformPoint(landingPoint.point);
-        //float distance = Vector3.Distance(Vector3.Scale(planet.LandingPlatform.localPosition, new Vector3(1,0,0)), platformLandingPoint);
-        //Debug.LogError("angle: " + angle + "\ndistance: " + distance + "\nvelocity: " + rigidbody.velocity.magnitude);
         landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude);
+    }
+
+    private void LoadFuel()
+    {
+        playerEffects.ShowFuelLoading(shipThruster.transform.position, transform.rotation);
+        fuelLoading = StartCoroutine(FuelLoadingCR());
+    }
+
+    private void StopLoadingFuel()
+    {
+        playerEffects.HideFuelLoading();
+        StopCoroutine(fuelLoading);
     }
 
     private IEnumerator FuelLoadingCR()
@@ -233,7 +249,7 @@ public class PlayerController : MonoBehaviour
     {
         hasLanded = false;
         HostPlanet = null;
-        StopCoroutine(fuelLoading);
+        StopLoadingFuel();
         OnPlayerTookOff?.Invoke(planet);
     }
 
@@ -312,6 +328,10 @@ public class PlayerController : MonoBehaviour
     {
         var score = GameController.Instance.Rewards.GetReward(type, entityRewardData);
         Stats.AddScore(score);
+    }
+
+    private void PlayTeleportEffect()
+    {
     }
 
     #endregion private methods
@@ -405,4 +425,61 @@ public class ShipSounds
     public float RandomPitch => UnityEngine.Random.Range(-.05f, .05f);
 
     public Tween pitchTween;
+}
+
+public static class VFX
+{
+    public static void PlayTeleportEffect(Transform transform)
+    {
+        Rigidbody[] rbs = transform.GetComponentsInChildren<Rigidbody>();
+        Collider[] colls = transform.GetComponentsInChildren<Collider>();
+
+        foreach (var rb in rbs)
+        {
+            rb.isKinematic = true;
+        }
+
+        foreach (var coll in colls)
+        {
+            coll.enabled = false;
+        }
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(transform.DOScale(0, 1f).SetEase(Ease.OutSine));
+    }
+}
+
+[Serializable]
+public class PlayerEffects
+{
+    public GameObject LandingFX;
+    public GameObject FuelLoadingFX;
+    private GameObject fuelLoadingFX;
+
+    public void ShowLandingFX(Vector3 position, Quaternion rotation)
+    {
+        var obj = GameObject.Instantiate(LandingFX, position, rotation);
+        obj.transform.SetParent(PlayerController.Instance.transform);
+        GameObject.Destroy(obj, 2.5f);
+    }
+
+    public void ShowFuelLoading(Vector3 position, Quaternion rotation)
+    {
+        if (fuelLoadingFX == null)
+        {
+            fuelLoadingFX = GameObject.Instantiate(FuelLoadingFX, position, rotation);
+            fuelLoadingFX.transform.SetParent(PlayerController.Instance.transform);
+        }
+        else
+        {
+            fuelLoadingFX.SetActive(true);
+            fuelLoadingFX.transform.position = position;
+            fuelLoadingFX.transform.rotation = rotation;
+        }
+    }
+
+    public void HideFuelLoading()
+    {
+        fuelLoadingFX.SetActive(false);
+    }
 }

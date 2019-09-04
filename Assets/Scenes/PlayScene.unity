@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5917,6 +5917,11 @@ MonoBehaviour:
   propulsionPS: {fileID: 311097086}
   explosionPrefab: {fileID: 100002, guid: f7efb0d9df2264096af57128df85dddb, type: 3}
   shipThruster: {fileID: 1079448570}
+  playerEffects:
+    LandingFX: {fileID: 1095767987829304, guid: bbdffbb5bb33e0942a03dd0c4a2b87f4,
+      type: 3}
+    FuelLoadingFX: {fileID: 1832608762662134, guid: 89a5880db63937c4db5ac8be1cce8406,
+      type: 3}
   OnPlayerDied:
     m_PersistentCalls:
       m_Calls: []
@@ -5924,6 +5929,11 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   Stats:
     fuel: 1000
+    OnFuelFull:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
     OnOutOfFuel:
       m_PersistentCalls:
         m_Calls: []

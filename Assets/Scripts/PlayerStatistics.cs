@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,8 +8,10 @@ public class PlayerStatistics
     public int Score { get; private set; }
     public float TotalFuelUsed { get; private set; }
     public float MaxFuel { get; private set; }
+
     [SerializeField]
     private float fuel;
+
     public float Fuel
     {
         get { return fuel; }
@@ -24,6 +24,11 @@ public class PlayerStatistics
 
             fuel = fuel <= MaxFuel ? value : MaxFuel;
 
+            if (fuel == MaxFuel)
+            {
+                OnFuelFull?.Invoke();
+            }
+
             if (fuel <= 0)
             {
                 OnOutOfFuel.Invoke();
@@ -33,6 +38,7 @@ public class PlayerStatistics
 
     public UnityAction<int> OnScoreUpdated;
     public UnityAction<float> OnFuelUpdated;
+    public UnityEvent OnFuelFull;
     public UnityEvent OnOutOfFuel;
 
     public void AddScore(int value)
@@ -49,7 +55,7 @@ public class PlayerStatistics
 
     public PlayerStatistics(float initialFuel, float maxFuel)
     {
-        this.Fuel = initialFuel;
-        this.MaxFuel = maxFuel;
+        Fuel = initialFuel;
+        MaxFuel = maxFuel;
     }
 }

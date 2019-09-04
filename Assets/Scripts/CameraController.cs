@@ -71,6 +71,11 @@ public class CameraController : Singleton<CameraController>
         CameraViews.SetActive(CameraView.CameraViewType.Standard);
     }
 
+    public void NormalLook()
+    {
+        CameraViews.SetActive(CameraView.CameraViewType.NormalLook, SetStandardViewParams);
+    }
+
     private void RegisterCallbacks()
     {
         PlayerController.Instance.OnPlayerLanded += (x) =>

@@ -52,7 +52,7 @@ public class GameController : Singleton<GameController>
     public void PlayNextMission()
     {
         MissionID++;
-        if (MissionController.AvailableMissions.Count < MissionID)
+        if (MissionController.AvailableMissions.Count > MissionID)
         {
             PlayMission(MissionID);
         }

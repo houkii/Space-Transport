@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 
 #region CameraView
@@ -9,12 +8,14 @@ using UnityEngine;
 public interface ICameraView
 {
     void Enable(Action onComplete);
+
     void Disable();
 }
 
 public abstract class CameraView : ICameraView
 {
     public enum CameraViewType { Standard, NormalLook, CloseLook, Distant, QuickDistant }
+
     public static Camera Cam;
     public bool IsSet { get; private set; }
     protected Sequence activeSequence;
@@ -22,7 +23,8 @@ public abstract class CameraView : ICameraView
     public void Enable(Action onCompleted = null)
     {
         IsSet = false;
-        activeSequence = GetSequence().OnComplete(() => {
+        activeSequence = GetSequence().OnComplete(() =>
+        {
             onCompleted?.Invoke();
             IsSet = true;
         });
@@ -36,7 +38,7 @@ public abstract class CameraView : ICameraView
     protected abstract Sequence GetSequence();
 }
 
-#endregion
+#endregion CameraView
 
 #region StandardView
 
@@ -51,7 +53,7 @@ public class StandardView : CameraView
     }
 }
 
-#endregion
+#endregion StandardView
 
 #region Normal
 
@@ -70,7 +72,7 @@ public class NormalView : CameraView
     }
 }
 
-#endregion
+#endregion Normal
 
 #region CloseView
 
@@ -87,7 +89,7 @@ public class CloseView : CameraView
     }
 }
 
-#endregion
+#endregion CloseView
 
 #region DistantView
 
@@ -95,7 +97,10 @@ public class DistantView : CameraView
 {
     public float tweenTime = 8.0f;
 
-    public DistantView(float _time = 8.0f) { tweenTime = _time; }
+    public DistantView(float _time = 8.0f)
+    {
+        tweenTime = _time;
+    }
 
     protected override Sequence GetSequence()
     {
@@ -103,19 +108,21 @@ public class DistantView : CameraView
 
         var camPos = new Vector3(0, 0, Cam.transform.position.z);
         seq.Append(Cam.DOOrthoSize(1550, tweenTime).SetEase(Ease.InOutSine))
+            .Join(Cam.transform.DORotate(Vector3.zero, 1f))
             .Join(Cam.transform.DOMove(camPos, tweenTime).SetEase(Ease.InOutSine));
 
         return seq;
     }
 }
 
-#endregion
+#endregion DistantView
 
 #region CameraView Factory
 
 public static class CameraViews
 {
     public delegate void CameraViewChangedDelegate(CameraView view);
+
     public static CameraViewChangedDelegate OnCameraViewChanged;
 
     public static CameraView ActiveView { get; private set; }
@@ -138,7 +145,7 @@ public static class CameraViews
 
     private static IEnumerator SetCameraViewType(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)
     {
-        if(finishPreviousViewTransition)
+        if (finishPreviousViewTransition)
             yield return new WaitUntil(() => ActiveView.IsSet == true);
 
         switch (cameraViewType)
@@ -185,4 +192,4 @@ public static class CameraViews
     }
 }
 
-#endregion
+#endregion CameraView Factory
