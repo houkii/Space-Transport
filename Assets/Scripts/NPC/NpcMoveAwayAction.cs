@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace NpcActions
@@ -27,9 +26,15 @@ namespace NpcActions
                 {
                     Debug.Log("A traveller reached destination :)");
                     GameObject.Destroy(npc.View.gameObject);
-                    GameObject.Destroy(npc.gameObject);
+                    DestroySequence();
                 }
             }
+        }
+
+        private void DestroySequence()
+        {
+            npc.transform.DOScale(0, .75f).SetEase(Ease.InBack)
+                .OnComplete(() => GameObject.Destroy(npc.gameObject));
         }
     }
 }

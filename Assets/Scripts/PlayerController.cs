@@ -534,7 +534,11 @@ public class PlayerEffects
         }
 
         var obj = GameObject.Instantiate(BlackHoleFX, player.position, player.rotation);
+
+        //obj.transform.SetParent(player);
         obj.transform.localScale = Vector3.zero;
+        CameraViews.ActiveView.Disable();
+        Camera.main.transform.SetParent(null);
 
         Sequence BHSeq = DOTween.Sequence();
         BHSeq.Append(obj.transform.DOScale(220, .75f).SetEase(Ease.OutBack))
@@ -544,12 +548,11 @@ public class PlayerEffects
 
         Sequence playerSeq = DOTween.Sequence();
         playerSeq.AppendInterval(.6f)
-            .AppendCallback(() =>
-            {
-                CameraController.Instance.StopAllCoroutines();
-                CameraViews.ActiveView.Disable();
-                Camera.main.transform.SetParent(null);
-            })
+            //.AppendCallback(() =>
+            //{
+            //    CameraController.Instance.StopAllCoroutines();
+            //    CameraViews.ActiveView.Disable();
+            //})
             .Append(player.DOScale(0, 1f).SetEase(Ease.InElastic));
     }
 }

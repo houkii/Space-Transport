@@ -1,23 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Unity.Entities;
-using Unity.Transforms;
+﻿using System.Collections.Generic;
 using Unity.Collections;
+using Unity.Entities;
 using Unity.Rendering;
-using Unity.Jobs;
-using Unity.Burst;
+using Unity.Transforms;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField]
     private List<Mesh> meshes;
+
     [SerializeField]
     private Material material;
 
     private List<Mesh> meshesToRender = new List<Mesh>();
-    
+
     public void Awake()
     {
         //base.Awake();
@@ -41,20 +39,12 @@ public class Spawner : MonoBehaviour
         {
             DestroyEntities();
 
-            foreach(PlanetarySystemInstance system in GameController.Instance.MissionController.CurrentMission.PlanetarySystems)
+            foreach (PlanetarySystemInstance system in GameController.Instance.MissionController.CurrentMission.PlanetarySystems)
             {
                 SpawnAsteroids(system.Origin);
             }
 
-            foreach (Mesh mesh in meshesToRender)
-            {
-                Spawn(5, mesh, 1200, 1500, -50, -100, Vector2.zero);
-            }
-
-            foreach (Mesh mesh in meshesToRender)
-            {
-                Spawn(25, mesh, 1200, 1500, 50, 100, Vector2.zero);
-            }
+            SpawnAsteroidBounds(GameController.Instance.MissionController.CurrentMission.BoundsSize);
 
             //foreach (Mesh mesh in meshesToRender)
             //{
@@ -71,7 +61,7 @@ public class Spawner : MonoBehaviour
             //    Spawn(3, mesh, 200, 1200, 100, 200);
             //}
         }
-        else if(scene.name == "MainMenu")
+        else if (scene.name == "MainMenu")
         {
             DestroyEntities();
             foreach (Mesh mesh in meshesToRender)
@@ -83,9 +73,24 @@ public class Spawner : MonoBehaviour
 
     private void PrepareMeshes()
     {
-        foreach(Mesh mesh in meshes)
+        foreach (Mesh mesh in meshes)
         {
-            meshesToRender.Add(GetScaledMesh(mesh, Random.Range(10f,20f)));
+            meshesToRender.Add(GetScaledMesh(mesh, Random.Range(10f, 20f)));
+        }
+    }
+
+    private void SpawnAsteroidBounds(int boundsSize)
+    {
+        int rMin = boundsSize - 250;
+        int rMax = boundsSize + 250;
+        foreach (Mesh mesh in meshesToRender)
+        {
+            Spawn(5, mesh, rMin, rMax, -50, -100, Vector2.zero);
+        }
+
+        foreach (Mesh mesh in meshesToRender)
+        {
+            Spawn(25, mesh, rMin, rMax, 50, 100, Vector2.zero);
         }
     }
 
@@ -117,11 +122,10 @@ public class Spawner : MonoBehaviour
         NativeArray<Entity> entityArray = new NativeArray<Entity>(numToSpawn, Allocator.Temp);
         entityManager.CreateEntity(entityArchetype, entityArray);
 
-        for(int i = 0; i < entityArray.Length; i++)
+        for (int i = 0; i < entityArray.Length; i++)
         {
             Entity entity = entityArray[i];
             var position = RandomInRing(innerRadius, outerRadius);
-            
 
             entityManager.SetComponentData(entity, new MoveComponent
             {
@@ -149,20 +153,19 @@ public class Spawner : MonoBehaviour
                 material = material
             });
         }
-        
+
         entityArray.Dispose();
     }
 
-    private Unity.Mathematics.quaternion RandomRotation => 
+    private Unity.Mathematics.quaternion RandomRotation =>
         Unity.Mathematics.quaternion.Euler(
-            Random.Range(0f, 360f), 
-            Random.Range(0f, 360f), 
+            Random.Range(0f, 360f),
+            Random.Range(0f, 360f),
             Random.Range(0f, 360f)
         );
 
     private Unity.Mathematics.float3 RandomRotationSpeed =>
         new Unity.Mathematics.float3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f), Random.Range(-2f, 2f));
-
 
     private Unity.Mathematics.float2 RandomInRing(float innerRadius, float outerRadius)
     {
@@ -187,12 +190,11 @@ public class Spawner : MonoBehaviour
                 entityManager.DestroyEntity(e);
             entityArray.Dispose();
         }
-        catch(System.NullReferenceException e)
+        catch (System.NullReferenceException e)
         {
             Debug.LogWarning("No entity manager available!");
         }
-    }    
-      
+    }
 
     private Mesh GetScaledMesh(Mesh mesh, float scale)
     {
@@ -237,15 +239,14 @@ public class MoveSystem : ComponentSystem
             //var newPosXY = Utils.GetRotatedPosition(entityPos, translation.Value.z / 50 * Time.deltaTime);
             //translation.Value = new Unity.Mathematics.float3(newPosXY.x + moveData.origin.x, newPosXY.y + moveData.origin.y, translation.Value.z);
 
-
             var entityPos = new Vector2(moveData.current.x, moveData.current.y);
             var newPosXY = Utils.GetRotatedPosition(entityPos, translation.Value.z / 50 * Time.deltaTime);
             moveData.current = new Unity.Mathematics.float2(newPosXY.x, newPosXY.y);
             translation.Value = new Unity.Mathematics.float3(newPosXY.x + moveData.origin.x, newPosXY.y + moveData.origin.y, translation.Value.z);
 
             rotation.Value = Unity.Mathematics.quaternion.Euler(
-                moveData.rotationSpeeds.x * Time.unscaledTime, 
-                moveData.rotationSpeeds.y * Time.unscaledTime, 
+                moveData.rotationSpeeds.x * Time.unscaledTime,
+                moveData.rotationSpeeds.y * Time.unscaledTime,
                 0//moveData.rotationSpeeds.z * Time.unscaledTime
             );
         });

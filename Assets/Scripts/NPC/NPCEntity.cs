@@ -1,19 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
-using UnityEngine.Events;
+﻿using DG.Tweening;
 using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class NPCEntity : MonoBehaviour
 {
     [SerializeField]
     private float speedModifier = 0.2f;
+
     private Animator Animator;
     private Transform movementTarget = null;
     private TargetIndicator targetIndicator;
 
     private PlanetController hostPlanet;
+
     public PlanetController HostPlanet
     {
         get { return hostPlanet; }
@@ -21,6 +22,7 @@ public class NPCEntity : MonoBehaviour
     }
 
     private NpcActions.Action currentAction;
+
     public NpcActions.Action CurrentAction
     {
         get { return currentAction; }
@@ -34,12 +36,16 @@ public class NPCEntity : MonoBehaviour
 
     // Npc events
     public UnityEvent OnGotAboard;
+
     public UnityEvent OnReachedDestination;
+
     public event Action OnExitShip;
 
     private bool IsAboard => HostPlanet == null;
     private bool isAttached;
     public string CurrentActionString;
+
+    private Vector3 defaultScale;
 
     private void Awake()
     {
@@ -50,11 +56,17 @@ public class NPCEntity : MonoBehaviour
         //targetIndicator = GetComponent<TargetIndicator>();
     }
 
+    private void Start()
+    {
+        defaultScale = transform.localScale;
+        //ShowNPC();
+    }
+
     private void OnEnable()
     {
         PlayerController.Instance.OnPlayerLanded += HandlePlayerLanding;
         PlayerController.Instance.OnPlayerTookOff += HandlePlayerTakingOff;
-        this.View.Show();
+        View.Show();
     }
 
     private void OnDisable()
@@ -62,8 +74,8 @@ public class NPCEntity : MonoBehaviour
         PlayerController.Instance.OnPlayerTookOff -= HandlePlayerTakingOff;
         PlayerController.Instance.OnPlayerLanded -= HandlePlayerLanding;
 
-        if(this.View != null)
-            this.View.Hide();
+        if (View != null)
+            View.Hide();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -76,7 +88,7 @@ public class NPCEntity : MonoBehaviour
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
                 //targetIndicator.DestroySelf();
             }
-            else if (PlayerController.Instance.HostPlanet == this.HostPlanet)
+            else if (PlayerController.Instance.HostPlanet == HostPlanet)
             {
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
             }
@@ -93,7 +105,7 @@ public class NPCEntity : MonoBehaviour
     {
         if (collision.gameObject.tag == "Planet")
         {
-            this.ResolveNPCRotation(collision.contacts[0].normal);
+            ResolveNPCRotation(collision.contacts[0].normal);
         }
     }
 
@@ -114,7 +126,7 @@ public class NPCEntity : MonoBehaviour
 
     private void HandlePlayerTakingOff(PlanetController planetPlayerTookOffFrom)
     {
-        if(planetPlayerTookOffFrom == HostPlanet && CurrentAction.Type != NpcActions.ActionType.Wonder)
+        if (planetPlayerTookOffFrom == HostPlanet && CurrentAction.Type != NpcActions.ActionType.Wonder)
         {
             CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.Wonder);
         }
@@ -122,7 +134,7 @@ public class NPCEntity : MonoBehaviour
 
     private void HandlePlayerLanding(PlanetController planetPlayerLandedOn)
     {
-        if(planetPlayerLandedOn == HostPlanet)
+        if (planetPlayerLandedOn == HostPlanet)
         {
             CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveToShip);
         }
@@ -177,7 +189,20 @@ public class NPCEntity : MonoBehaviour
         }
     }
 
-    #endregion
+    private void HideNPC()
+    {
+        transform.DOScale(0, .65f).SetEase(Ease.OutBack).OnComplete(() => gameObject.SetActive(false));
+    }
+
+    private void ShowNPC()
+    {
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
+        transform.localScale = Vector3.zero;
+        transform.DOScale(defaultScale.x, .65f).SetEase(Ease.OutCirc);
+    }
+
+    #endregion private methods
 
     #region public methods
 
@@ -186,29 +211,31 @@ public class NPCEntity : MonoBehaviour
         StopAllCoroutines();
         PlaySceneCanvasController.Instance.TravellersPanelController.AddEntry(this);
         PlayerController.Instance.AddPassenger(this);
-        this.DeliveryRewardData = new DeliveryRewardArgs(Time.time + 60);
-        this.HostPlanet.CurrentTraveller = null;
-        this.Animator.enabled = false;
-        this.OnGotAboard?.Invoke();
-        this.isAttached = false;
+        DeliveryRewardData = new DeliveryRewardArgs(Time.time + 60);
+        HostPlanet.CurrentTraveller = null;
+        Animator.enabled = false;
+        OnGotAboard?.Invoke();
+        isAttached = false;
         gameObject.SetActive(false);
+        //HideNPC();
     }
 
     public void ExitShip(PlanetController planet)
     {
         PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
-        this.HostPlanet = planet;
-        this.transform.rotation = Quaternion.identity;
-        this.transform.position = HostPlanet.Waypoints[UnityEngine.Random.Range(0,HostPlanet.Waypoints.Count)].position;
-        this.gameObject.SetActive(true);
-        this.DeliveryRewardData.DeliveryTime = Time.time;
-        this.OnExitShip?.Invoke();
+        HostPlanet = planet;
+        //ShowNPC();
+        transform.rotation = Quaternion.identity;
+        transform.position = HostPlanet.Waypoints[UnityEngine.Random.Range(0, HostPlanet.Waypoints.Count)].position;
+        gameObject.SetActive(true);
+        DeliveryRewardData.DeliveryTime = Time.time;
+        OnExitShip?.Invoke();
     }
 
     public void Initialize(PlanetController host, PlanetController destination)
     {
-        this.HostPlanet = host;
-        this.DestinationPlanet = destination;
+        HostPlanet = host;
+        DestinationPlanet = destination;
     }
 
     public void MoveTo(Transform destination)
@@ -217,5 +244,5 @@ public class NPCEntity : MonoBehaviour
         StartCoroutine(MoveToCR(destination));
     }
 
-    #endregion
+    #endregion public methods
 }
