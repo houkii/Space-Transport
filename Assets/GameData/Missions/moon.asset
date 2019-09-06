@@ -34,9 +34,9 @@ MonoBehaviour:
     Satellites:
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
-      Position: {x: 400, y: 0, z: 0}
+      Position: {x: 450, y: 0, z: 0}
       Mass: 475
-      Scale: 135
+      Scale: 140
       ID: 2
       rotationAngles: {x: 0, y: 0, z: 90}
       RotationSpeed: 6

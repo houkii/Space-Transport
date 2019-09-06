@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
             var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
                 new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
             Stats.AddScore(endgameLandingScore);
-            //VFX.PlayTeleportEffect(transform);
+            StopLoadingFuel();
             playerEffects.PlayOutroSequence();
         });
 
@@ -533,15 +533,16 @@ public class PlayerEffects
             coll.enabled = false;
         }
 
-        var obj = GameObject.Instantiate(BlackHoleFX, player.position, player.rotation);
+        var scaler = player.transform.localScale.x * player.transform.parent.transform.localScale.x;
+        var obj = GameObject.Instantiate(BlackHoleFX, player.position + new Vector3(0, 0, 25f), player.rotation);
 
-        //obj.transform.SetParent(player);
+        obj.transform.SetParent(player);
         obj.transform.localScale = Vector3.zero;
         CameraViews.ActiveView.Disable();
         Camera.main.transform.SetParent(null);
 
         Sequence BHSeq = DOTween.Sequence();
-        BHSeq.Append(obj.transform.DOScale(220, .75f).SetEase(Ease.OutBack))
+        BHSeq.Append(obj.transform.DOScale(220 / scaler, 1f).SetEase(Ease.OutBack))
             .AppendInterval(.35f)
             .Append(obj.transform.DOScale(0, .45f).SetEase(Ease.InBack))
             .AppendCallback(() => GameObject.Destroy(obj));
