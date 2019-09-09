@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     //private Dictionary<NPCEntity, DeliveryRewardArgs> PassengerRewardDict = new Dictionary<NPCEntity, DeliveryRewardArgs>()
 
     private AudioSource Audio;
+    private AudioSource Audio2;
 
     [SerializeField] private PlayerEffects playerEffects;
     [SerializeField] private ShipSounds Sounds;
@@ -57,6 +58,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Audio = gameObject.AddComponent<AudioSource>();
+        Audio2 = gameObject.AddComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody>();
         cameraController = GetComponentInChildren<CameraController>();
         shipModelController = GetComponentInChildren<ShipModelController>();
@@ -186,7 +188,7 @@ public class PlayerController : MonoBehaviour
         var colliders = transform.GetComponents<Collider>();
         foreach (Collider coll in colliders) Destroy(coll);
         isDead = true;
-        //SoundManager.Instance.PlayExplosion();
+        SoundManager.Instance.PlayExplosion();
         SoundManager.Instance.PlayMissionFailedTheme();
         gameObject.SetActive(false);
     }
@@ -217,6 +219,7 @@ public class PlayerController : MonoBehaviour
         shipModelController.CurrentState = ShipModelController.ShipModelState.Landed;
         PlaySceneCanvasController.Instance.ShowLandingInfo(landingData);
         playerEffects.ShowLandingFX(shipThruster.transform.position, transform.rotation);
+        Audio2.PlayOneShot(Sounds.LandingSound);
         OnPlayerLanded?.Invoke(planet);
     }
 
@@ -257,6 +260,7 @@ public class PlayerController : MonoBehaviour
 
     private void ReleasePassengerToPlanet(NPCEntity entity, PlanetController planet)
     {
+        Audio2.PlayOneShot(Sounds.DestinationReached);
         entity.ExitShip(planet);
         RemovePassenger(entity);
     }
@@ -360,6 +364,7 @@ public class PlayerController : MonoBehaviour
 
     public void AddPassenger(NPCEntity entity)
     {
+        Audio2.PlayOneShot(Sounds.GetOnBoard);
         entity.OnReachedDestination.AddListener(() =>
             AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
         Passengers.Add(entity);
@@ -419,6 +424,10 @@ public class ShipSounds
     public AudioClip StartEngine;
     public AudioClip Running;
     public AudioClip StopEngine;
+    public AudioClip LandingSound;
+
+    public AudioClip GetOnBoard;
+    public AudioClip DestinationReached;
 
     public float engineStartPitch = 0.75f;
     public float engineEndPitch = 1.1f;

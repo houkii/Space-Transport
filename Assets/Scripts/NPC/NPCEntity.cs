@@ -47,6 +47,9 @@ public class NPCEntity : MonoBehaviour
 
     private Vector3 defaultScale;
 
+    [SerializeField] private AudioClip getOnBoard;
+    [SerializeField] private AudioClip destinationReached;
+
     private void Awake()
     {
         gameObject.name = NpcNames.RandomName;
@@ -216,6 +219,7 @@ public class NPCEntity : MonoBehaviour
         Animator.enabled = false;
         OnGotAboard?.Invoke();
         isAttached = false;
+
         gameObject.SetActive(false);
         //HideNPC();
     }

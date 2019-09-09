@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.09387847, g: 0.03846131, b: 0.052685454, a: 1}
+  m_IndirectSpecularColor: {r: 0.1383237, g: 0.06512183, b: 0.08141748, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5947,6 +5947,10 @@ MonoBehaviour:
     StartEngine: {fileID: 8300000, guid: bc1b970fe9fac6d43909ae5e2961c43d, type: 3}
     Running: {fileID: 8300000, guid: e07bfdb447626d64fbcf4175330c4fac, type: 3}
     StopEngine: {fileID: 8300000, guid: 99d0df1ed1a41d943bec63c5462de2fd, type: 3}
+    LandingSound: {fileID: 8300000, guid: 03aa8de86fd357c46b9942a4c04904a7, type: 3}
+    GetOnBoard: {fileID: 8300000, guid: 33e089773a3a55f49a44d918be496876, type: 3}
+    DestinationReached: {fileID: 8300000, guid: 111a03a9c5d4a994eb1a13023c33c65e,
+      type: 3}
     engineStartPitch: 0.75
     engineEndPitch: 1.1
     tweenTime: 4
