@@ -16,6 +16,7 @@ public class GameController : Singleton<GameController>
     {
         Rewards = new RewardFactory();
         //Settings = new GameSettings();
+        PlayerPrefs.SetInt("score", 0);
         Settings.Init();
         Authentication.Login();
     }
@@ -91,6 +92,7 @@ public class GameSettings
     public float PlayerDrag = 0.2f;
     public float PlayerMass = 1f;
     public float PlayerAccel = 7000f;
+    public float PlanetMassScale = 1f;
 
     public int MaxRewardForTotalFuelUsed = 1000000;
     public int MaxRewardForRemainingFuel = 1000;
@@ -101,6 +103,7 @@ public class GameSettings
     public Slider DistanceSlider;
     public Slider DragSlider;
     public Slider PlayerMassSlider;
+    public Slider PlanetMassSlider;
 
     public void Init()
     {
@@ -108,10 +111,12 @@ public class GameSettings
         DistanceSlider.value = DistanceScaler;
         DragSlider.value = PlayerDrag;
         PlayerMassSlider.value = PlayerMass;
+        PlanetMassSlider.value = PlanetMassScale;
 
         GSlider.onValueChanged.AddListener(delegate { G = GSlider.value; });
         DistanceSlider.onValueChanged.AddListener(delegate { DistanceScaler = DistanceSlider.value; });
         DragSlider.onValueChanged.AddListener(delegate { PlayerController.Instance.GetComponent<Rigidbody>().drag = DragSlider.value; });
         PlayerMassSlider.onValueChanged.AddListener(delegate { PlayerController.Instance.GetComponent<Rigidbody>().mass = PlayerMassSlider.value; });
+        PlanetMassSlider.onValueChanged.AddListener(delegate { PlanetMassScale = PlanetMassSlider.value; });
     }
 }

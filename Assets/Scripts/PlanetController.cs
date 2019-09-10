@@ -36,6 +36,7 @@ public class PlanetController : MonoBehaviour
         targetIndicator = GetComponent<TargetIndicator>();
         targetIndicator.enabled = false;
         angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.forward) * Mathf.Deg2Rad;
+        GetComponent<Rigidbody>().mass *= GameController.Instance.Settings.PlanetMassScale;
     }
 
     public PlanetController Initialize(PlanetInstance data)

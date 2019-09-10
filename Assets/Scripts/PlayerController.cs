@@ -76,10 +76,10 @@ public class PlayerController : MonoBehaviour
             Stats.AddScore(endgameLandingScore);
             StopLoadingFuel();
             playerEffects.PlayOutroSequence();
+            StartCoroutine(SetScore());
         });
 
         Stats.OnFuelFull.AddListener(StopLoadingFuel);
-
         playerEffects.PlayIntroSequence();
     }
 
@@ -247,6 +247,18 @@ public class PlayerController : MonoBehaviour
         {
             Stats.AddFuel(GameController.Instance.Settings.FuelLoading * Time.deltaTime);
             yield return null;
+        }
+    }
+
+    private IEnumerator SetScore()
+    {
+        yield return new WaitForSeconds(2);
+        string scoreName = "score" + GameController.Instance.MissionController.CurrentMission.Name;
+        Debug.Log(Stats.Score);
+
+        if (PlayerPrefs.HasKey("scoreName") && PlayerPrefs.GetInt(scoreName) < Stats.Score)
+        {
+            PlayerPrefs.SetInt(scoreName, Stats.Score);
         }
     }
 

@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityEngine.Events;
 
 [Serializable]
@@ -9,6 +9,7 @@ public class MissionController
 {
     [SerializeField]
     private List<Mission> availableMissions;
+
     public List<Mission> AvailableMissions { get { return availableMissions; } }
     private Queue<TravellerInstance> NpcsToSpawn = new Queue<TravellerInstance>();
 
@@ -22,13 +23,14 @@ public class MissionController
 
     public int TotalNpcs { get; private set; }
     private int npcsLeft;
+
     public int NpcsLeft
     {
         get { return npcsLeft; }
         private set
         {
             npcsLeft = value;
-            if(npcsLeft <= 0)
+            if (npcsLeft <= 0)
             {
                 OnMissionCompleted?.Invoke();
             }
@@ -40,6 +42,7 @@ public class MissionController
         CurrentMissionID = missionID;
         MissionPlanets = new Dictionary<string, PlanetController>();
         CurrentMission = GameObject.Instantiate(AvailableMissions[CurrentMissionID]);
+        CurrentMission.Name = AvailableMissions[CurrentMissionID].name;
         PlayerController.Instance.transform.position = CurrentMission.PlayerPosition;
         InitializePlanetarySystems(ref CurrentMission.PlanetarySystems);
         InitializePlanets(ref CurrentMission.Planets);
@@ -60,7 +63,7 @@ public class MissionController
 
     private void InitializePlanetarySystems(ref List<PlanetarySystemInstance> systems)
     {
-        foreach(PlanetarySystemInstance system in systems)
+        foreach (PlanetarySystemInstance system in systems)
         {
             var centralObject = GameObject.Instantiate(system.CentralObjectPrefab, system.Origin, Quaternion.identity);
             InitializePlanets(ref system.Planets, centralObject.transform);
@@ -72,7 +75,7 @@ public class MissionController
     {
         foreach (PlanetInstance planetData in planets)
         {
-            if(centralPlanet != null)
+            if (centralPlanet != null)
             {
                 planetData.CentralObject = centralPlanet;
                 planetData.Position += centralPlanet.position;
@@ -85,7 +88,7 @@ public class MissionController
             var planetController = planetObject.GetComponent<PlanetController>().Initialize(planetData);
             MissionPlanets.Add(planetObject.name, planetController);
 
-            if(planetData.Satellites.Count > 0)
+            if (planetData.Satellites.Count > 0)
             {
                 InitializePlanets(ref planetData.Satellites, planetObject.transform);
             }
@@ -95,33 +98,33 @@ public class MissionController
     private void InitializeNpcs()
     {
         NpcsToSpawn.Clear();
-        foreach(TravellerInstance traveller in CurrentMission.NpcsToSpawn)
+        foreach (TravellerInstance traveller in CurrentMission.NpcsToSpawn)
         {
             NpcsToSpawn.Enqueue(traveller);
         }
-        this.TotalNpcs = NpcsToSpawn.Count;
-        this.npcsLeft = this.TotalNpcs;
-        this.Spawn();
+        TotalNpcs = NpcsToSpawn.Count;
+        npcsLeft = TotalNpcs;
+        Spawn();
     }
 
     private IEnumerator SpawnNPCs()
     {
-        while(this.NpcsToSpawn.Count > 0)
+        while (NpcsToSpawn.Count > 0)
         {
             var NpcToSpawn = NpcsToSpawn.Dequeue();
             yield return new WaitForSeconds(NpcToSpawn.SpawnDelay);
-            this.SpawnNPC(NpcToSpawn);
+            SpawnNPC(NpcToSpawn);
         }
     }
 
     private void Spawn()
     {
-        if(this.NpcsToSpawn.Count > 1)
+        if (NpcsToSpawn.Count > 1)
         {
-            var spawnedNpcController = this.SpawnNPC(NpcsToSpawn.Dequeue());
-            spawnedNpcController.OnReachedDestination.AddListener(this.Spawn);
+            var spawnedNpcController = SpawnNPC(NpcsToSpawn.Dequeue());
+            spawnedNpcController.OnReachedDestination.AddListener(Spawn);
         }
-        else if(this.NpcsToSpawn.Count > 0)
+        else if (NpcsToSpawn.Count > 0)
         {
             SpawnNPC(NpcsToSpawn.Dequeue());
         }
