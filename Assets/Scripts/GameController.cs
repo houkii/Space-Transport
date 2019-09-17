@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using PlayFab;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : Singleton<GameController>
@@ -18,7 +20,7 @@ public class GameController : Singleton<GameController>
         //Settings = new GameSettings();
         PlayerPrefs.SetInt("score", 0);
         Settings.Init();
-        Authentication.Login();
+        StartCoroutine(ConnectToPlayfab());
     }
 
     private void Update()
@@ -77,6 +79,15 @@ public class GameController : Singleton<GameController>
         PlayMission(id);
     }
 
+    private IEnumerator ConnectToPlayfab()
+    {
+        while (!PlayFabClientAPI.IsClientLoggedIn())
+        {
+            Authentication.Login();
+            yield return new WaitForSeconds(Settings.ConnectionRetryTime);
+        }
+    }
+
     public void SetG(float val) => Settings.G = val;
 
     public void SetDistanceScaler(float val) => Settings.DistanceScaler = val;
@@ -98,6 +109,8 @@ public class GameSettings
     public int MaxRewardForRemainingFuel = 1000;
     public int DeliveryRewardMultiplier = 5;
     public int LandingRewardMultiplier = 5;
+
+    public float ConnectionRetryTime = 5.0f;
 
     public Slider GSlider;
     public Slider DistanceSlider;

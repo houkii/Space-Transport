@@ -256,10 +256,12 @@ public class PlayerController : MonoBehaviour
         string scoreName = "score" + GameController.Instance.MissionController.CurrentMission.Name;
         Debug.Log(Stats.Score);
 
-        if (PlayerPrefs.HasKey("scoreName") && PlayerPrefs.GetInt(scoreName) < Stats.Score)
+        if (PlayerPrefs.HasKey(scoreName) && PlayerPrefs.GetInt(scoreName) < Stats.Score)
         {
             PlayerPrefs.SetInt(scoreName, Stats.Score);
         }
+
+        PF_PlayerData.UpdateUserScore(GameController.Instance.MissionController.CurrentMission.Name, Stats.Score);
     }
 
     private void TakeOff(PlanetController planet)

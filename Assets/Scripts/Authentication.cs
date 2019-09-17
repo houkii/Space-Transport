@@ -71,7 +71,7 @@ public static class Authentication
         PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest()
         {
             CreateAccount = true,
-            CustomId = PlayFabSettings.DeviceUniqueIdentifier + UnityEngine.Random.Range(0, 9999).ToString()
+            CustomId = PlayFabSettings.DeviceUniqueIdentifier// + UnityEngine.Random.Range(0, 9999).ToString()
         }, OnPlayfabSuccess, OnPlayFabError);
     }
 
