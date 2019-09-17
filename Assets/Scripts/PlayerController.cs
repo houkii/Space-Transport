@@ -47,6 +47,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerEffects playerEffects;
     [SerializeField] private ShipSounds Sounds;
 
+    public UnityEvent OnNewPersonalHighScore = new UnityEvent();
+    public UnityEvent OnNewGlobalHighScore = new UnityEvent();
+
     private void Awake()
     {
         if (Instance == null)
@@ -254,7 +257,8 @@ public class PlayerController : MonoBehaviour
     private IEnumerator SetScore()
     {
         yield return new WaitForSeconds(2);
-        string scoreName = "score" + GameController.Instance.MissionController.CurrentMission.Name;
+        string missionName = GameController.Instance.MissionController.CurrentMission.Name;
+        string scoreName = "score" + missionName;
         Debug.Log(Stats.Score);
 
         if (PlayerPrefs.HasKey(scoreName) && PlayerPrefs.GetInt(scoreName) < Stats.Score)
@@ -262,9 +266,19 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetInt(scoreName, Stats.Score);
         }
 
-        if (PlayFabClientAPI.IsClientLoggedIn() && PF_PlayerData.Statistics[GameController.Instance.MissionController.CurrentMission.Name] < Stats.Score)
+        if (PlayFabClientAPI.IsClientLoggedIn() && PF_PlayerData.Statistics[missionName] < Stats.Score)
         {
-            PF_PlayerData.UpdateUserScore(GameController.Instance.MissionController.CurrentMission.Name, Stats.Score);
+            PF_PlayerData.UpdateUserScore(missionName, Stats.Score);
+            PF_PlayerData.Statistics[missionName] = Stats.Score;
+            if (Stats.Score > PF_PlayerData.TopScores[missionName])
+            {
+                PF_PlayerData.TopScores[missionName] = Stats.Score;
+                OnNewGlobalHighScore?.Invoke();
+            }
+            else
+            {
+                OnNewPersonalHighScore?.Invoke();
+            }
         }
     }
 

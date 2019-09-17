@@ -67,7 +67,7 @@ public class MissionInstanceUI : MonoBehaviour
 
             if (PF_PlayerData.RankPositions.ContainsKey(missionName))
             {
-                rank.text = "Rank: " + PF_PlayerData.RankPositions[missionName];
+                rank.text = "Rank: " + (PF_PlayerData.RankPositions[missionName] + 1);
             }
         }
         else if (PlayerPrefs.HasKey(missionScoreName))

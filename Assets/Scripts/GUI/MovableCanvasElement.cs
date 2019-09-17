@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.Events;
 
 public class MovableCanvasElement : MonoBehaviour
 {
@@ -12,18 +11,21 @@ public class MovableCanvasElement : MonoBehaviour
     [SerializeField] private Ease hideEase = Ease.InBack;
     [SerializeField] private bool activeOnStart = true;
 
+    public UnityEvent OnShown;
+
     protected RectTransform RT;
 
     protected virtual void Awake()
     {
-        this.Initialize();
+        Initialize();
     }
 
     public virtual Sequence Show()
     {
         gameObject.SetActive(true);
         Sequence showSequence = DOTween.Sequence();
-        showSequence.Append(RT.DOAnchorPos(activePosition, tweenTime).SetEase(showEase));
+        showSequence.Append(RT.DOAnchorPos(activePosition, tweenTime).SetEase(showEase))
+            .AppendCallback(() => OnShown?.Invoke());
         return showSequence;
     }
 
@@ -42,13 +44,13 @@ public class MovableCanvasElement : MonoBehaviour
         RT.anchoredPosition = inactivePosition;
         if (activeOnStart)
         {
-            this.Show();
+            Show();
         }
     }
 
     public void Toggle()
     {
-        if(gameObject.activeSelf)
+        if (gameObject.activeSelf)
         {
             Hide();
         }
