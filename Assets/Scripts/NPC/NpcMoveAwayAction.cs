@@ -25,7 +25,8 @@ namespace NpcActions
                 if (other.gameObject.name == "PlanetBack")
                 {
                     Debug.Log("A traveller reached destination :)");
-                    GameObject.Destroy(npc.View.gameObject);
+                    if (npc.View.gameObject != null)
+                        GameObject.Destroy(npc.View.gameObject);
                     DestroySequence();
                 }
             }

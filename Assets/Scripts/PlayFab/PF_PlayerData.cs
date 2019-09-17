@@ -15,6 +15,7 @@ public class PF_PlayerData : MonoBehaviour
 
     public static Dictionary<string, int> Statistics = new Dictionary<string, int>();
     public static Dictionary<string, int> RankPositions = new Dictionary<string, int>();
+    public static Dictionary<string, int> TopScores = new Dictionary<string, int>();
 
     public static void GetAccountInfo()
     {
@@ -69,8 +70,24 @@ public class PF_PlayerData : MonoBehaviour
         error => { });
     }
 
-    public static void GetHighScores()
+    public static void GetHighScore(string mapName)
     {
+        PlayFabClientAPI.GetLeaderboard(new GetLeaderboardRequest()
+        {
+            MaxResultsCount = 1,
+            StatisticName = mapName
+        },
+            result =>
+            {
+                if (TopScores.ContainsKey(mapName))
+                    TopScores[mapName] = result.Leaderboard[0].StatValue;
+                else
+                    TopScores.Add(mapName, result.Leaderboard[0].StatValue);
+
+                PF_Bridge.RaiseCallbackSuccess(mapName, PlayFabAPIMethods.GetFriendsLeaderboard, MessageDisplayStyle.success);
+            },
+            error => { }
+        );
     }
 
     public static void GetPlayerLeaderboardPosition(string mapName)

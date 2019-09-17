@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using PlayFab;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -261,7 +262,10 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetInt(scoreName, Stats.Score);
         }
 
-        PF_PlayerData.UpdateUserScore(GameController.Instance.MissionController.CurrentMission.Name, Stats.Score);
+        if (PlayFabClientAPI.IsClientLoggedIn() && PF_PlayerData.Statistics[GameController.Instance.MissionController.CurrentMission.Name] < Stats.Score)
+        {
+            PF_PlayerData.UpdateUserScore(GameController.Instance.MissionController.CurrentMission.Name, Stats.Score);
+        }
     }
 
     private void TakeOff(PlanetController planet)
