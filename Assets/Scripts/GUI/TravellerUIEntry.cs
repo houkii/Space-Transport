@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
-using DG.Tweening;
-using TMPro;
 using UnityEngine.UI;
 
 public class TravellerUIEntry : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI astronautName;
+
     [SerializeField]
     private TextMeshProUGUI destinationName;
+
     private Slider timeSlider;
 
     public NPCEntity Npc { get; private set; }

@@ -20,7 +20,7 @@ MonoBehaviour:
       type: 3}
     Planets: []
   Planets:
-  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+  - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
       type: 3}
     Position: {x: 350, y: 0, z: 0}
     Mass: 500
@@ -32,7 +32,7 @@ MonoBehaviour:
     Center: {x: 0, y: 0, z: 0}
     Period: 360
     Satellites: []
-  - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+  - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
       type: 3}
     Position: {x: 850, y: 0, z: 0}
     Mass: 550
@@ -50,18 +50,4 @@ MonoBehaviour:
     HostPlanet: 1
     DestinationPlanet: 2
     SpawnDelay: 3
-  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-      type: 3}
-    HostPlanet: 2
-    DestinationPlanet: 1
-    SpawnDelay: 3
-  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-      type: 3}
-    HostPlanet: 1
-    DestinationPlanet: 2
-    SpawnDelay: 3
-  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-      type: 3}
-    HostPlanet: 2
-    DestinationPlanet: 1
-    SpawnDelay: 3
+  BoundsSize: 1500

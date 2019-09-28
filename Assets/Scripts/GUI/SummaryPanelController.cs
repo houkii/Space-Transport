@@ -1,21 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using DG.Tweening;
 
 public class SummaryPanelController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI SummaryText;
     [SerializeField] private TextMeshProUGUI TravellersDeliveredText;
+    [SerializeField] private TextMeshProUGUI PersonalRecordText;
+    [SerializeField] private TextMeshProUGUI GlobalHighScoreText;
     [SerializeField] private TweenableStat TotalPointsText;
     [SerializeField] private TweenableStat TotalFuelUsedText;
     [SerializeField] private Button MainMenuButton;
     [SerializeField] private Button RestartButton;
     [SerializeField] private Button NextMissionButton;
 
-    void Awake()
+    private void Awake()
     {
         MainMenuButton.onClick.AddListener(SceneController.Instance.LoadMainMenu);
         MainMenuButton.onClick.AddListener(SoundManager.Instance.PlayBackButton);
@@ -23,6 +23,12 @@ public class SummaryPanelController : MonoBehaviour
         RestartButton.onClick.AddListener(SoundManager.Instance.PlayForwardButton);
         NextMissionButton.onClick.AddListener(GameController.Instance.PlayNextMission);
         NextMissionButton.onClick.AddListener(SoundManager.Instance.PlayForwardButton);
+    }
+
+    private void Start()
+    {
+        PlayerController.Instance.OnNewGlobalHighScore.AddListener(() => ShowRecord(GlobalHighScoreText.rectTransform));
+        PlayerController.Instance.OnNewPersonalHighScore.AddListener(() => ShowRecord(PersonalRecordText.rectTransform));
     }
 
     public void Show(bool missionCompleted)
@@ -44,5 +50,15 @@ public class SummaryPanelController : MonoBehaviour
     public void Hide()
     {
         GetComponent<MovableCanvasElement>().Hide();
+    }
+
+    private void ShowRecord(RectTransform rt)
+    {
+        rt.gameObject.SetActive(true);
+        rt.localScale = Vector3.zero;
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(3f)
+            .Append(rt.DOScale(1, .45f).SetEase(Ease.OutBounce))
+            .Append(rt.DOScale(1.1f, .2f).SetEase(Ease.InExpo).SetLoops(int.MaxValue, LoopType.Yoyo));
     }
 }

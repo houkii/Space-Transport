@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DestinationIndicator : MonoBehaviour
 {
@@ -21,21 +19,21 @@ public class DestinationIndicator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(Destination != null)
+        if (Destination != null)
         {
             var destinationVector = Destination.position;
 
             float distance = Vector3.Distance(PlayerController.Instance.transform.position, Destination.position);
             //Debug.LogError(distance);
-            if (distance <= ( 200f + 100 * CameraController.Instance.currentToMaxCameraSizeRation))
+            if (distance <= (200f + 100 * CameraController.Instance.currentToMaxCameraSizeRation))
             {
-                var landingPlatform = Destination.gameObject.GetComponent<PlanetController>().LandingPlatform;
-                Vector3 platformPos = landingPlatform.transform.position + landingPlatform.forward * (platformPosOffset * landingPlatform.parent.localScale.x/100);
+                var landingPlatform = Destination.GetComponent<PlanetController>().GetNearestPlantformTransform(PlayerController.Instance.transform.position);
+                Vector3 platformPos = landingPlatform.transform.position + landingPlatform.forward * (platformPosOffset * landingPlatform.parent.localScale.x / 100);
                 transform.position = Vector3.Lerp(transform.position, platformPos, 0.2f);
                 Quaternion platformRot = Quaternion.LookRotation(destinationVector - transform.position, PlayerController.Instance.transform.up);
                 transform.rotation = Quaternion.Lerp(transform.rotation, platformRot, 0.125f);
 
-                if(transform.parent != null)
+                if (transform.parent != null)
                 {
                     transform.parent = null;
                 }
@@ -46,7 +44,7 @@ public class DestinationIndicator : MonoBehaviour
                 Vector3 destinationPos = PlayerController.Instance.transform.position + transform.forward * offsetRadius;
                 transform.position = Vector3.Lerp(transform.position, destinationPos, 0.5f);
 
-                if(transform.parent != PlayerController.Instance.transform)
+                if (transform.parent != PlayerController.Instance.transform)
                 {
                     transform.parent = PlayerController.Instance.transform;
                 }

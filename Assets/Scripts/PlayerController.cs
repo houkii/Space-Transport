@@ -1,9 +1,10 @@
-﻿using System;
+﻿using DG.Tweening;
+using PlayFab;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,13 +28,13 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private bool hasLanded = false;
     private bool isDead = false;
-    private bool joystickAvailable => !(this.transform.parent != null || (this.isLocked || this.hasLanded) || Joystick.Instance.Input.magnitude < .2f);
+    private bool joystickAvailable => !(transform.parent != null || (isLocked || hasLanded) || Joystick.Instance.Input.magnitude < .2f);
 
     public UnityEvent OnPlayerDied;
     public UnityAction<PlanetController> OnPlayerLanded;
     public UnityAction<PlanetController> OnPlayerTookOff;
 
-    public PlayerStatistics Stats = new PlayerStatistics(1000,1200);
+    public PlayerStatistics Stats = new PlayerStatistics(1000, 1200);
 
     private List<NPCEntity> Passengers = new List<NPCEntity>();
     private ShipModelController shipModelController;
@@ -41,12 +42,17 @@ public class PlayerController : MonoBehaviour
     //private Dictionary<NPCEntity, DeliveryRewardArgs> PassengerRewardDict = new Dictionary<NPCEntity, DeliveryRewardArgs>()
 
     private AudioSource Audio;
-    [SerializeField]
-    private ShipSounds Sounds;
+    private AudioSource Audio2;
+
+    [SerializeField] private PlayerEffects playerEffects;
+    [SerializeField] private ShipSounds Sounds;
+
+    public UnityEvent OnNewPersonalHighScore = new UnityEvent();
+    public UnityEvent OnNewGlobalHighScore = new UnityEvent();
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -56,6 +62,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Audio = gameObject.AddComponent<AudioSource>();
+        Audio2 = gameObject.AddComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody>();
         cameraController = GetComponentInChildren<CameraController>();
         shipModelController = GetComponentInChildren<ShipModelController>();
@@ -68,39 +75,52 @@ public class PlayerController : MonoBehaviour
     {
         GameController.Instance.MissionController.OnMissionCompleted.AddListener(() =>
         {
-            var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
-                new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
-            Stats.AddScore(endgameLandingScore);
+            StartCoroutine(MissionEndedCR());
         });
+
+        Stats.OnFuelFull.AddListener(StopLoadingFuel);
+        playerEffects.PlayIntroSequence();
     }
 
     private void Update()
     {
-        this.HandleInput();
+        HandleInput();
     }
 
     private void FixedUpdate()
     {
-        this.HandleJoystickInput();
+        HandleJoystickInput();
         ProcessMovementBuffer();
-        Debug.DrawLine(transform.position, transform.position + averagedMovementVector*100, Color.red);
+        Debug.DrawLine(transform.position, transform.position + averagedMovementVector * 100, Color.red);
         Debug.DrawLine(transform.position, transform.position + transform.forward);
 
-        if (this.isMoving)
+        if (isMoving)
         {
-            this.Move();
+            Move();
         }
     }
 
     #region private methods
 
+    private IEnumerator MissionEndedCR()
+    {
+        yield return new WaitForSeconds(1.25f);
+        var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
+                new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
+        Stats.AddScore(endgameLandingScore);
+        StopLoadingFuel();
+        playerEffects.PlayOutroSequence();
+        StartCoroutine(SetScore());
+
+    }
+
     private void HandleInput()
     {
-        if (this.isLocked) return;
+        if (isLocked) return;
 
         if (Input.GetKey(KeyCode.Space))
         {
-            this.Move();
+            Move();
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -112,22 +132,26 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            this.StartEngine();
+            StartEngine();
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            this.StopEngine();
+            StopEngine();
         }
-        if(Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            foreach(NPCEntity trav in Passengers)
+            foreach (NPCEntity trav in Passengers)
             {
-                trav.DestinationPlanet = this.HostPlanet;
+                trav.DestinationPlanet = HostPlanet;
             }
         }
-        if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            this.ReleasePassengers(this.HostPlanet, true);
+            ReleasePassengers(HostPlanet, true);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            VFX.PlayTeleportEffect(transform);
         }
 
         //if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 80f)
@@ -143,7 +167,7 @@ public class PlayerController : MonoBehaviour
     {
         if (joystickAvailable)
         {
-            this.JoystickRotate();
+            JoystickRotate();
         }
     }
 
@@ -156,26 +180,25 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var colName = collision.contacts[0].thisCollider.name;
-        if(colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
+        if (colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
         {
             var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            this.GetLandingData(ref this.landingData, collision.contacts[0], currentPlanetHost);
-            this.Land(currentPlanetHost);
+            GetLandingData(ref landingData, collision.contacts[0], currentPlanetHost);
+            Land(currentPlanetHost);
         }
-        else if(!this.hasLanded && !this.isDead)
+        else if (!hasLanded && !isDead)
         {
-            this.Kill();
+            Kill();
         }
     }
 
     private void Kill()
     {
-        var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        Destroy(explosion, 1);
+        playerEffects.ShowExplosion(transform.position, transform.rotation);
         OnPlayerDied?.Invoke();
         var colliders = transform.GetComponents<Collider>();
         foreach (Collider coll in colliders) Destroy(coll);
-        this.isDead = true;
+        isDead = true;
         SoundManager.Instance.PlayExplosion();
         SoundManager.Instance.PlayMissionFailedTheme();
         gameObject.SetActive(false);
@@ -183,72 +206,111 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.tag == "Landable")
+        if (collision.gameObject.tag == "Landable")
         {
             var previousPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            this.TakeOff(previousPlanetHost);
+            TakeOff(previousPlanetHost);
         }
     }
 
     private void Land(PlanetController planet)
     {
-        this.hasLanded = true;
-        this.HostPlanet = planet;
-        fuelLoading = StartCoroutine(FuelLoadingCR());
+        hasLanded = true;
+        HostPlanet = planet;
+        LoadFuel();
         transform.SetParent(HostPlanet.transform);
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
 
         if (Passengers.Count > 0)
         {
-            this.ReleasePassengers(HostPlanet);
+            ReleasePassengers(HostPlanet);
         }
 
         shipModelController.CurrentState = ShipModelController.ShipModelState.Landed;
-        PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
+        PlaySceneCanvasController.Instance.ShowLandingInfo(landingData);
+        playerEffects.ShowLandingFX(shipThruster.transform.position, transform.rotation);
+        Audio2.PlayOneShot(Sounds.LandingSound);
         OnPlayerLanded?.Invoke(planet);
     }
 
     private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
     {
         var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
-        var platformScale = planet.transform.localScale;
-        Vector3 platformLandingPoint = planet.LandingPlatform.InverseTransformPoint(landingPoint.point);
-        float distance = Vector3.Distance(Vector3.Scale(planet.LandingPlatform.localPosition, new Vector3(1,0,0)), platformLandingPoint);
-        //Debug.LogError("angle: " + angle + "\ndistance: " + distance + "\nvelocity: " + rigidbody.velocity.magnitude);
-        landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude, distance);
+        landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude);
+    }
+
+    private void LoadFuel()
+    {
+        playerEffects.ShowFuelLoading(shipThruster.transform.position, transform.rotation);
+        fuelLoading = StartCoroutine(FuelLoadingCR());
+    }
+
+    private void StopLoadingFuel()
+    {
+        playerEffects.HideFuelLoading();
+        StopCoroutine(fuelLoading);
     }
 
     private IEnumerator FuelLoadingCR()
     {
-        while(this.hasLanded)
+        while (hasLanded)
         {
             Stats.AddFuel(GameController.Instance.Settings.FuelLoading * Time.deltaTime);
             yield return null;
         }
     }
 
+    private IEnumerator SetScore()
+    {
+        yield return new WaitForSeconds(2);
+        string missionName = GameController.Instance.MissionController.CurrentMission.Name;
+        string scoreName = "score" + missionName;
+        Debug.Log(Stats.Score);
+
+        if (PlayerPrefs.HasKey(scoreName) && PlayerPrefs.GetInt(scoreName) < Stats.Score)
+        {
+            PlayerPrefs.SetInt(scoreName, Stats.Score);
+        }
+
+        if (PlayFabClientAPI.IsClientLoggedIn() && PF_PlayerData.Statistics[missionName] < Stats.Score)
+        {
+            PF_PlayerData.UpdateUserScore(missionName, Stats.Score);
+            PF_PlayerData.Statistics[missionName] = Stats.Score;
+            if (Stats.Score > PF_PlayerData.TopScores[missionName])
+            {
+                PF_PlayerData.TopScores[missionName] = Stats.Score;
+                OnNewGlobalHighScore?.Invoke();
+            }
+            else
+            {
+                OnNewPersonalHighScore?.Invoke();
+            }
+        }
+    }
+
     private void TakeOff(PlanetController planet)
     {
-        this.hasLanded = false;
-        this.HostPlanet = null;
-        StopCoroutine(this.fuelLoading);
+        hasLanded = false;
+        HostPlanet = null;
+        StopLoadingFuel();
         OnPlayerTookOff?.Invoke(planet);
     }
 
     private void ReleasePassengerToPlanet(NPCEntity entity, PlanetController planet)
     {
+        Audio2.PlayOneShot(Sounds.DestinationReached);
         entity.ExitShip(planet);
-        this.RemovePassenger(entity);
+        RemovePassenger(entity);
     }
 
     private void ReleasePassengers(PlanetController planet, bool releaseAll = false)
     {
-        if(releaseAll)
+        if (releaseAll)
         {
-            for(int i = Passengers.Count-1; i >= 0; i--)
-            { 
-                ReleasePassengerToPlanet(Passengers[i], this.HostPlanet);
+            for (int i = Passengers.Count - 1; i >= 0; i--)
+            {
+                ReleasePassengerToPlanet(Passengers[i], HostPlanet);
             }
         }
         else
@@ -256,8 +318,8 @@ public class PlayerController : MonoBehaviour
             var leavers = Passengers.FindAll(x => x.DestinationPlanet == planet);
             if (leavers.Count > 0)
             {
-                this.AddScore(Reward.RewardType.LandingReward, this.landingData);
-                this.AddScore(Reward.RewardType.FuelReward, new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel));
+                AddScore(Reward.RewardType.LandingReward, landingData);
+                AddScore(Reward.RewardType.FuelReward, new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel));
                 //PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
                 StartCoroutine(ReleasePassengersCR(leavers, planet));
             }
@@ -266,14 +328,14 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator ReleasePassengersCR(List<NPCEntity> leavers, PlanetController planet)
     {
-        this.isLocked = true;
+        isLocked = true;
         yield return new WaitForSeconds(0.5f);
         foreach (NPCEntity leaver in leavers)
         {
             ReleasePassengerToPlanet(leaver, planet);
-             yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.5f);
         }
-        this.isLocked = false;
+        isLocked = false;
     }
 
     private void Move()
@@ -313,41 +375,46 @@ public class PlayerController : MonoBehaviour
         Stats.AddScore(score);
     }
 
-    #endregion
+    private void PlayTeleportEffect()
+    {
+    }
+
+    #endregion private methods
 
     #region public methods
 
     public void StartMovement()
     {
-        if (!this.isMoving)
+        if (!isMoving)
         {
-            this.StartEngine();
-            this.isMoving = true;
+            StartEngine();
+            isMoving = true;
         }
     }
 
     public void StopMovement()
     {
-        if (this.isMoving)
+        if (isMoving)
         {
-            this.StopEngine();
-            this.isMoving = false;
+            StopEngine();
+            isMoving = false;
         }
     }
 
     public void AddPassenger(NPCEntity entity)
     {
-        entity.OnReachedDestination.AddListener(() => 
+        Audio2.PlayOneShot(Sounds.GetOnBoard);
+        entity.OnReachedDestination.AddListener(() =>
             AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
-        this.Passengers.Add(entity);
+        Passengers.Add(entity);
     }
 
     public void RemovePassenger(NPCEntity entity)
     {
-        this.Passengers.Remove(entity);
+        Passengers.Remove(entity);
     }
 
-    #endregion
+    #endregion public methods
 
     #region trashcoding
 
@@ -375,7 +442,7 @@ public class PlayerController : MonoBehaviour
         return (averagedVel / movementBuff.Capacity);
     }
 
-    Vector3 GetAveragedMovementVector()
+    private Vector3 GetAveragedMovementVector()
     {
         Vector3 vectorSum = Vector3.zero;
         foreach (Vector3 movementVec in movementBuff)
@@ -387,7 +454,7 @@ public class PlayerController : MonoBehaviour
 
     public float DelayedForwardAngle => Vector3.SignedAngle(transform.forward, averagedMovementVector, transform.up);
 
-    #endregion
+    #endregion trashcoding
 }
 
 [Serializable]
@@ -396,6 +463,10 @@ public class ShipSounds
     public AudioClip StartEngine;
     public AudioClip Running;
     public AudioClip StopEngine;
+    public AudioClip LandingSound;
+
+    public AudioClip GetOnBoard;
+    public AudioClip DestinationReached;
 
     public float engineStartPitch = 0.75f;
     public float engineEndPitch = 1.1f;
@@ -404,4 +475,133 @@ public class ShipSounds
     public float RandomPitch => UnityEngine.Random.Range(-.05f, .05f);
 
     public Tween pitchTween;
+}
+
+public static class VFX
+{
+    public static void PlayTeleportEffect(Transform transform)
+    {
+        Rigidbody[] rbs = transform.GetComponentsInChildren<Rigidbody>();
+        Collider[] colls = transform.GetComponentsInChildren<Collider>();
+
+        foreach (var rb in rbs)
+        {
+            rb.isKinematic = true;
+        }
+
+        foreach (var coll in colls)
+        {
+            coll.enabled = false;
+        }
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(transform.DOScale(0, 1f).SetEase(Ease.OutSine));
+    }
+}
+
+[Serializable]
+public class PlayerEffects
+{
+    public GameObject LandingFX;
+    public GameObject FuelLoadingFX;
+    public GameObject ExplosionFX;
+    public GameObject BlackHoleFX;
+
+    private GameObject fuelLoadingFX;
+
+    public void ShowLandingFX(Vector3 position, Quaternion rotation)
+    {
+        var obj = GameObject.Instantiate(LandingFX, position, rotation);
+        obj.transform.SetParent(PlayerController.Instance.transform);
+        GameObject.Destroy(obj, 2.5f);
+    }
+
+    public void ShowFuelLoading(Vector3 position, Quaternion rotation)
+    {
+        if (fuelLoadingFX == null)
+        {
+            fuelLoadingFX = GameObject.Instantiate(FuelLoadingFX, position, rotation);
+            fuelLoadingFX.transform.SetParent(PlayerController.Instance.transform);
+        }
+        else
+        {
+            fuelLoadingFX.SetActive(true);
+            fuelLoadingFX.transform.position = position;
+            fuelLoadingFX.transform.rotation = rotation;
+        }
+    }
+
+    public void HideFuelLoading()
+    {
+        fuelLoadingFX.SetActive(false);
+    }
+
+    public void ShowExplosion(Vector3 position, Quaternion rotation)
+    {
+        var obj = GameObject.Instantiate(ExplosionFX, position, rotation);
+        GameObject.Destroy(obj, 2.5f);
+    }
+
+    public void PlayIntroSequence()
+    {
+        var player = PlayerController.Instance.transform;
+        var defaultPlayerScale = player.localScale;
+        var obj = GameObject.Instantiate(BlackHoleFX, player.position + new Vector3(0, 0, 75f), player.rotation);
+        obj.transform.localScale = Vector3.zero;
+        player.localScale = Vector3.zero;
+
+        Sequence BHSeq = DOTween.Sequence();
+        BHSeq.Append(obj.transform.DOScale(220, .75f).SetEase(Ease.OutBack))
+            .AppendInterval(.35f)
+            .Append(obj.transform.DOScale(0, .45f).SetEase(Ease.InBack))
+            .AppendCallback(() => GameObject.Destroy(obj));
+
+        Sequence playerSeq = DOTween.Sequence();
+        playerSeq.AppendInterval(1.2f)
+            .Append(player.DOScale(defaultPlayerScale.x, 1f).SetEase(Ease.OutElastic));
+    }
+
+    public void PlayOutroSequence()
+    {
+        var player = PlayerController.Instance.transform;
+
+        Rigidbody[] rbs = player.GetComponentsInChildren<Rigidbody>();
+        Collider[] colls = player.GetComponentsInChildren<Collider>();
+        var attractor = player.GetComponent<Attractor>();
+        attractor.isAffectedByPull = false;
+        attractor.isPulling = false;
+
+        foreach (var rb in rbs)
+        {
+            rb.isKinematic = true;
+        }
+
+        foreach (var coll in colls)
+        {
+            coll.enabled = false;
+        }
+
+        var scaler = player.transform.localScale.x * player.transform.parent.transform.localScale.x;
+        var obj = GameObject.Instantiate(BlackHoleFX, player.position + new Vector3(0, 0, 25f), player.rotation);
+
+        obj.transform.SetParent(player);
+        obj.transform.localScale = Vector3.zero;
+        CameraViews.ActiveView.Disable();
+        Camera.main.transform.SetParent(null);
+
+        Sequence BHSeq = DOTween.Sequence();
+        BHSeq.Append(obj.transform.DOScale(220 / scaler, 1f).SetEase(Ease.OutBack))
+            .AppendInterval(.35f)
+            .Append(obj.transform.DOScale(0, .45f).SetEase(Ease.InBack))
+            .AppendCallback(() => GameObject.Destroy(obj));
+
+        Sequence playerSeq = DOTween.Sequence();
+        playerSeq.AppendInterval(.6f)
+            //.AppendCallback(() =>
+            //{
+            //    CameraController.Instance.StopAllCoroutines();
+            //    CameraViews.ActiveView.Disable();
+            //})
+            .Append(player.DOScale(0, 1f).SetEase(Ease.InElastic));
+    }
 }

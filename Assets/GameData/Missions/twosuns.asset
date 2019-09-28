@@ -59,3 +59,4 @@ MonoBehaviour:
     HostPlanet: 2
     DestinationPlanet: 1
     SpawnDelay: 0
+  BoundsSize: 1500

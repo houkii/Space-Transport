@@ -74,7 +74,7 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
     {
         HideAllMovableElements();
         HideIndicators();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3.5f);
         ShowSummary();
     }
 }

@@ -3,20 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class RewardsView : Singleton<RewardsView>
 {
     [SerializeField] private GameObject UIRewardPrefab;
     [SerializeField] private float rewardEntryRange = 175f;
-
-    Coroutine showRewardsCR = null;
+    private Coroutine showRewardsCR = null;
     private Queue<Action> UIRewardsQueue = new Queue<Action>();
 
     private int currentDir = 1;
 
     private void Start()
     {
-        if(showRewardsCR == null)
+        if (showRewardsCR == null)
         {
             showRewardsCR = StartCoroutine(ShowInQueue());
         }
@@ -54,7 +52,7 @@ public class RewardsView : Singleton<RewardsView>
 
     private IEnumerator ShowInQueue()
     {
-        while(true)
+        while (true)
         {
             yield return new WaitUntil(() => UIRewardsQueue.Count > 0);
             UIRewardsQueue.Dequeue().Invoke();
@@ -64,9 +62,9 @@ public class RewardsView : Singleton<RewardsView>
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            GameController.Instance.Rewards.GetReward(Reward.RewardType.LandingReward, new LandingRewardArgs(20, 20, 20));
-        }
+        //if(Input.GetKeyDown(KeyCode.P))
+        //{
+        //    GameController.Instance.Rewards.GetReward(Reward.RewardType.LandingReward, new LandingRewardArgs(20, 20, 20));
+        //}
     }
 }

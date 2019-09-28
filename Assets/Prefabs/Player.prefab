@@ -5234,10 +5234,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxVelocityMagnitude: 500
-  acceleration: 5000
   propulsionPS: {fileID: 943669597934007520}
   explosionPrefab: {fileID: 100002, guid: f7efb0d9df2264096af57128df85dddb, type: 3}
   shipThruster: {fileID: 743019556251238197}
+  playerEffects:
+    LandingFX: {fileID: 1095767987829304, guid: bbdffbb5bb33e0942a03dd0c4a2b87f4,
+      type: 3}
   OnPlayerDied:
     m_PersistentCalls:
       m_Calls: []
@@ -5498,6 +5500,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ship
       objectReference: {fileID: 0}
+    - target: {fileID: -6587012065708496896, guid: 0ec812217a268804ea74e8f63622556f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6587012065708496896, guid: 0ec812217a268804ea74e8f63622556f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.18
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 0ec812217a268804ea74e8f63622556f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5568,6 +5580,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 0ec812217a268804ea74e8f63622556f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d7f4bf85e0ae2049bb983f45967a3ae, type: 2}
+    - target: {fileID: 5994622128736832609, guid: 0ec812217a268804ea74e8f63622556f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d7f4bf85e0ae2049bb983f45967a3ae, type: 2}
     - target: {fileID: 6499270477281094416, guid: 0ec812217a268804ea74e8f63622556f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5578,26 +5600,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3d7f4bf85e0ae2049bb983f45967a3ae, type: 2}
-    - target: {fileID: 5994622128736832609, guid: 0ec812217a268804ea74e8f63622556f,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3d7f4bf85e0ae2049bb983f45967a3ae, type: 2}
-    - target: {fileID: -1504981713932161579, guid: 0ec812217a268804ea74e8f63622556f,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3d7f4bf85e0ae2049bb983f45967a3ae, type: 2}
-    - target: {fileID: -6587012065708496896, guid: 0ec812217a268804ea74e8f63622556f,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6587012065708496896, guid: 0ec812217a268804ea74e8f63622556f,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.18
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ec812217a268804ea74e8f63622556f, type: 3}
 --- !u!1 &7221298158511107486 stripped

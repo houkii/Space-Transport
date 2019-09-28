@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: moon
   m_EditorClassIdentifier: 
   Name: 
-  PlayerPosition: {x: 0, y: 300, z: 0}
+  PlayerPosition: {x: 0, y: 450, z: 0}
   PlanetarySystems:
   - Origin: {x: 0, y: 0, z: 0}
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
@@ -22,9 +22,9 @@ MonoBehaviour:
   Planets:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
-    Position: {x: 600, y: 0, z: 0}
-    Mass: 700
-    Scale: 175
+    Position: {x: 700, y: 0, z: 0}
+    Mass: 750
+    Scale: 185
     ID: 1
     rotationAngles: {x: 0, y: 0, z: 0}
     RotationSpeed: 3
@@ -34,9 +34,9 @@ MonoBehaviour:
     Satellites:
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}
-      Position: {x: 300, y: 0, z: 0}
-      Mass: 450
-      Scale: 100
+      Position: {x: 450, y: 0, z: 0}
+      Mass: 475
+      Scale: 140
       ID: 2
       rotationAngles: {x: 0, y: 0, z: 90}
       RotationSpeed: 6
@@ -60,3 +60,4 @@ MonoBehaviour:
     HostPlanet: 1
     DestinationPlanet: 2
     SpawnDelay: 3
+  BoundsSize: 1500

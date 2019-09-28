@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace NpcActions
@@ -26,10 +25,17 @@ namespace NpcActions
                 if (other.gameObject.name == "PlanetBack")
                 {
                     Debug.Log("A traveller reached destination :)");
-                    GameObject.Destroy(npc.View.gameObject);
-                    GameObject.Destroy(npc.gameObject);
+                    if (npc.View.gameObject != null)
+                        GameObject.Destroy(npc.View.gameObject);
+                    DestroySequence();
                 }
             }
+        }
+
+        private void DestroySequence()
+        {
+            npc.transform.DOScale(0, .75f).SetEase(Ease.InBack)
+                .OnComplete(() => GameObject.Destroy(npc.gameObject));
         }
     }
 }
