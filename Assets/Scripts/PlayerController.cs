@@ -75,12 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         GameController.Instance.MissionController.OnMissionCompleted.AddListener(() =>
         {
-            var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
-                new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
-            Stats.AddScore(endgameLandingScore);
-            StopLoadingFuel();
-            playerEffects.PlayOutroSequence();
-            StartCoroutine(SetScore());
+            StartCoroutine(MissionEndedCR());
         });
 
         Stats.OnFuelFull.AddListener(StopLoadingFuel);
@@ -106,6 +101,18 @@ public class PlayerController : MonoBehaviour
     }
 
     #region private methods
+
+    private IEnumerator MissionEndedCR()
+    {
+        yield return new WaitForSeconds(1.25f);
+        var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
+                new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
+        Stats.AddScore(endgameLandingScore);
+        StopLoadingFuel();
+        playerEffects.PlayOutroSequence();
+        StartCoroutine(SetScore());
+
+    }
 
     private void HandleInput()
     {

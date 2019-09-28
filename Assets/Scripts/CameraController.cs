@@ -24,6 +24,8 @@ public class CameraController : Singleton<CameraController>
         CameraViews.Initialize();
         CameraView.Cam = camera;
         effects = GetComponent<Effects>();
+        var playerPos = PlayerController.Instance.transform.position;
+        transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
     }
 
     private void OnEnable()
