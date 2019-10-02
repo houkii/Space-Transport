@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public UnityEvent OnPlayerDied;
     public UnityAction<PlanetController> OnPlayerLanded;
     public UnityAction<PlanetController> OnPlayerTookOff;
+    public UnityEvent OnFuelExhausted;
 
     public PlayerStatistics Stats = new PlayerStatistics(1000, 1200);
 
@@ -111,7 +112,6 @@ public class PlayerController : MonoBehaviour
         StopLoadingFuel();
         playerEffects.PlayOutroSequence();
         StartCoroutine(SetScore());
-
     }
 
     private void HandleInput()
@@ -132,7 +132,10 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartEngine();
+            if (Stats.Fuel > 0)
+            {
+                StartEngine();
+            }
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -192,10 +195,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Kill()
+    public void Kill()
     {
         playerEffects.ShowExplosion(transform.position, transform.rotation);
-        OnPlayerDied?.Invoke();
+        Camera.main.transform.DOShakeRotation(.45f, 5f, 30).OnComplete(() => OnPlayerDied?.Invoke());
+
         var colliders = transform.GetComponents<Collider>();
         foreach (Collider coll in colliders) Destroy(coll);
         isDead = true;
@@ -340,6 +344,15 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+        if (Stats.Fuel <= 0)
+        {
+            StopEngine();
+            OnFuelExhausted?.Invoke();
+            isMoving = false;
+            playerEffects.PlayLostFuelSequence();
+            return;
+        }
+
         if (rigidbody.velocity.magnitude < maxVelocityMagnitude)
         {
             rigidbody.AddForce(transform.forward * GameController.Instance.Settings.PlayerAccel * Time.deltaTime, ForceMode.Acceleration);
@@ -558,7 +571,8 @@ public class PlayerEffects
 
         Sequence playerSeq = DOTween.Sequence();
         playerSeq.AppendInterval(1.2f)
-            .Append(player.DOScale(defaultPlayerScale.x, 1f).SetEase(Ease.OutElastic));
+            .Append(player.DOScale(defaultPlayerScale.x, 1f).SetEase(Ease.OutElastic))
+            .Join(Camera.main.transform.DOShakeRotation(1f, 1.25f));
     }
 
     public void PlayOutroSequence()
@@ -602,6 +616,15 @@ public class PlayerEffects
             //    CameraController.Instance.StopAllCoroutines();
             //    CameraViews.ActiveView.Disable();
             //})
-            .Append(player.DOScale(0, 1f).SetEase(Ease.InElastic));
+            .Append(player.DOScale(0, 1f).SetEase(Ease.InElastic))
+            .Join(Camera.main.transform.DOShakeRotation(1f, 1.25f));
+    }
+
+    public void PlayLostFuelSequence()
+    {
+        Sequence lostFuelSeq = DOTween.Sequence();
+        lostFuelSeq.Append(Camera.main.transform.DOShakeRotation(1.25f, 3))
+        .AppendInterval(1f)
+        .AppendCallback(() => PlayerController.Instance.Kill());
     }
 }

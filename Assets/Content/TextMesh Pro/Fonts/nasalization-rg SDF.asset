@@ -2453,6 +2453,7 @@ MonoBehaviour:
     kerningPairs: []
   m_FontFeatureTable:
     m_GlyphPairAdjustmentRecords: []
+  fallbackFontAssets: []
   m_FallbackFontAssetTable: []
   m_CreationSettings:
     sourceFontFileName: 
@@ -2539,7 +2540,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Ambient: 0.5
+    - _Ambient: 0.665
     - _Bevel: 0.5
     - _BevelClamp: 0
     - _BevelOffset: 0
@@ -2548,7 +2549,7 @@ Material:
     - _BumpFace: 0
     - _BumpOutline: 0
     - _ColorMask: 15
-    - _Diffuse: 0.5
+    - _Diffuse: 0.577
     - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
@@ -2557,7 +2558,7 @@ Material:
     - _GlowOuter: 0.05
     - _GlowPower: 1
     - _GradientScale: 6
-    - _LightAngle: 3.1416
+    - _LightAngle: 1.67
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
     - _OutlineSoftness: 0
@@ -2565,7 +2566,7 @@ Material:
     - _OutlineUVSpeedY: 0
     - _OutlineWidth: 0.203
     - _PerspectiveFilter: 0.875
-    - _Reflectivity: 10
+    - _Reflectivity: 9.59
     - _ScaleRatioA: 0.8333333
     - _ScaleRatioB: 0.6770833
     - _ScaleRatioC: 0.6770833
@@ -2573,7 +2574,7 @@ Material:
     - _ScaleY: 1
     - _ShaderFlags: 0
     - _Sharpness: 0
-    - _SpecularPower: 2
+    - _SpecularPower: 0
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0

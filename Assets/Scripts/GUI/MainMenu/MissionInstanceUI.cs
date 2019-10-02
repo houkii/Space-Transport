@@ -78,7 +78,7 @@ public class MissionInstanceUI : MonoBehaviour
 
     private void SetHighestRankScore()
     {
-        highScore.text = "Highscore: " + PF_PlayerData.TopScores[missionName];
+        highScore.text = "Record: " + PF_PlayerData.TopScores[missionName];
     }
 
     private string GetYourScoreText(int scoreValue) => "Score: " + scoreValue;

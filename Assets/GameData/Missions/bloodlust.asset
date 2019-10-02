@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bloodlust
   m_EditorClassIdentifier: 
   Name: 
-  PlayerPosition: {x: 0, y: 0, z: 0}
+  PlayerPosition: {x: 0, y: 1000, z: 0}
   PlanetarySystems:
   - Origin: {x: -950, y: 400, z: 0}
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
@@ -29,7 +29,7 @@ MonoBehaviour:
       RotationSpeed: 10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 45
+      Period: -30
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -85,7 +85,7 @@ MonoBehaviour:
     Planets:
     - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
         type: 3}
-      Position: {x: 300, y: 0, z: 0}
+      Position: {x: 0, y: -300, z: 0}
       Mass: 700
       Scale: 175
       ID: 2
@@ -93,7 +93,7 @@ MonoBehaviour:
       RotationSpeed: 10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 45
+      Period: 35
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -149,7 +149,7 @@ MonoBehaviour:
     Planets:
     - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
         type: 3}
-      Position: {x: 300, y: 0, z: 0}
+      Position: {x: 0, y: -300, z: 0}
       Mass: 700
       Scale: 175
       ID: 3
@@ -157,7 +157,7 @@ MonoBehaviour:
       RotationSpeed: 10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 45
+      Period: 30
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -224,4 +224,4 @@ MonoBehaviour:
     HostPlanet: 3
     DestinationPlanet: 1
     SpawnDelay: 0
-  BoundsSize: 0
+  BoundsSize: 1750
