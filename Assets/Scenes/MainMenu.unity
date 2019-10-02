@@ -570,6 +570,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3ae59d6a46f4c804899ec1a518ace4fd, type: 2}
     - {fileID: 11400000, guid: 5bc449d3c4e98ab4c906ebf635173d19, type: 2}
     - {fileID: 11400000, guid: b3fd0c33a0fb21a49a77c906050fec52, type: 2}
+    - {fileID: 11400000, guid: f2f187799825f244d973c3b1c1df2455, type: 2}
+    - {fileID: 11400000, guid: cfa2625ff7eecfc418f39c432e8d4f80, type: 2}
     OnMissionCompleted:
       m_PersistentCalls:
         m_Calls: []
@@ -737,6 +739,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   top: {fileID: 813853649}
   bottom: {fileID: 1845420835}
   mainMenu: {fileID: 1738239421}
@@ -1826,6 +1833,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 0
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &568331236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4023,6 +4035,11 @@ MonoBehaviour:
   showEase: 18
   hideEase: 26
   activeOnStart: 0
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   missionInstanceUIprefab: {fileID: 8804976543853811038, guid: c9f99812d77b0564b8d324530a4562c0,
     type: 3}
   missionContainer: {fileID: 617695989}
@@ -5402,6 +5419,11 @@ MonoBehaviour:
   showEase: 18
   hideEase: 26
   activeOnStart: 0
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   playButton: {fileID: 143946655}
   quitButton: {fileID: 1863156012}
 --- !u!114 &1738239422
@@ -6723,6 +6745,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   title: {fileID: 1216649194}
   message: {fileID: 1187997017}
   okButton: {fileID: 83063277}

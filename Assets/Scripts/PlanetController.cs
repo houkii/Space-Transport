@@ -23,6 +23,7 @@ public class PlanetController : MonoBehaviour
     private Material planetMaterial;
 
     private float angle = 0;
+    //private float initialAngle;
 
     private void Awake()
     {
@@ -37,6 +38,7 @@ public class PlanetController : MonoBehaviour
         targetIndicator.enabled = false;
         angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.forward) * Mathf.Deg2Rad;
         GetComponent<Rigidbody>().mass *= GameController.Instance.Settings.PlanetMassScale;
+        angle = GetInitialAngle();
     }
 
     public PlanetController Initialize(PlanetInstance data)
@@ -60,11 +62,18 @@ public class PlanetController : MonoBehaviour
 
     private void OrbitalMove()
     {
-        float x = Mathf.Cos(angle) * Data.Radius;
-        float y = Mathf.Sin(angle) * Data.Radius;
+        float x = Mathf.Cos(angle * Mathf.Deg2Rad) * Data.Radius;
+        float y = Mathf.Sin(angle * Mathf.Deg2Rad) * Data.Radius;
         transform.position = new Vector3(x, y, transform.position.z);
         transform.position += Data.CentralObject != null ? Data.CentralObject.position : Vector3.zero;
-        angle += Data.AngularFrequency * Time.fixedDeltaTime;
+        angle += Data.AngularFrequency * Mathf.Rad2Deg * Time.fixedDeltaTime;
+    }
+
+    private float GetInitialAngle()
+    {
+        var localPos = transform.position - Data.CentralObject.position;
+        float angle = Mathf.Atan2(localPos.y, localPos.x) * Mathf.Rad2Deg;
+        return angle;
     }
 
     private void SetCallbacks(NPCEntity entity)

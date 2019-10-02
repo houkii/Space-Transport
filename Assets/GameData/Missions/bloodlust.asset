@@ -1,0 +1,227 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 227f3720e46100743a9e95f49c5764ee, type: 3}
+  m_Name: bloodlust
+  m_EditorClassIdentifier: 
+  Name: 
+  PlayerPosition: {x: 0, y: 0, z: 0}
+  PlanetarySystems:
+  - Origin: {x: -950, y: 400, z: 0}
+    CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
+      type: 3}
+    Planets:
+    - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
+        type: 3}
+      Position: {x: 300, y: 0, z: 0}
+      Mass: 700
+      Scale: 175
+      ID: 1
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 10
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 45
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 500, y: 0, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 4
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 50
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: -500, y: 0, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 5
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 0, y: 500, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 6
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 0, y: -500, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 7
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+  - Origin: {x: 950, y: 400, z: 0}
+    CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
+      type: 3}
+    Planets:
+    - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
+        type: 3}
+      Position: {x: 300, y: 0, z: 0}
+      Mass: 700
+      Scale: 175
+      ID: 2
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 10
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 45
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 500, y: 0, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 999
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 50
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: -500, y: 0, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 8
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 0, y: 500, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 9
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 0, y: -500, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 10
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+  - Origin: {x: 0, y: -550, z: 0}
+    CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
+      type: 3}
+    Planets:
+    - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
+        type: 3}
+      Position: {x: 300, y: 0, z: 0}
+      Mass: 700
+      Scale: 175
+      ID: 3
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 10
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 45
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 500, y: 0, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 11
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 50
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: -500, y: 0, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 12
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 0, y: 500, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 13
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
+        type: 3}
+      Position: {x: 0, y: -500, z: 0}
+      Mass: 500
+      Scale: 100
+      ID: 14
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 0
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 7
+      Satellites: []
+  Planets: []
+  NpcsToSpawn:
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 1
+    DestinationPlanet: 2
+    SpawnDelay: 0
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 2
+    DestinationPlanet: 3
+    SpawnDelay: 0
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 3
+    DestinationPlanet: 1
+    SpawnDelay: 0
+  BoundsSize: 0
