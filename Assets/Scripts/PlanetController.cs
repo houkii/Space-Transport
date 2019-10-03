@@ -22,6 +22,11 @@ public class PlanetController : MonoBehaviour
 
     private Material planetMaterial;
 
+    private Vector3 previousPos;
+
+    private List<Vector3> positions = new List<Vector3> { Vector3.zero, Vector3.zero };
+    public Vector3 CurrentVelocity => (positions[1] - positions[0]) / Time.fixedDeltaTime;
+
     private float angle = 0;
     //private float initialAngle;
 
@@ -58,6 +63,9 @@ public class PlanetController : MonoBehaviour
     {
         transform.Rotate(transform.forward, Data.RotationSpeed * Time.fixedDeltaTime);
         OrbitalMove();
+        positions.Add(transform.position);
+        if (positions.Count == 3)
+            positions.RemoveAt(0);
     }
 
     private void OrbitalMove()
@@ -71,6 +79,9 @@ public class PlanetController : MonoBehaviour
 
     private float GetInitialAngle()
     {
+        if (Data.CentralObject == null)
+            return 0;
+
         var localPos = transform.position - Data.CentralObject.position;
         float angle = Mathf.Atan2(localPos.y, localPos.x) * Mathf.Rad2Deg;
         return angle;

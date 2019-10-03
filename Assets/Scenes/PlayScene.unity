@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.07069307, g: 0.026525266, b: 0.038134493, a: 1}
+  m_IndirectSpecularColor: {r: 0.07496501, g: 0.028542167, b: 0.04131931, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -622,6 +622,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 0
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &220361567
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,6 +730,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &244080477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5915,11 +5925,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa1c5072d009f047a84fbae1d0c284d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocityMagnitude: 500
+  maxVelocityMagnitude: 600
   propulsionPS: {fileID: 311097086}
   explosionPrefab: {fileID: 100002, guid: f7efb0d9df2264096af57128df85dddb, type: 3}
   shipThruster: {fileID: 1079448570}
   OnPlayerDied:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnFuelExhausted:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
@@ -5966,6 +5981,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  PreviousPlanetHost: {fileID: 0}
   averagedVelocityMagnitude: 0
   averagedMovementVector: {x: 0, y: 0, z: 0}
 --- !u!114 &352122036
@@ -6683,7 +6699,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 342
+  orthographic size: 420
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6726,12 +6742,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 352122034}
-  minCameraSize: 130
-  maxCameraSize: 400
+  minCameraSize: 120
+  maxCameraSize: 600
   defaultCameraPosition: {x: 0, y: 20, z: 2}
   maximumVerticalOffset: 15
   interpolationValue: 0.075
   skyboxRotateSpeed: 1.5
+  OnStandardViewSet:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7322,6 +7343,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &686799133
 GameObject:
   m_ObjectHideFlags: 0
@@ -10504,6 +10530,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1619527308
 GameObject:
   m_ObjectHideFlags: 0
@@ -11317,6 +11348,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1807478115
 GameObject:
   m_ObjectHideFlags: 0
@@ -11589,6 +11625,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1977755587
 GameObject:
   m_ObjectHideFlags: 0
@@ -11630,7 +11671,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1990813688}
   - component: {fileID: 1990813690}
-  - component: {fileID: 1990813689}
   m_Layer: 0
   m_Name: MiniMapCamera
   m_TagString: Untagged
@@ -11652,14 +11692,6 @@ Transform:
   m_Father: {fileID: 4185072224716396}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &1990813689
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1990813687}
-  m_Enabled: 1
 --- !u!20 &1990813690
 Camera:
   m_ObjectHideFlags: 0
@@ -11812,6 +11844,11 @@ MonoBehaviour:
   showEase: 27
   hideEase: 26
   activeOnStart: 1
+  OnShown:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &2062166281
 GameObject:
   m_ObjectHideFlags: 0

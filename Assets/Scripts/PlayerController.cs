@@ -79,6 +79,8 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(MissionEndedCR());
         });
 
+        CameraController.Instance.OnStandardViewSet.AddListener(CorrectVelocity);
+
         Stats.OnFuelFull.AddListener(StopLoadingFuel);
         playerEffects.PlayIntroSequence();
     }
@@ -208,12 +210,15 @@ public class PlayerController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public PlanetController PreviousPlanetHost;
+
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Landable")
         {
-            var previousPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            TakeOff(previousPlanetHost);
+            //var previousPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
+            PreviousPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
+            TakeOff(PreviousPlanetHost);
         }
     }
 
@@ -388,8 +393,13 @@ public class PlayerController : MonoBehaviour
         Stats.AddScore(score);
     }
 
-    private void PlayTeleportEffect()
+    private void CorrectVelocity()
     {
+        if (PreviousPlanetHost != null)
+        {
+            rigidbody.velocity += PreviousPlanetHost.CurrentVelocity;
+            Debug.Log(PreviousPlanetHost.CurrentVelocity);
+        }
     }
 
     #endregion private methods

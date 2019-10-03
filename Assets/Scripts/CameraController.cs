@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -9,6 +10,8 @@ public class CameraController : Singleton<CameraController>
     [SerializeField] private float maximumVerticalOffset = 9f;
     [SerializeField] private float interpolationValue = 0.05f;
     [SerializeField] private float skyboxRotateSpeed = 1.5f;
+
+    public UnityEvent OnStandardViewSet;
 
     private Camera camera;
     private Effects effects;
@@ -71,6 +74,7 @@ public class CameraController : Singleton<CameraController>
         transform.SetParent(null);
         player.transform.SetParent(null);
         CameraViews.SetActive(CameraView.CameraViewType.Standard);
+        OnStandardViewSet?.Invoke();
     }
 
     public void NormalLook()

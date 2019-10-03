@@ -585,11 +585,11 @@ MonoBehaviour:
   Settings:
     FuelCost: -50
     FuelLoading: 150
-    G: 667
-    DistanceScaler: 0.75
-    PlayerDrag: 0.1
+    G: 800
+    DistanceScaler: 0.55
+    PlayerDrag: 0.05
     PlayerMass: 1
-    PlayerAccel: 7000
+    PlayerAccel: 12000
     PlanetMassScale: 1
     MaxRewardForTotalFuelUsed: 1000000
     MaxRewardForRemainingFuel: 1000
