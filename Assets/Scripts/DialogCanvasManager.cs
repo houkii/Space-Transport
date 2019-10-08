@@ -3,6 +3,7 @@
 public class DialogCanvasManager : Singleton<DialogCanvasManager>
 {
     public InfoDialog Info;
+    public OvelappingCanvas overlapping;
 
     private void Update()
     {

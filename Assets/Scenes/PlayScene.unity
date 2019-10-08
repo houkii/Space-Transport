@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.07108035, g: 0.026624821, b: 0.038267788, a: 1}
+  m_IndirectSpecularColor: {r: 0.14725101, g: 0.07142099, b: 0.08819654, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5956,6 +5956,8 @@ MonoBehaviour:
       type: 3}
     FuelLoadingFX: {fileID: 1832608762662134, guid: 89a5880db63937c4db5ac8be1cce8406,
       type: 3}
+    TravellerEnterFX: {fileID: 1973293703174828, guid: df335fb1db6375f4d96d741e3d35beff,
+      type: 3}
     ExplosionFX: {fileID: 1822773341328252, guid: 8aea2a892ad46aa439b8be49adccdcad,
       type: 3}
     BlackHoleFX: {fileID: 1721409791827648, guid: 12683014616796e4980e298c021ecd9e,
@@ -8614,6 +8616,7 @@ GameObject:
   - component: {fileID: 1011657082}
   - component: {fileID: 1011657083}
   - component: {fileID: 1011657084}
+  - component: {fileID: 1011657085}
   m_Layer: 12
   m_Name: PlayerLander
   m_TagString: PlayerLander
@@ -8657,9 +8660,23 @@ SphereCollider:
   m_GameObject: {fileID: 1011657081}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &1011657085
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011657081}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 4.49
+  m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1079448569
 PrefabInstance:
@@ -10319,7 +10336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.627451}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.34901962}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -10894,14 +10911,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.6213612, b: 0, a: 0.627451}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 0.8941177, b: 0, a: 1}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

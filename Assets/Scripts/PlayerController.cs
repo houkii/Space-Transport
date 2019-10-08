@@ -246,6 +246,7 @@ public class PlayerController : MonoBehaviour
     private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
     {
         var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
+        Debug.Log(angle);
         landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude);
     }
 
@@ -433,6 +434,7 @@ public class PlayerController : MonoBehaviour
         entity.OnReachedDestination.AddListener(() =>
             AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
         Passengers.Add(entity);
+        playerEffects.ShowTravellerEnterFX(shipThruster.transform.position, transform.rotation);
     }
 
     public void RemovePassenger(NPCEntity entity)
@@ -530,6 +532,7 @@ public class PlayerEffects
 {
     public GameObject LandingFX;
     public GameObject FuelLoadingFX;
+    public GameObject TravellerEnterFX;
     public GameObject ExplosionFX;
     public GameObject BlackHoleFX;
 
@@ -540,6 +543,13 @@ public class PlayerEffects
         var obj = GameObject.Instantiate(LandingFX, position, rotation);
         obj.transform.SetParent(PlayerController.Instance.transform);
         GameObject.Destroy(obj, 2.5f);
+    }
+
+    public void ShowTravellerEnterFX(Vector3 position, Quaternion rotation)
+    {
+        var obj = GameObject.Instantiate(TravellerEnterFX, position, rotation);
+        obj.transform.SetParent(PlayerController.Instance.transform);
+        GameObject.Destroy(obj, 1f);
     }
 
     public void ShowFuelLoading(Vector3 position, Quaternion rotation)

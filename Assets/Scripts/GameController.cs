@@ -76,7 +76,8 @@ public class GameController : Singleton<GameController>
         var allMissions = MissionController.AvailableMissions;
         var mission = allMissions.Find(x => x.name == missionName);
         var id = allMissions.FindIndex(x => x == mission);
-        PlayMission(id);
+        //PlayMission(id);
+        DialogCanvasManager.Instance.overlapping.Show("Loading", () => PlayMission(id));
     }
 
     private IEnumerator ConnectToPlayfab()

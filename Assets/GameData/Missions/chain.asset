@@ -19,7 +19,7 @@ MonoBehaviour:
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
       type: 3}
     Planets:
-    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+    - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
         type: 3}
       Position: {x: 1350, y: 0, z: 0}
       Mass: 650
@@ -50,10 +50,10 @@ MonoBehaviour:
           Scale: 125
           ID: 3
           rotationAngles: {x: 0, y: 0, z: 90}
-          RotationSpeed: -60
+          RotationSpeed: -40
           CentralObject: {fileID: 0}
           Center: {x: 0, y: 0, z: 0}
-          Period: 5
+          Period: 12
           Satellites: []
   Planets: []
   NpcsToSpawn:

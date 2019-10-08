@@ -23,8 +23,8 @@ MonoBehaviour:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 387, y: 0, z: 0}
-    Mass: 300
-    Scale: 75
+    Mass: 500
+    Scale: 125
     ID: 1
     rotationAngles: {x: 0, y: 0, z: 0}
     RotationSpeed: 10
@@ -47,7 +47,7 @@ MonoBehaviour:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 1000, y: 0, z: 0}
-    Mass: 750
+    Mass: 900
     Scale: 200
     ID: 3
     rotationAngles: {x: 0, y: 0, z: 0}
@@ -59,8 +59,8 @@ MonoBehaviour:
   - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
       type: 3}
     Position: {x: 1524, y: 0, z: 0}
-    Mass: 350
-    Scale: 100
+    Mass: 550
+    Scale: 125
     ID: 4
     rotationAngles: {x: 0, y: 0, z: 0}
     RotationSpeed: 15

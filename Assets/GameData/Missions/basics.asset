@@ -48,7 +48,7 @@ MonoBehaviour:
       type: 3}
     Position: {x: 1200, y: 0, z: 0}
     Mass: 500
-    Scale: 100
+    Scale: 125
     ID: 3
     rotationAngles: {x: 0, y: 0, z: 180}
     RotationSpeed: -12
@@ -58,7 +58,7 @@ MonoBehaviour:
     Satellites:
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
-      Position: {x: 150, y: 0, z: 0}
+      Position: {x: 175, y: 0, z: 0}
       Mass: 33
       Scale: 27
       ID: 4
@@ -66,7 +66,7 @@ MonoBehaviour:
       RotationSpeed: 18
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 8
+      Period: 11
       Satellites:
       - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
           type: 3}
@@ -78,7 +78,7 @@ MonoBehaviour:
         RotationSpeed: 50
         CentralObject: {fileID: 0}
         Center: {x: 0, y: 0, z: 0}
-        Period: 1
+        Period: 1.5
         Satellites: []
   NpcsToSpawn:
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,

@@ -106,7 +106,7 @@ public class NPCEntity : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Planet")
+        if (collision.gameObject.tag == "Planet" || collision.gameObject.tag == "Landable")
         {
             ResolveNPCRotation(collision.contacts[0].normal);
         }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class VelocityIndicator : MonoBehaviour
 {
@@ -17,6 +15,7 @@ public class VelocityIndicator : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (targetBody.velocity.magnitude <= 0) return;
         transform.rotation = Quaternion.LookRotation(targetBody.velocity.normalized, targetBody.transform.up);
         var currentSize = PlayerController.Instance.CurrentToMaximumVelocityMagnitudeRatio;
         transform.localScale = Vector3.one * currentSize * size;

@@ -25,10 +25,19 @@ namespace NpcActions
                 if (other.gameObject.name == "PlanetBack")
                 {
                     Debug.Log("A traveller reached destination :)");
-                    if (npc.View.gameObject != null)
+                    if (npc.View != null)
                         GameObject.Destroy(npc.View.gameObject);
                     DestroySequence();
                 }
+                else
+                {
+                    npc.MoveTo(npc.HostPlanet.PlanetBack);
+                }
+            }
+            if (other.gameObject.tag == "Player")
+            {
+                int index = Random.Range(0, npc.HostPlanet.Waypoints.Count);
+                npc.MoveTo(npc.HostPlanet.Waypoints[index]);
             }
         }
 
