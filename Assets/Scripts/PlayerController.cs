@@ -277,10 +277,13 @@ public class PlayerController : MonoBehaviour
         string scoreName = "score" + missionName;
         Debug.Log(Stats.Score);
 
-        if (PlayerPrefs.HasKey(scoreName) && PlayerPrefs.GetInt(scoreName) < Stats.Score)
+        if (PlayerPrefs.HasKey(scoreName))
         {
-            PlayerPrefs.SetInt(scoreName, Stats.Score);
+            if (PlayerPrefs.GetInt(scoreName) < Stats.Score)
+                PlayerPrefs.SetInt(scoreName, Stats.Score);
         }
+        else
+            PlayerPrefs.SetInt(scoreName, Stats.Score);
 
         if (PlayFabClientAPI.IsClientLoggedIn() && PF_PlayerData.Statistics[missionName] < Stats.Score)
         {

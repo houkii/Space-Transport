@@ -51,13 +51,20 @@ public class MissionInstanceUI : MonoBehaviour
         button.onClick.AddListener(() => GameController.Instance.PlayMission(missionName));
         name.text = missionName;
 
-        PF_PlayerData.GetPlayerLeaderboardPosition(this.missionName);
-        PF_PlayerData.GetHighScore(this.missionName);
+        if (PlayFabClientAPI.IsClientLoggedIn())
+        {
+            PF_PlayerData.GetPlayerLeaderboardPosition(this.missionName);
+            PF_PlayerData.GetHighScore(this.missionName);
+        }
+        else
+        {
+            SetPlayerScore();
+        }
     }
 
     private void SetPlayerScore()
     {
-        string missionScoreName = "Score" + missionName;
+        string missionScoreName = "score" + missionName;
         if (PlayFabClientAPI.IsClientLoggedIn())
         {
             if (PF_PlayerData.Statistics.ContainsKey(missionName))
