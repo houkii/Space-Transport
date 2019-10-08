@@ -100,7 +100,7 @@ MonoBehaviour:
       Position: {x: 500, y: 0, z: 0}
       Mass: 500
       Scale: 100
-      ID: 999
+      ID: 15
       rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 50
       CentralObject: {fileID: 0}

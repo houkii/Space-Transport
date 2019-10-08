@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: struggle
   m_EditorClassIdentifier: 
   Name: 
-  PlayerPosition: {x: 0, y: 0, z: 0}
+  PlayerPosition: {x: 0, y: 750, z: 0}
   PlanetarySystems:
   - Origin: {x: -1000, y: -250, z: 0}
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
