@@ -32,6 +32,7 @@ public class PlayerStatistics
             if (fuel <= 0)
             {
                 OnOutOfFuel.Invoke();
+                DialogCanvasManager.Instance.midInfo.Show("Out Of Fuel!");
             }
         }
     }

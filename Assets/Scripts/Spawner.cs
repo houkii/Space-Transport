@@ -66,7 +66,7 @@ public class Spawner : MonoBehaviour
             DestroyEntities();
             foreach (Mesh mesh in meshesToRender)
             {
-                Spawn(10, mesh, 350, 650, 250, 550, Vector2.zero);
+                Spawn(5, mesh, 350, 650, 250, 550, Vector2.zero);
             }
         }
     }
