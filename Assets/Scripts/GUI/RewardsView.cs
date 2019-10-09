@@ -32,22 +32,23 @@ public class RewardsView : Singleton<RewardsView>
 
     public void ShowReward(Reward reward)
     {
-        //Vector2 position = UnityEngine.Random.insideUnitCircle.normalized;
-        //position = rewardEntryRange * new Vector2(
-        //    Mathf.Clamp(position.x, Mathf.Sign(position.x) * .5f, Mathf.Sign(position.x)),
-        //    Mathf.Abs(position.y));
-
         Vector2 position = new Vector2(UnityEngine.Random.Range(75, 200), UnityEngine.Random.Range(50, 75));
-        position = new Vector2(position.x * currentDir, position.y);
         currentDir *= (-1);
-
+        position = new Vector2(position.x * currentDir, position.y);
         var rewardObj = Instantiate(UIRewardPrefab, transform);
         rewardObj.GetComponent<RectTransform>().anchoredPosition = position;
         var rewardEntry = rewardObj.GetComponent<UIRewardEntry>();
-        var rewardTypeName = reward.GetType().ToString();
-        var rewardName = rewardTypeName.Remove(rewardTypeName.IndexOf("Reward"), "Reward".Length);
+        rewardEntry.Initialize(reward, currentDir);
+        UIRewardsQueue.Enqueue(() => rewardEntry.Show());
+    }
 
-        UIRewardsQueue.Enqueue(() => rewardEntry.Show(rewardName, reward.Value));
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            //ShowReward(new DeliveryReward(typeof(DeliveryRewardArgs)));
+            var newDelivery = new DeliveryReward(typeof(DeliveryRewardArgs));
+        }
     }
 
     private IEnumerator ShowInQueue()
@@ -58,13 +59,5 @@ public class RewardsView : Singleton<RewardsView>
             UIRewardsQueue.Dequeue().Invoke();
             yield return new WaitForSeconds(0.9f);
         }
-    }
-
-    private void Update()
-    {
-        //if(Input.GetKeyDown(KeyCode.P))
-        //{
-        //    GameController.Instance.Rewards.GetReward(Reward.RewardType.LandingReward, new LandingRewardArgs(20, 20, 20));
-        //}
     }
 }
