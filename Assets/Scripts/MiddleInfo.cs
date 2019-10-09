@@ -8,6 +8,7 @@ public class MiddleInfo : MonoBehaviour
 
     private Color defaultColor;
     private Color fadedColor;
+    private Sequence colSeq;
 
     private void Awake()
     {
@@ -17,10 +18,11 @@ public class MiddleInfo : MonoBehaviour
 
     public void Show(string info)
     {
+        colSeq.Kill();
         gameObject.SetActive(true);
         message.color = fadedColor;
         message.text = info;
-        Sequence colSeq = DOTween.Sequence();
+        colSeq = DOTween.Sequence();
         colSeq.Append(message.DOColor(defaultColor, .45f))
             .AppendInterval(1.5f)
             .Append(message.DOColor(fadedColor, .45f))
