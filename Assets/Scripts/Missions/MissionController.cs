@@ -7,6 +7,9 @@ using UnityEngine.Events;
 [Serializable]
 public class MissionController
 {
+    [SerializeField] private bool spawnRandomTravellers = true;
+    [SerializeField] private List<GameObject> availableTravellers;
+
     [SerializeField]
     private List<Mission> availableMissions;
 
@@ -101,6 +104,9 @@ public class MissionController
         NpcsToSpawn.Clear();
         foreach (TravellerInstance traveller in CurrentMission.NpcsToSpawn)
         {
+            if (spawnRandomTravellers)
+                traveller.TravelerPrefab = availableTravellers[UnityEngine.Random.Range(0, availableTravellers.Count)];
+
             NpcsToSpawn.Enqueue(traveller);
         }
         TotalNpcs = NpcsToSpawn.Count;

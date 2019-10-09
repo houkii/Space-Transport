@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -651,6 +651,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MissionController:
+    spawnRandomTravellers: 1
+    availableTravellers:
+    - {fileID: 498348283861695024, guid: 45e7cc96b3fec9545a38d73dc3a53914, type: 3}
+    - {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5, type: 3}
     availableMissions:
     - {fileID: 11400000, guid: 8e95131f37a17354da3630655dbd118e, type: 2}
     - {fileID: 11400000, guid: 9a56b9127086d484c86e6abf9e0dff81, type: 2}
