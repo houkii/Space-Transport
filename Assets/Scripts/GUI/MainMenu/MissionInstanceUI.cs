@@ -10,6 +10,7 @@ public class MissionInstanceUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI score;
     [SerializeField] private TextMeshProUGUI rank;
     [SerializeField] private TextMeshProUGUI highScore;
+    [SerializeField] private Image lockImage;
 
     private string missionName;
 
@@ -48,17 +49,27 @@ public class MissionInstanceUI : MonoBehaviour
     public void Initialize(string missionName)
     {
         this.missionName = missionName;
-        button.onClick.AddListener(() => GameController.Instance.PlayMission(missionName));
         name.text = missionName;
-
-        if (PlayFabClientAPI.IsClientLoggedIn())
+        if (GameController.Instance.PlayerData.IsMissionAvailable(missionName) || GameController.Instance.DevModeEnabled)
         {
-            PF_PlayerData.GetPlayerLeaderboardPosition(this.missionName);
-            PF_PlayerData.GetHighScore(this.missionName);
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(() => GameController.Instance.PlayMission(missionName));
+            lockImage.gameObject.SetActive(false);
+
+            if (PlayFabClientAPI.IsClientLoggedIn())
+            {
+                PF_PlayerData.GetPlayerLeaderboardPosition(this.missionName);
+                PF_PlayerData.GetHighScore(this.missionName);
+            }
+            else
+            {
+                SetPlayerScore();
+            }
         }
         else
         {
-            SetPlayerScore();
+            lockImage.gameObject.SetActive(true);
+            button.onClick.AddListener(() => DialogCanvasManager.Instance.midInfo.Show("Mission Locked!"));
         }
     }
 

@@ -40,6 +40,9 @@ public class MissionController
         }
     }
 
+    public string NextMissionName =>
+        availableMissions[(CurrentMissionID + 1) <= availableMissions.Count ? (CurrentMissionID + 1) : CurrentMissionID].name;
+
     public void InitializeMission(int missionID)
     {
         CurrentMissionID = missionID;
@@ -88,7 +91,9 @@ public class MissionController
 
             var planetObject = GameObject.Instantiate(planetData.Prefab, planetData.Position, planetData.Rotation);
             //planetObject.name = String.Format("Planet {0}", planetData.ID);
+
             planetObject.name = planetData.ID;
+
             var planetController = planetObject.GetComponent<PlanetController>().Initialize(planetData);
             MissionPlanets.Add(planetObject.name, planetController);
 

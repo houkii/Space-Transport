@@ -1,5 +1,6 @@
 ﻿using PlayFab;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,10 @@ public class GameController : Singleton<GameController>
     public MissionController MissionController;
     public RewardFactory Rewards { get; private set; }
     public GameSettings Settings;
+
+    public PlayerData PlayerData;
     public int MissionID { get; private set; }
+
     public bool DevModeEnabled = true;
 
     public ColorPalette ColorPaletteDarkPink;
@@ -18,8 +22,10 @@ public class GameController : Singleton<GameController>
     {
         Rewards = new RewardFactory();
         //Settings = new GameSettings();
+        //PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("score", 0);
         Settings.Init();
+        PlayerData.Init();
         StartCoroutine(ConnectToPlayfab());
     }
 
@@ -37,11 +43,16 @@ public class GameController : Singleton<GameController>
         {
             PlayerController.Instance.Stats.AddScore(Rewards.GetReward(Reward.RewardType.DeliveryReward, new DeliveryRewardArgs(5, 5)));
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            MissionController.OnMissionCompleted?.Invoke();
+        }
     }
 
     public void InitializePlayScene()
     {
         MissionController.InitializeMission(MissionID);
+        MissionController.OnMissionCompleted.AddListener(PlayerData.MakeNextMissionAvailable);
     }
 
     public void RestartMission()
@@ -55,13 +66,15 @@ public class GameController : Singleton<GameController>
     public void PlayNextMission()
     {
         MissionID++;
-        if (MissionController.AvailableMissions.Count > MissionID)
+        if (MissionController.AvailableMissions.Count > MissionID
+            && PlayerData.IsMissionAvailable(MissionController.AvailableMissions[MissionID].name))
         {
             PlayMission(MissionID);
         }
         else
         {
-            SceneController.Instance.LoadMainMenu();
+            //SceneController.Instance.LoadMainMenu();
+            DialogCanvasManager.Instance.midInfo.Show("Mission Locked!");
         }
     }
 
@@ -69,6 +82,10 @@ public class GameController : Singleton<GameController>
     {
         MissionID = missionID;
         SceneController.Instance.LoadLevel();
+    }
+
+    public void PlayMissionIfUnlocked(int missionID)
+    {
     }
 
     public void PlayMission(string missionName)
@@ -97,6 +114,7 @@ public class GameController : Singleton<GameController>
 [System.Serializable]
 public class GameSettings
 {
+    public int MaxSkips = 2;
     public float FuelCost = -50f;
     public float FuelLoading = 150f;
     public float G = 800.7f;
@@ -132,5 +150,58 @@ public class GameSettings
         DragSlider.onValueChanged.AddListener(delegate { PlayerController.Instance.GetComponent<Rigidbody>().drag = DragSlider.value; });
         PlayerMassSlider.onValueChanged.AddListener(delegate { PlayerController.Instance.GetComponent<Rigidbody>().mass = PlayerMassSlider.value; });
         PlanetMassSlider.onValueChanged.AddListener(delegate { PlanetMassScale = PlanetMassSlider.value; });
+    }
+}
+
+[System.Serializable]
+public class PlayerData
+{
+    public enum MissionState { Unavailable = 0, Available = 1, Skipped = 2 }
+
+    public Dictionary<string, MissionState> missionCompletes = new Dictionary<string, MissionState>();
+
+    public int NumSkips = 0;
+
+    public void Init()
+    {
+        var missions = GameController.Instance.MissionController.AvailableMissions;
+        for (int i = 0; i < missions.Count; i++)
+        {
+            int missionState = PlayerPrefs.GetInt(missions[i].name + "Completed");
+            missionCompletes.Add(missions[i].name, (MissionState)missionState);
+            Debug.Log(missions[i].name + ": " + (MissionState)missionState);
+
+            if ((MissionState)missionState == MissionState.Skipped)
+            {
+                NumSkips++;
+            }
+        }
+
+        missionCompletes[missions[0].name] = MissionState.Available;
+    }
+
+    //public bool CanMissionBeSkipped (string name) => missionCompletes[name] == MissionState.
+    public bool IsMissionAvailable(string name) => missionCompletes[name] == MissionState.Available;
+
+    public bool IsNextMissionAvailable()
+    {
+        var nextMissionName = GameController.Instance.MissionController.NextMissionName;
+        if (nextMissionName != GameController.Instance.MissionController.CurrentMission.name)
+        {
+            if (missionCompletes[nextMissionName] == MissionState.Available)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void MakeNextMissionAvailable()
+    {
+        var nextMissionName = GameController.Instance.MissionController.NextMissionName;
+        if (missionCompletes[nextMissionName] != MissionState.Available)
+        {
+            missionCompletes[nextMissionName] = MissionState.Available;
+            PlayerPrefs.SetInt(nextMissionName + "Completed", (int)MissionState.Available);
+        }
     }
 }

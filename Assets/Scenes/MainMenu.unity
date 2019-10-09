@@ -666,6 +666,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: b3fd0c33a0fb21a49a77c906050fec52, type: 2}
     - {fileID: 11400000, guid: f2f187799825f244d973c3b1c1df2455, type: 2}
     - {fileID: 11400000, guid: cfa2625ff7eecfc418f39c432e8d4f80, type: 2}
+    - {fileID: 11400000, guid: 1e28112632780ad4fbeef72fefb29fd7, type: 2}
     OnMissionCompleted:
       m_PersistentCalls:
         m_Calls: []
@@ -677,6 +678,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   Settings:
+    MaxSkips: 2
     FuelCost: -50
     FuelLoading: 150
     G: 700
@@ -695,6 +697,8 @@ MonoBehaviour:
     DragSlider: {fileID: 626333001}
     PlayerMassSlider: {fileID: 1020502704}
     PlanetMassSlider: {fileID: 2019943308}
+  PlayerData:
+    NumSkips: 0
   DevModeEnabled: 0
   ColorPaletteDarkPink:
     paletteColors:

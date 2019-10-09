@@ -51,7 +51,12 @@ public class PlanetController : MonoBehaviour
         Data = data;
         GetComponent<Rigidbody>().mass = Data.Mass;
         transform.localScale = Vector3.one * Data.Scale;
-        miniMapIndex.text = Data.ID.ToString();
+
+        if (data.Prefab.name.Contains("Moon"))
+            miniMapIndex.text = "M";
+        else
+            miniMapIndex.text = Data.ID.ToString();
+
         if (Data.CentralObject != null)
         {
             Data.Center = Data.CentralObject.position;

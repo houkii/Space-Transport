@@ -44,6 +44,9 @@ public class SummaryPanelController : MonoBehaviour
         TotalFuelUsedText.Set(PlayerController.Instance.Stats.TotalFuelUsed, "{0:0.0}");
         TotalPointsText.Set(PlayerController.Instance.Stats.Score, "{0:0}");
 
+        bool nextMissionAvailable = GameController.Instance.PlayerData.IsNextMissionAvailable();
+        NextMissionButton.gameObject.SetActive(nextMissionAvailable);
+
         GetComponent<MovableCanvasElement>().Show();
     }
 
