@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -660,13 +660,15 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9a56b9127086d484c86e6abf9e0dff81, type: 2}
     - {fileID: 11400000, guid: ef6fec8ac657e0342bec6d8c932f9b3d, type: 2}
     - {fileID: 11400000, guid: 3357ab4fae43cb841a0b1b52c7ec6746, type: 2}
-    - {fileID: 11400000, guid: fbb765cc5f23d834495d7b8928c3b902, type: 2}
     - {fileID: 11400000, guid: 3ae59d6a46f4c804899ec1a518ace4fd, type: 2}
     - {fileID: 11400000, guid: 5bc449d3c4e98ab4c906ebf635173d19, type: 2}
     - {fileID: 11400000, guid: b3fd0c33a0fb21a49a77c906050fec52, type: 2}
     - {fileID: 11400000, guid: f2f187799825f244d973c3b1c1df2455, type: 2}
     - {fileID: 11400000, guid: cfa2625ff7eecfc418f39c432e8d4f80, type: 2}
     - {fileID: 11400000, guid: 1e28112632780ad4fbeef72fefb29fd7, type: 2}
+    - {fileID: 11400000, guid: fbb765cc5f23d834495d7b8928c3b902, type: 2}
+    - {fileID: 11400000, guid: 05d6ea8003ab64543ae9d53dc5cf7bce, type: 2}
+    - {fileID: 11400000, guid: 175ad5f135bed0a498c00b3232b785fc, type: 2}
     OnMissionCompleted:
       m_PersistentCalls:
         m_Calls: []
@@ -699,7 +701,7 @@ MonoBehaviour:
     PlanetMassSlider: {fileID: 2019943308}
   PlayerData:
     NumSkips: 0
-  DevModeEnabled: 0
+  DevModeEnabled: 1
   ColorPaletteDarkPink:
     paletteColors:
     - {r: 0.6901961, g: 0.2901961, b: 0.30588236, a: 1}
