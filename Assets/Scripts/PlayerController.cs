@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
     private AudioSource Audio;
     private AudioSource Audio2;
 
+    public Vector3 DefaultPlayerScale { get; private set; }
+
     [SerializeField] private PlayerEffects playerEffects;
     [SerializeField] private ShipSounds Sounds;
 
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
             Destroy(this);
         }
 
+        DefaultPlayerScale = transform.localScale;
         Audio = gameObject.AddComponent<AudioSource>();
         Audio2 = gameObject.AddComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody>();
@@ -82,6 +85,17 @@ public class PlayerController : MonoBehaviour
         CameraController.Instance.OnStandardViewSet.AddListener(CorrectVelocity);
 
         Stats.OnFuelFull.AddListener(StopLoadingFuel);
+        //playerEffects.PlayIntroSequence();
+
+        StartCoroutine(WaitForTutorialCompletion());
+    }
+
+    private IEnumerator WaitForTutorialCompletion()
+    {
+        rigidbody.isKinematic = true;
+        transform.localScale = Vector3.zero;
+        yield return new WaitUntil(() => GameController.Instance.MissionController.CurrentMission.tutorial.Complete);
+        rigidbody.isKinematic = false;
         playerEffects.PlayIntroSequence();
     }
 
@@ -584,7 +598,7 @@ public class PlayerEffects
     public void PlayIntroSequence()
     {
         var player = PlayerController.Instance.transform;
-        var defaultPlayerScale = player.localScale;
+        var defaultPlayerScale = PlayerController.Instance.DefaultPlayerScale;
         var obj = GameObject.Instantiate(BlackHoleFX, player.position + new Vector3(0, 0, 75f), player.rotation);
         obj.transform.localScale = Vector3.zero;
         player.localScale = Vector3.zero;

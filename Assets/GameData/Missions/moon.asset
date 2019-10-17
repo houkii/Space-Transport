@@ -30,7 +30,7 @@ MonoBehaviour:
     RotationSpeed: 3
     CentralObject: {fileID: 0}
     Center: {x: 0, y: 0, z: 0}
-    Period: 999
+    Period: 240
     Satellites:
     - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
         type: 3}

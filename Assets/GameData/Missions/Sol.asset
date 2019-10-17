@@ -24,7 +24,7 @@ MonoBehaviour:
       type: 3}
     Position: {x: 387, y: 0, z: 0}
     Mass: 500
-    Scale: 125
+    Scale: 135
     ID: 1
     rotationAngles: {x: 0, y: 0, z: 0}
     RotationSpeed: 10
@@ -60,7 +60,7 @@ MonoBehaviour:
       type: 3}
     Position: {x: 1524, y: 0, z: 0}
     Mass: 550
-    Scale: 125
+    Scale: 135
     ID: 4
     rotationAngles: {x: 0, y: 0, z: 0}
     RotationSpeed: 15

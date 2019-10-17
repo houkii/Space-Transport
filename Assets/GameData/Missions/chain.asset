@@ -21,7 +21,7 @@ MonoBehaviour:
     Planets:
     - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
         type: 3}
-      Position: {x: 1350, y: 0, z: 0}
+      Position: {x: 1250, y: 0, z: 0}
       Mass: 650
       Scale: 175
       ID: 1
@@ -33,27 +33,27 @@ MonoBehaviour:
       Satellites:
       - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
           type: 3}
-        Position: {x: 700, y: 0, z: 0}
+        Position: {x: 650, y: 0, z: 0}
         Mass: 600
-        Scale: 140
+        Scale: 150
         ID: 2
         rotationAngles: {x: 0, y: 0, z: -90}
         RotationSpeed: 5
         CentralObject: {fileID: 0}
         Center: {x: 0, y: 0, z: 0}
-        Period: 25
+        Period: 30
         Satellites:
         - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
             type: 3}
-          Position: {x: 350, y: 0, z: 0}
+          Position: {x: 300, y: 0, z: 0}
           Mass: 550
-          Scale: 125
+          Scale: 140
           ID: 3
           rotationAngles: {x: 0, y: 0, z: 90}
           RotationSpeed: -40
           CentralObject: {fileID: 0}
           Center: {x: 0, y: 0, z: 0}
-          Period: 12
+          Period: 16
           Satellites: []
   Planets: []
   NpcsToSpawn:

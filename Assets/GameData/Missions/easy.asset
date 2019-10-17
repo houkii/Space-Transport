@@ -56,3 +56,19 @@ MonoBehaviour:
     DestinationPlanet: 1
     SpawnDelay: 3
   BoundsSize: 1500
+  tutorial:
+    lessons:
+    - title: Navigation
+      info: '- Steer using <#E4B8B8>joystick</color>@@- Use <#E4B8B8>Move</color>
+        button to start engine@@- Use <#E4B8B8>View</color> Button to see your position
+        from distance@@- <#E4B8B8>Minimap</color> is Your friend!'
+    - title: Indicators
+      info: '- <color=red>Red</color> arrow indicates your velocity@@- <color=green>Green</color>
+        arrow shows where''s Your target@@- Wach out for Your <color=yellow>fuel</color>
+        level!@@- Use them constantly in order to navigate properly'
+    - title: Landing
+      info: '- You can land only on platforms@@- Do it slowly. Space travel ain''t
+        easy, right?'
+    - title: Passengers
+      info: '- You gather them from one planet and transport to another... Just like
+        a space taxi cab@@- Watch out for their oxygen level!@@Good Luck'

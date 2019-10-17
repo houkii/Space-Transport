@@ -20,7 +20,7 @@ MonoBehaviour:
       type: 3}
     Planets: []
   Planets:
-  - Prefab: {fileID: 8017094335169556457, guid: b64f719baed5b504baaca2e870fd92dd,
+  - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
       type: 3}
     Position: {x: 500, y: 0, z: 0}
     Mass: 500
@@ -32,7 +32,7 @@ MonoBehaviour:
     Center: {x: 0, y: 0, z: 0}
     Period: 25
     Satellites: []
-  - Prefab: {fileID: 8017094335169556457, guid: b64f719baed5b504baaca2e870fd92dd,
+  - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
       type: 3}
     Position: {x: 800, y: 0, z: 0}
     Mass: 550
@@ -44,7 +44,7 @@ MonoBehaviour:
     Center: {x: 0, y: 0, z: 0}
     Period: 35
     Satellites: []
-  - Prefab: {fileID: 8017094335169556457, guid: b64f719baed5b504baaca2e870fd92dd,
+  - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
       type: 3}
     Position: {x: 1200, y: 0, z: 0}
     Mass: 500
@@ -97,3 +97,9 @@ MonoBehaviour:
     DestinationPlanet: 3
     SpawnDelay: 3
   BoundsSize: 2000
+  tutorial:
+    lessons:
+    - title: 
+      info: 
+    - title: 
+      info: 

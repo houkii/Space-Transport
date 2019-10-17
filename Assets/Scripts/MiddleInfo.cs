@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class MiddleInfo : MonoBehaviour
         fadedColor = new Color(defaultColor.r, defaultColor.g, defaultColor.b, 0);
     }
 
-    public void Show(string info)
+    public void Show(string info, Action onShown = null)
     {
         colSeq.Kill();
         gameObject.SetActive(true);
@@ -26,6 +27,10 @@ public class MiddleInfo : MonoBehaviour
         colSeq.Append(message.DOColor(defaultColor, .45f))
             .AppendInterval(1.5f)
             .Append(message.DOColor(fadedColor, .45f))
-            .AppendCallback(() => gameObject.SetActive(false));
+            .AppendCallback(() =>
+            {
+                onShown?.Invoke();
+                gameObject.SetActive(false);
+            });
     }
 }

@@ -66,6 +66,9 @@ public class PlanetController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameController.Instance.MissionController.CurrentMission.tutorial.Complete == false)
+            return;
+
         transform.Rotate(transform.forward, Data.RotationSpeed * Time.fixedDeltaTime);
         OrbitalMove();
         positions.Add(transform.position);

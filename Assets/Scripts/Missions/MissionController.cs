@@ -53,8 +53,13 @@ public class MissionController
         InitializePlanetarySystems(ref CurrentMission.PlanetarySystems);
         InitializePlanets(ref CurrentMission.Planets);
         InitializeNpcs();
-        DialogCanvasManager.Instance.midInfo.Show(CurrentMission.Name);
+        DialogCanvasManager.Instance.midInfo.Show(CurrentMission.Name, ShowStartInfo);
         OnMissionInitialized?.Invoke();
+    }
+
+    private void ShowStartInfo()
+    {
+        GameController.Instance.StartCoroutine(CurrentMission.tutorial.Show());
     }
 
     //private void InitializePlanets()
