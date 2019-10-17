@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,24 @@ public class Mission : ScriptableObject
     public List<TravellerInstance> NpcsToSpawn;
     public int BoundsSize;
     public Tutorial tutorial;
+
+    public void Initialize()
+    {
+        tutorial.OnTutorialCompleted += SaveToPrefs;
+        if (PlayerPrefs.HasKey(TutorialString))
+        {
+            var tutorialCompleteInt = PlayerPrefs.GetInt(TutorialString);
+            if (tutorialCompleteInt == 1)
+                tutorial.Complete = true;
+        }
+    }
+
+    private void SaveToPrefs()
+    {
+        PlayerPrefs.SetInt(Name + "Tutorial", 1);
+    }
+
+    private string TutorialString => Name + "Tutorial";
 }
 
 [System.Serializable]
@@ -19,12 +38,17 @@ public class Tutorial
 {
     [SerializeField] private List<Lesson> lessons;
     public bool HasLessons => lessons.Count > 0;
-    public bool Complete { get; private set; }
+    public bool Complete { get; set; }
+
+    public Action OnTutorialCompleted;
 
     private bool currentLessonViewed = false;
 
     public IEnumerator Show()
     {
+        if (Complete)
+            yield break;
+
         Complete = false;
         for (int i = 0; i < lessons.Count; ++i)
         {
@@ -34,6 +58,7 @@ public class Tutorial
             yield return new WaitUntil(() => DialogCanvasManager.Instance.Info.gameObject.activeSelf == false);
         }
         Complete = true;
+        OnTutorialCompleted?.Invoke();
         yield break;
     }
 

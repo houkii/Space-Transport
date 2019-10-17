@@ -49,6 +49,7 @@ public class MissionController
         MissionPlanets = new Dictionary<string, PlanetController>();
         CurrentMission = GameObject.Instantiate(AvailableMissions[CurrentMissionID]);
         CurrentMission.Name = AvailableMissions[CurrentMissionID].name;
+        CurrentMission.Initialize();
         PlayerController.Instance.transform.position = CurrentMission.PlayerPosition;
         InitializePlanetarySystems(ref CurrentMission.PlanetarySystems);
         InitializePlanets(ref CurrentMission.Planets);
