@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using DG.Tweening;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class MenuGameTitle : MovableCanvasElement
 {
@@ -22,14 +20,14 @@ public class MenuGameTitle : MovableCanvasElement
     private Sequence GetTitleSequence()
     {
         Sequence titleSequence = DOTween.Sequence();
-        titleSequence.Append(top.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 2f).SetEase(Ease.OutElastic))
-                    .Join(bottom.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 2f).SetEase(Ease.OutElastic))
-                    .AppendCallback(() => mainMenu.Show())
-                    .Join(DOTween.To(() => titleGroup.cellSize, 
-                                    x => titleGroup.cellSize = x, 
-                                    defaultCellSize, 15f)
-                                    .SetEase(Ease.InOutSine)
-                                    .SetLoops(System.Int32.MaxValue, LoopType.Yoyo));
+        titleSequence.Append(top.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 4f).SetEase(Ease.OutElastic))
+                .Join(bottom.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 4f).SetEase(Ease.OutElastic))
+                .AppendCallback(() => mainMenu.Show())
+                .Join(DOTween.To(() => titleGroup.cellSize,
+                                x => titleGroup.cellSize = x,
+                                defaultCellSize, 15f)
+                                .SetEase(Ease.InOutSine)
+                                .SetLoops(int.MaxValue, LoopType.Yoyo));
 
         return titleSequence;
     }

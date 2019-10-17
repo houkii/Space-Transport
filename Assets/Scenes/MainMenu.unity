@@ -701,7 +701,7 @@ MonoBehaviour:
     PlanetMassSlider: {fileID: 2019943308}
   PlayerData:
     NumSkips: 0
-  DevModeEnabled: 1
+  DevModeEnabled: 0
   ColorPaletteDarkPink:
     paletteColors:
     - {r: 0.6901961, g: 0.2901961, b: 0.30588236, a: 1}

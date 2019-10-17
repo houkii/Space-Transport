@@ -18,6 +18,8 @@ public class GameController : Singleton<GameController>
     public ColorPalette ColorPaletteDarkPink;
     public ColorPalette ColorPaletteLightPink;
 
+    public int androidApiLevel { get; private set; }
+
     private void Start()
     {
         Rewards = new RewardFactory();
@@ -27,6 +29,12 @@ public class GameController : Singleton<GameController>
         Settings.Init();
         PlayerData.Init();
         StartCoroutine(ConnectToPlayfab());
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        androidApiLevel = int.Parse(SystemInfo.operatingSystem.Substring(SystemInfo.operatingSystem.IndexOf("-") + 1, 3));
+        Debug.LogError("Running on Android API: " + androidApiLevel);
+        Vibration.Initialize(androidApiLevel);
+#endif
     }
 
     private void Update()

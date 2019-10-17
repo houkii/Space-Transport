@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
 public class SceneController : Singleton<SceneController>
 {
@@ -24,7 +20,7 @@ public class SceneController : Singleton<SceneController>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if(scene.name == "PlayScene")
+        if (scene.name == "PlayScene")
         {
             GameController.Instance.InitializePlayScene();
         }
@@ -32,13 +28,11 @@ public class SceneController : Singleton<SceneController>
 
     public void LoadLevel()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadSceneAsync(1);
     }
 
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(0);
     }
-
-    
 }

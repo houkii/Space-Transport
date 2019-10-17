@@ -207,6 +207,7 @@ public class PlayerController : MonoBehaviour
         isDead = true;
         SoundManager.Instance.PlayExplosion();
         SoundManager.Instance.PlayMissionFailedTheme();
+        Vibration.Vibrate(50);
         gameObject.SetActive(false);
     }
 
@@ -240,6 +241,7 @@ public class PlayerController : MonoBehaviour
         PlaySceneCanvasController.Instance.ShowLandingInfo(landingData);
         playerEffects.ShowLandingFX(shipThruster.transform.position, transform.rotation);
         Audio2.PlayOneShot(Sounds.LandingSound);
+        Vibration.Vibrate(20);
         OnPlayerLanded?.Invoke(planet);
     }
 
@@ -434,6 +436,7 @@ public class PlayerController : MonoBehaviour
         entity.OnReachedDestination.AddListener(() =>
             AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
         Passengers.Add(entity);
+        Vibration.Vibrate(15);
         playerEffects.ShowTravellerEnterFX(shipThruster.transform.position, transform.rotation);
     }
 
