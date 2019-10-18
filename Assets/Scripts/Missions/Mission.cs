@@ -19,6 +19,9 @@ public class Mission : ScriptableObject
         tutorial.OnTutorialCompleted += SaveToPrefs;
         if (PlayerPrefs.HasKey(TutorialString))
         {
+            if (GameController.Instance.Settings.InfoActive)
+                return;
+
             var tutorialCompleteInt = PlayerPrefs.GetInt(TutorialString);
             if (tutorialCompleteInt == 1)
                 tutorial.Complete = true;

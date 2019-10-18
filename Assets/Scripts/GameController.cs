@@ -139,6 +139,8 @@ public class GameSettings
 
     public float ConnectionRetryTime = 5.0f;
 
+    public bool InfoActive = true;
+
     public Slider GSlider;
     public Slider DistanceSlider;
     public Slider DragSlider;
@@ -158,6 +160,16 @@ public class GameSettings
         DragSlider.onValueChanged.AddListener(delegate { PlayerController.Instance.GetComponent<Rigidbody>().drag = DragSlider.value; });
         PlayerMassSlider.onValueChanged.AddListener(delegate { PlayerController.Instance.GetComponent<Rigidbody>().mass = PlayerMassSlider.value; });
         PlanetMassSlider.onValueChanged.AddListener(delegate { PlanetMassScale = PlanetMassSlider.value; });
+
+        LoadSettings();
+    }
+
+    private void LoadSettings()
+    {
+        if (PlayerPrefs.HasKey("InfoActive"))
+        {
+            InfoActive = PlayerPrefs.GetInt("InfoActive") == 1 ? true : false;
+        }
     }
 }
 

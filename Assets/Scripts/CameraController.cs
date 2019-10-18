@@ -12,6 +12,7 @@ public class CameraController : Singleton<CameraController>
     [SerializeField] private float skyboxRotateSpeed = 1.5f;
 
     public UnityEvent OnStandardViewSet;
+    public Camera RadarCamera;
 
     private Camera camera;
     private Effects effects;
@@ -138,6 +139,26 @@ public class CameraController : Singleton<CameraController>
         else
         {
             ShowQuickDistantView();
+        }
+    }
+
+    public bool ToggleRadar()
+    {
+        if (RadarCamera.transform.parent == null)
+        {
+            RadarCamera.transform.SetParent(PlayerController.Instance.transform);
+            RadarCamera.transform.localPosition = new Vector3(0, 300, 0);
+            RadarCamera.transform.rotation = Quaternion.identity;
+            RadarCamera.orthographicSize = 1800;
+            return true;
+        }
+        else
+        {
+            RadarCamera.transform.SetParent(null);
+            RadarCamera.transform.position = new Vector3(0, 0, -1500);
+            RadarCamera.transform.rotation = Quaternion.identity;
+            RadarCamera.orthographicSize = 3500;
+            return false;
         }
     }
 }

@@ -9,6 +9,8 @@ public class PlayerStatistics
     public float TotalFuelUsed { get; private set; }
     public float MaxFuel { get; private set; }
 
+    private bool fuelExhausted = false;
+
     [SerializeField]
     private float fuel;
 
@@ -17,6 +19,9 @@ public class PlayerStatistics
         get { return fuel; }
         private set
         {
+            if (fuelExhausted)
+                return;
+
             if (value < fuel)
             {
                 TotalFuelUsed += (fuel - value);
@@ -33,6 +38,7 @@ public class PlayerStatistics
             {
                 OnOutOfFuel.Invoke();
                 DialogCanvasManager.Instance.midInfo.Show("Out Of Fuel!");
+                fuelExhausted = true;
             }
         }
     }
