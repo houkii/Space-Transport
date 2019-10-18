@@ -102,6 +102,16 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
+        ProximityCheck();
+    }
+
+    private void ProximityCheck()
+    {
+        if (transform.position.magnitude > GameController.Instance.MissionController.CurrentMission.BoundsSize * 1.1f)
+        {
+            if (DialogCanvasManager.Instance.midInfo.gameObject.activeSelf == false)
+                DialogCanvasManager.Instance.midInfo.Show("You're too far away!");
+        }
     }
 
     private void FixedUpdate()
@@ -134,10 +144,10 @@ public class PlayerController : MonoBehaviour
     {
         if (isLocked) return;
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            Move();
-        }
+        //if (Input.GetKey(KeyCode.Space))
+        //{
+        //    Move();
+        //}
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Rotate(-Vector3.up * 5);
@@ -150,12 +160,12 @@ public class PlayerController : MonoBehaviour
         {
             if (Stats.Fuel > 0)
             {
-                StartEngine();
+                StartMovement();
             }
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            StopEngine();
+            StopMovement();
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -369,11 +379,10 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (Stats.Fuel <= 0)
+        if (Stats.Fuel <= 0 && isMoving)
         {
-            StopEngine();
             OnFuelExhausted?.Invoke();
-            isMoving = false;
+            StopMovement();
             playerEffects.PlayLostFuelSequence();
             return;
         }
@@ -387,7 +396,6 @@ public class PlayerController : MonoBehaviour
 
     private void StartEngine()
     {
-        //propulsionEmission.enabled = true;
         shipModelController.CurrentState = ShipModelController.ShipModelState.Moving;
         shipThruster.SetActive(true);
         Audio.Stop();
@@ -399,7 +407,6 @@ public class PlayerController : MonoBehaviour
 
     private void StopEngine()
     {
-        //propulsionEmission.enabled = false;
         shipModelController.CurrentState = ShipModelController.ShipModelState.Idle;
         shipThruster.SetActive(false);
         Sounds.pitchTween.Kill();
@@ -428,7 +435,7 @@ public class PlayerController : MonoBehaviour
 
     public void StartMovement()
     {
-        if (!isMoving)
+        if (!isMoving && Stats.Fuel > 0)
         {
             StartEngine();
             isMoving = true;
