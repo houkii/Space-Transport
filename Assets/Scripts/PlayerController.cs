@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     public UnityAction<PlanetController> OnPlayerTookOff;
     public UnityEvent OnFuelExhausted;
 
-    public PlayerStatistics Stats = new PlayerStatistics(1000, 1200);
+    public PlayerStatistics Stats;
 
     private List<NPCEntity> Passengers = new List<NPCEntity>();
     private ShipModelController shipModelController;
@@ -278,7 +278,6 @@ public class PlayerController : MonoBehaviour
 
     private void LoadFuel()
     {
-        playerEffects.ShowFuelLoading(shipThruster.transform.position, transform.rotation);
         fuelLoading = StartCoroutine(FuelLoadingCR());
     }
 
@@ -292,6 +291,7 @@ public class PlayerController : MonoBehaviour
     {
         while (hasLanded)
         {
+            playerEffects.ShowFuelLoading(shipThruster.transform.position, transform.rotation);
             Stats.AddFuel(GameController.Instance.Settings.FuelLoading * Time.deltaTime);
             yield return null;
         }
@@ -338,9 +338,9 @@ public class PlayerController : MonoBehaviour
 
     private void ReleasePassengerToPlanet(NPCEntity entity, PlanetController planet)
     {
+        RemovePassenger(entity);
         Audio2.PlayOneShot(Sounds.DestinationReached);
         entity.ExitShip(planet);
-        RemovePassenger(entity);
     }
 
     private void ReleasePassengers(PlanetController planet, bool releaseAll = false)

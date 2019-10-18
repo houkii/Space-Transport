@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.072850384, g: 0.02756339, b: 0.039930977, a: 1}
+  m_IndirectSpecularColor: {r: 0.09884266, g: 0.041577816, b: 0.056101494, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5940,7 +5940,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Stats:
-    fuel: 1000
+    MaxFuel: 800
+    fuel: 800
     OnFuelFull:
       m_PersistentCalls:
         m_Calls: []

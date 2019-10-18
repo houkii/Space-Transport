@@ -7,7 +7,7 @@ public class PlayerStatistics
 {
     public int Score { get; private set; }
     public float TotalFuelUsed { get; private set; }
-    public float MaxFuel { get; private set; }
+    public float MaxFuel;
 
     private bool fuelExhausted = false;
 
@@ -29,7 +29,7 @@ public class PlayerStatistics
 
             fuel = fuel <= MaxFuel ? value : MaxFuel;
 
-            if (fuel == MaxFuel)
+            if (fuel >= MaxFuel)
             {
                 OnFuelFull?.Invoke();
             }

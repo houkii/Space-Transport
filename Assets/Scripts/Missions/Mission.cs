@@ -59,6 +59,8 @@ public class Tutorial
             ShowLesson(lessons[i]);
             yield return new WaitUntil(() => currentLessonViewed == true);
             yield return new WaitUntil(() => DialogCanvasManager.Instance.Info.gameObject.activeSelf == false);
+            if (GameController.Instance.Settings.InfoActive == false)
+                break;
         }
         Complete = true;
         OnTutorialCompleted?.Invoke();

@@ -90,7 +90,7 @@ public class Spawner : MonoBehaviour
 
         foreach (Mesh mesh in meshesToRender)
         {
-            Spawn(25, mesh, rMin, rMax, 50, 100, Vector2.zero);
+            Spawn(15, mesh, rMin, rMax, 50, 100, Vector2.zero);
         }
     }
 

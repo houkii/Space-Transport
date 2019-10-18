@@ -685,16 +685,16 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 2100000, guid: 9e4889790eafe864ca152dd03662e642, type: 2}
   - {fileID: 2100000, guid: ffc887aa6d3c5144db2fc747992243ae, type: 2}
-  - {fileID: 2100000, guid: ffc887aa6d3c5144db2fc747992243ae, type: 2}
-  - {fileID: 2100000, guid: be33f66cd7bf9ab4da24bfeac27b37d0, type: 2}
+  - {fileID: 2100000, guid: c406d826e55d1e340a72b834157feb6d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
