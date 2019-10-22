@@ -133,6 +133,7 @@ public class GameSettings
     public float PlanetMassScale = 1f;
     public float MaxFuel = 800;
     public float StartingFuel = 800;
+    public float MaxLandingAngle = 15f;
 
     public int MaxRewardForTotalFuelUsed = 1000000;
     public int MaxRewardForRemainingFuel = 1000;

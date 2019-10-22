@@ -456,6 +456,7 @@ namespace PlayFab
         QueryRateLimitExceeded = 1452,
         EntityAPIKeyCreationDisabledForEntity = 1453,
         ForbiddenByEntityPolicy = 1454,
+        UpdateInventoryRateLimitExceeded = 1455,
         StudioCreationRateLimited = 1456,
         StudioCreationInProgress = 1457,
         DuplicateStudioName = 1458,
@@ -482,6 +483,13 @@ namespace PlayFab
         VirtualCurrencyBetaRestoreError = 1479,
         VirtualCurrencyBetaSaveConflict = 1480,
         VirtualCurrencyBetaUpdateError = 1481,
+        InsightsManagementDatabaseNotFound = 1482,
+        InsightsManagementOperationNotFound = 1483,
+        InsightsManagementErrorPendingOperationExists = 1484,
+        InsightsManagementSetPerformanceLevelInvalidParameter = 1485,
+        InsightsManagementSetStorageRetentionInvalidParameter = 1486,
+        InsightsManagementGetStorageUsageInvalidParameter = 1487,
+        InsightsManagementGetOperationStatusInvalidParameter = 1488,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
@@ -544,6 +552,7 @@ namespace PlayFab
         ExperimentationExceededVariantNameLength = 7006,
         ExperimentationExceededMaxVariantLength = 7007,
         ExperimentInvalidId = 7008,
+        MaxActionDepthExceeded = 8000,
         SnapshotNotFound = 11000
     }
 

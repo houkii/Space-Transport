@@ -1505,7 +1505,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// Entity type. See https://api.playfab.com/docs/tutorials/entities/entitytypes
+        /// Entity type. See https://docs.microsoft.com/gaming/playfab/features/data/entities/available-built-in-entity-types
         /// </summary>
         public string Type;
     }
@@ -2064,6 +2064,7 @@ namespace PlayFab.AdminModels
         QueryRateLimitExceeded,
         EntityAPIKeyCreationDisabledForEntity,
         ForbiddenByEntityPolicy,
+        UpdateInventoryRateLimitExceeded,
         StudioCreationRateLimited,
         StudioCreationInProgress,
         DuplicateStudioName,
@@ -2090,6 +2091,13 @@ namespace PlayFab.AdminModels
         VirtualCurrencyBetaRestoreError,
         VirtualCurrencyBetaSaveConflict,
         VirtualCurrencyBetaUpdateError,
+        InsightsManagementDatabaseNotFound,
+        InsightsManagementOperationNotFound,
+        InsightsManagementErrorPendingOperationExists,
+        InsightsManagementSetPerformanceLevelInvalidParameter,
+        InsightsManagementSetStorageRetentionInvalidParameter,
+        InsightsManagementGetStorageUsageInvalidParameter,
+        InsightsManagementGetOperationStatusInvalidParameter,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2152,6 +2160,7 @@ namespace PlayFab.AdminModels
         ExperimentationExceededVariantNameLength,
         ExperimentationExceededMaxVariantLength,
         ExperimentInvalidId,
+        MaxActionDepthExceeded,
         SnapshotNotFound
     }
 
@@ -2347,7 +2356,8 @@ namespace PlayFab.AdminModels
     public class GetDataReportResult : PlayFabResultCommon
     {
         /// <summary>
-        /// The URL where the requested report can be downloaded.
+        /// The URL where the requested report can be downloaded. This can be any PlayFab generated reports. The full list of
+        /// reports can be found at: https://docs.microsoft.com/en-us/gaming/playfab/features/analytics/reports/quickstart.
         /// </summary>
         public string DownloadUrl;
     }
@@ -2855,7 +2865,7 @@ namespace PlayFab.AdminModels
     public class GetStoreItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// catalog version to store items from. Use default catalog version if null
+        /// Catalog version to store items from. Use default catalog version if null
         /// </summary>
         public string CatalogVersion;
         /// <summary>
@@ -3112,7 +3122,8 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string CharacterId;
         /// <summary>
-        /// A set of custom key-value pairs on the inventory item.
+        /// A set of custom key-value pairs on the instance of the inventory item, which is not to be confused with the catalog
+        /// item's custom data.
         /// </summary>
         public Dictionary<string,string> CustomData;
         /// <summary>
@@ -3311,7 +3322,8 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string CatalogVersion;
         /// <summary>
-        /// A set of custom key-value pairs on the inventory item.
+        /// A set of custom key-value pairs on the instance of the inventory item, which is not to be confused with the catalog
+        /// item's custom data.
         /// </summary>
         public Dictionary<string,string> CustomData;
         /// <summary>
@@ -3857,6 +3869,10 @@ namespace PlayFab.AdminModels
         /// Player account origination
         /// </summary>
         public LoginIdentityProvider? Origination;
+        /// <summary>
+        /// List of player variants for experimentation
+        /// </summary>
+        public List<string> PlayerExperimentVariants;
         /// <summary>
         /// PlayFab Player ID
         /// </summary>

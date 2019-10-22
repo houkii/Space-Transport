@@ -20,10 +20,6 @@ public class MissionInstanceUI : MonoBehaviour
         {
             PF_Bridge.OnPlayfabCallbackSuccess += HandleCallbackSuccess;
         }
-        else
-        {
-            SetPlayerScore();
-        }
     }
 
     private void OnDisable()

@@ -42,7 +42,7 @@ namespace PlayFab.ProfilesModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// Entity type. See https://api.playfab.com/docs/tutorials/entities/entitytypes
+        /// Entity type. See https://docs.microsoft.com/gaming/playfab/features/data/entities/available-built-in-entity-types
         /// </summary>
         public string Type;
     }
@@ -129,6 +129,10 @@ namespace PlayFab.ProfilesModels
         /// The chain of responsibility for this entity. Use Lineage.
         /// </summary>
         public string EntityChain;
+        /// <summary>
+        /// The experiment variants of this profile.
+        /// </summary>
+        public List<string> ExperimentVariants;
         /// <summary>
         /// The files on this profile.
         /// </summary>

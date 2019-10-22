@@ -19,7 +19,7 @@ MonoBehaviour:
     CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
       type: 3}
     Planets:
-    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+    - Prefab: {fileID: 8017094335169556457, guid: f11614c604c37954e95fc5d01f45f748,
         type: 3}
       Position: {x: 550, y: 0, z: 0}
       Mass: 500
@@ -31,7 +31,7 @@ MonoBehaviour:
       Center: {x: 0, y: 0, z: 0}
       Period: 30
       Satellites: []
-    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+    - Prefab: {fileID: 8017094335169556457, guid: f11614c604c37954e95fc5d01f45f748,
         type: 3}
       Position: {x: 0, y: 550, z: 0}
       Mass: 500
@@ -43,7 +43,7 @@ MonoBehaviour:
       Center: {x: 0, y: 0, z: 0}
       Period: 30
       Satellites: []
-    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+    - Prefab: {fileID: 8017094335169556457, guid: f11614c604c37954e95fc5d01f45f748,
         type: 3}
       Position: {x: -550, y: 0, z: 0}
       Mass: 500
@@ -55,7 +55,7 @@ MonoBehaviour:
       Center: {x: 0, y: 0, z: 0}
       Period: 30
       Satellites: []
-    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+    - Prefab: {fileID: 8017094335169556457, guid: f11614c604c37954e95fc5d01f45f748,
         type: 3}
       Position: {x: 0, y: -550, z: 0}
       Mass: 500
@@ -90,3 +90,5 @@ MonoBehaviour:
     DestinationPlanet: 1
     SpawnDelay: 0
   BoundsSize: 1500
+  tutorial:
+    lessons: []

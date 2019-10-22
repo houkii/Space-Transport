@@ -102,6 +102,40 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
+    public class BuildAliasDetailsResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The guid string alias Id of the alias to be created or updated.
+        /// </summary>
+        public string AliasId;
+        /// <summary>
+        /// The alias name.
+        /// </summary>
+        public string AliasName;
+        /// <summary>
+        /// Array of build selection criteria.
+        /// </summary>
+        public List<BuildSelectionCriterion> BuildSelectionCriteria;
+        /// <summary>
+        /// The page size on the response.
+        /// </summary>
+        public int PageSize;
+        /// <summary>
+        /// The skip token for the paged response.
+        /// </summary>
+        public string SkipToken;
+    }
+
+    [Serializable]
+    public class BuildAliasParams : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The guid string alias ID to use for the request.
+        /// </summary>
+        public string AliasId;
+    }
+
+    [Serializable]
     public class BuildRegion : PlayFabBaseModel
     {
         /// <summary>
@@ -142,6 +176,15 @@ namespace PlayFab.MultiplayerModels
         /// The number of standby multiplayer servers for the region.
         /// </summary>
         public int StandbyServers;
+    }
+
+    [Serializable]
+    public class BuildSelectionCriterion : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Dictionary of build ids and their respective weights for distribution of allocation requests.
+        /// </summary>
+        public Dictionary<string,uint> BuildWeightDistribution;
     }
 
     [Serializable]
@@ -311,6 +354,22 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Creates a multiplayer server build alias and returns the created alias.
+    /// </summary>
+    [Serializable]
+    public class CreateBuildAliasRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The alias name.
+        /// </summary>
+        public string AliasName;
+        /// <summary>
+        /// Array of build selection criteria.
+        /// </summary>
+        public List<BuildSelectionCriterion> BuildSelectionCriteria;
+    }
+
+    /// <summary>
     /// Creates a multiplayer server build with a custom container and returns information about the build creation request.
     /// </summary>
     [Serializable]
@@ -342,7 +401,7 @@ namespace PlayFab.MultiplayerModels
         public List<GameCertificateReferenceParams> GameCertificateReferences;
         /// <summary>
         /// Metadata to tag the build. The keys are case insensitive. The build metadata is made available to the server through
-        /// Game Server SDK (GSDK).
+        /// Game Server SDK (GSDK).Constraints: Maximum number of keys: 30, Maximum key length: 50, Maximum value length: 100
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
@@ -443,8 +502,12 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public List<GameCertificateReferenceParams> GameCertificateReferences;
         /// <summary>
+        /// The instrumentation configuration for the build.
+        /// </summary>
+        public InstrumentationConfiguration InstrumentationConfiguration;
+        /// <summary>
         /// Metadata to tag the build. The keys are case insensitive. The build metadata is made available to the server through
-        /// Game Server SDK (GSDK).
+        /// Game Server SDK (GSDK).Constraints: Maximum number of keys: 30, Maximum key length: 50, Maximum value length: 100
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
@@ -496,6 +559,10 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
+        /// <summary>
+        /// The instrumentation configuration for this build.
+        /// </summary>
+        public InstrumentationConfiguration InstrumentationConfiguration;
         /// <summary>
         /// The metadata of the build.
         /// </summary>
@@ -655,6 +722,18 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Deletes a multiplayer server build alias.
+    /// </summary>
+    [Serializable]
+    public class DeleteBuildAliasRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The guid string alias ID of the alias to perform the action on.
+        /// </summary>
+        public string AliasId;
+    }
+
+    /// <summary>
     /// Deletes a multiplayer server build.
     /// </summary>
     [Serializable]
@@ -738,7 +817,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// Entity type. See https://api.playfab.com/docs/tutorials/entities/entitytypes
+        /// Entity type. See https://docs.microsoft.com/gaming/playfab/features/data/entities/available-built-in-entity-types
         /// </summary>
         public string Type;
     }
@@ -801,6 +880,18 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Returns the details about a multiplayer server build alias.
+    /// </summary>
+    [Serializable]
+    public class GetBuildAliasRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The guid string alias ID of the alias to perform the action on.
+        /// </summary>
+        public string AliasId;
+    }
+
+    /// <summary>
     /// Returns the details about a multiplayer server build.
     /// </summary>
     [Serializable]
@@ -852,6 +943,10 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
+        /// <summary>
+        /// The instrumentation configuration of the build.
+        /// </summary>
+        public InstrumentationConfiguration InstrumentationConfiguration;
         /// <summary>
         /// Metadata of the build. The keys are case insensitive. The build metadata is made available to the server through Game
         /// Server SDK (GSDK).
@@ -1191,6 +1286,17 @@ namespace PlayFab.MultiplayerModels
         public TitleMultiplayerServersQuotas Quotas;
     }
 
+    [Serializable]
+    public class InstrumentationConfiguration : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The list of processes to be monitored on a VM for this build. Providing processes will turn on performance metrics
+        /// collection for this build. Process names should not include extensions. If the game server process is: GameServer.exe;
+        /// then, ProcessesToMonitor = [ GameServer ]
+        /// </summary>
+        public List<string> ProcessesToMonitor;
+    }
+
     /// <summary>
     /// Add the player to a matchmaking ticket and specify all of its matchmaking attributes. Players can join a ticket if and
     /// only if their EntityKeys are already listed in the ticket's Members list. The matchmaking service automatically starts
@@ -1250,6 +1356,15 @@ namespace PlayFab.MultiplayerModels
         /// The skip token for the paged response.
         /// </summary>
         public string SkipToken;
+    }
+
+    [Serializable]
+    public class ListBuildAliasesForTitleResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The list of build aliases for the title
+        /// </summary>
+        public List<BuildAliasDetailsResponse> BuildAliases;
     }
 
     /// <summary>
@@ -1469,6 +1584,31 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Returns a list of quality of service servers for a title.
+    /// </summary>
+    [Serializable]
+    public class ListQosServersForTitleRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
+    public class ListQosServersForTitleResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The page size on the response.
+        /// </summary>
+        public int PageSize;
+        /// <summary>
+        /// The list of QoS servers.
+        /// </summary>
+        public List<QosServer> QosServers;
+        /// <summary>
+        /// The skip token for the paged response.
+        /// </summary>
+        public string SkipToken;
+    }
+
+    /// <summary>
     /// Returns a list of quality of service servers.
     /// </summary>
     [Serializable]
@@ -1587,6 +1727,14 @@ namespace PlayFab.MultiplayerModels
         public string TeamId;
     }
 
+    /// <summary>
+    /// Returns a list of summarized details of all multiplayer server builds for a title.
+    /// </summary>
+    [Serializable]
+    public class MultiplayerEmptyRequest : PlayFabRequestCommon
+    {
+    }
+
     [Serializable]
     public class MultiplayerServerSummary : PlayFabBaseModel
     {
@@ -1662,6 +1810,10 @@ namespace PlayFab.MultiplayerModels
     [Serializable]
     public class RequestMultiplayerServerRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The identifiers of the build alias to use for the request.
+        /// </summary>
+        public BuildAliasParams BuildAliasParams;
         /// <summary>
         /// The guid string build ID of the multiplayer server to request.
         /// </summary>
@@ -1832,6 +1984,26 @@ namespace PlayFab.MultiplayerModels
         /// The core capacity for the various regions and VM Family
         /// </summary>
         public List<CoreCapacity> CoreCapacities;
+    }
+
+    /// <summary>
+    /// Creates a multiplayer server build alias and returns the created alias.
+    /// </summary>
+    [Serializable]
+    public class UpdateBuildAliasRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The guid string alias Id of the alias to be updated.
+        /// </summary>
+        public string AliasId;
+        /// <summary>
+        /// The alias name.
+        /// </summary>
+        public string AliasName;
+        /// <summary>
+        /// Array of build selection criteria.
+        /// </summary>
+        public List<BuildSelectionCriterion> BuildSelectionCriteria;
     }
 
     /// <summary>

@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            VFX.PlayTeleportEffect(transform);
+            GameController.Instance.MissionController.OnMissionCompleted?.Invoke();
         }
 
         //if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 80f)
@@ -212,7 +212,15 @@ public class PlayerController : MonoBehaviour
         if (colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
         {
             var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            GetLandingData(ref landingData, collision.contacts[0], currentPlanetHost);
+            //GetLandingData(ref landingData, collision.contacts[0], currentPlanetHost);
+            float angle;
+            GetLandingData(ref landingData, collision.gameObject.transform.forward, currentPlanetHost, out angle);
+            if (angle > GameController.Instance.Settings.MaxLandingAngle)
+            {
+                Kill();
+                return;
+            }
+
             Land(currentPlanetHost);
         }
         else if (!hasLanded && !isDead)
@@ -269,9 +277,16 @@ public class PlayerController : MonoBehaviour
         OnPlayerLanded?.Invoke(planet);
     }
 
-    private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
+    //private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
+    //{
+    //    var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
+    //    Debug.Log(angle);
+    //    landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude);
+    //}
+
+    private void GetLandingData(ref LandingRewardArgs landingData, Vector3 landingObjUpVector, PlanetController planet, out float angle)
     {
-        var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
+        angle = Mathf.Abs(90 - Vector3.Angle(landingObjUpVector, transform.right));
         Debug.Log(angle);
         landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude);
     }
