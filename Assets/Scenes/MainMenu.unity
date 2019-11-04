@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -657,15 +657,18 @@ MonoBehaviour:
     - {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5, type: 3}
     availableMissions:
     - {fileID: 11400000, guid: 8e95131f37a17354da3630655dbd118e, type: 2}
+    - {fileID: 11400000, guid: 5f1a84ae9919fe346a8d6626f4746a71, type: 2}
     - {fileID: 11400000, guid: 9a56b9127086d484c86e6abf9e0dff81, type: 2}
-    - {fileID: 11400000, guid: ef6fec8ac657e0342bec6d8c932f9b3d, type: 2}
+    - {fileID: 11400000, guid: 3987394000674cb47bce26646ebbbf9f, type: 2}
     - {fileID: 11400000, guid: 3357ab4fae43cb841a0b1b52c7ec6746, type: 2}
+    - {fileID: 11400000, guid: ef6fec8ac657e0342bec6d8c932f9b3d, type: 2}
     - {fileID: 11400000, guid: 3ae59d6a46f4c804899ec1a518ace4fd, type: 2}
+    - {fileID: 11400000, guid: 82c1e2ee89c763746aba19e1271684ca, type: 2}
     - {fileID: 11400000, guid: 5bc449d3c4e98ab4c906ebf635173d19, type: 2}
     - {fileID: 11400000, guid: b3fd0c33a0fb21a49a77c906050fec52, type: 2}
+    - {fileID: 11400000, guid: 1e28112632780ad4fbeef72fefb29fd7, type: 2}
     - {fileID: 11400000, guid: f2f187799825f244d973c3b1c1df2455, type: 2}
     - {fileID: 11400000, guid: cfa2625ff7eecfc418f39c432e8d4f80, type: 2}
-    - {fileID: 11400000, guid: 1e28112632780ad4fbeef72fefb29fd7, type: 2}
     - {fileID: 11400000, guid: fbb765cc5f23d834495d7b8928c3b902, type: 2}
     - {fileID: 11400000, guid: 05d6ea8003ab64543ae9d53dc5cf7bce, type: 2}
     - {fileID: 11400000, guid: 175ad5f135bed0a498c00b3232b785fc, type: 2}
@@ -753,7 +756,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193673226}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f9fb19cc640f1b4e9f42d05dea1cf37, type: 3}
   m_Name: 
@@ -2863,8 +2866,8 @@ GameObject:
   m_Component:
   - component: {fileID: 737695702}
   - component: {fileID: 737695705}
-  - component: {fileID: 737695704}
   - component: {fileID: 737695703}
+  - component: {fileID: 737695704}
   m_Layer: 5
   m_Name: Overlapping
   m_TagString: Untagged
@@ -2929,7 +2932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+  m_Color: {r: 0.3679245, g: 0.35230508, b: 0.35230508, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3734,7 +3737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1005362279
 RectTransform:
   m_ObjectHideFlags: 0

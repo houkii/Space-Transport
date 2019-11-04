@@ -29,7 +29,7 @@ MonoBehaviour:
       RotationSpeed: 10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 30
+      Period: 35
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: 009a632bb6a355e4680f16738b5f2f86,
         type: 3}
@@ -41,7 +41,7 @@ MonoBehaviour:
       RotationSpeed: -10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -30
+      Period: -35
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: 7d4c9b5bc6a85bc4eb841563338219ad,
         type: 3}
@@ -53,9 +53,9 @@ MonoBehaviour:
       RotationSpeed: 10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 40
+      Period: 48
       Satellites: []
-    - Prefab: {fileID: 8017094335169556457, guid: 6d2d61c059de8694c817381c43fea445,
+    - Prefab: {fileID: 8017094335169556457, guid: f11614c604c37954e95fc5d01f45f748,
         type: 3}
       Position: {x: 0, y: 1075, z: 0}
       Mass: 500
@@ -65,7 +65,7 @@ MonoBehaviour:
       RotationSpeed: -10
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -40
+      Period: -48
       Satellites: []
   Planets: []
   NpcsToSpawn:
@@ -82,11 +82,8 @@ MonoBehaviour:
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}
     HostPlanet: 2
-    DestinationPlanet: 1
-    SpawnDelay: 0
-  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
-      type: 3}
-    HostPlanet: 4
     DestinationPlanet: 3
     SpawnDelay: 0
   BoundsSize: 1500
+  tutorial:
+    lessons: []

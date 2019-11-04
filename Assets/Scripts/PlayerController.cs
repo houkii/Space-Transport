@@ -257,6 +257,7 @@ public class PlayerController : MonoBehaviour
 
     private void Land(PlanetController planet)
     {
+        StartCoroutine(LockInput());
         hasLanded = true;
         HostPlanet = planet;
         LoadFuel();
@@ -275,6 +276,13 @@ public class PlayerController : MonoBehaviour
         Audio2.PlayOneShot(Sounds.LandingSound);
         Vibration.Vibrate(20);
         OnPlayerLanded?.Invoke(planet);
+    }
+
+    private IEnumerator LockInput()
+    {
+        isLocked = true;
+        yield return new WaitForSeconds(.5f);
+        isLocked = false;
     }
 
     //private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)

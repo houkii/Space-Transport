@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 227f3720e46100743a9e95f49c5764ee, type: 3}
+  m_Name: duets
+  m_EditorClassIdentifier: 
+  Name: 
+  PlayerPosition: {x: 0, y: 450, z: 0}
+  PlanetarySystems:
+  - Origin: {x: 0, y: 0, z: 0}
+    CentralObjectPrefab: {fileID: 1075436430327620044, guid: 5c10d411c73a10442a37601b36b93e11,
+      type: 3}
+    Planets:
+    - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
+        type: 3}
+      Position: {x: 600, y: 0, z: 0}
+      Mass: 700
+      Scale: 165
+      ID: 1
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: 5
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 50
+      Satellites:
+      - Prefab: {fileID: 8017094335169556457, guid: f11614c604c37954e95fc5d01f45f748,
+          type: 3}
+        Position: {x: 300, y: 0, z: 0}
+        Mass: 550
+        Scale: 135
+        ID: 2
+        rotationAngles: {x: 0, y: 0, z: 0}
+        RotationSpeed: -3
+        CentralObject: {fileID: 0}
+        Center: {x: 0, y: 0, z: 0}
+        Period: 30
+        Satellites: []
+    - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
+        type: 3}
+      Position: {x: 600, y: 0, z: 0}
+      Mass: 700
+      Scale: 165
+      ID: 3
+      rotationAngles: {x: 0, y: 0, z: 0}
+      RotationSpeed: -5
+      CentralObject: {fileID: 0}
+      Center: {x: 0, y: 0, z: 0}
+      Period: 50
+      Satellites:
+      - Prefab: {fileID: 8017094335169556457, guid: f11614c604c37954e95fc5d01f45f748,
+          type: 3}
+        Position: {x: 300, y: 0, z: 0}
+        Mass: 550
+        Scale: 135
+        ID: 4
+        rotationAngles: {x: 0, y: 0, z: 0}
+        RotationSpeed: 3
+        CentralObject: {fileID: 0}
+        Center: {x: 0, y: 0, z: 0}
+        Period: 30
+        Satellites: []
+  Planets: []
+  NpcsToSpawn:
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 1
+    DestinationPlanet: 2
+    SpawnDelay: 3
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 2
+    DestinationPlanet: 4
+    SpawnDelay: 3
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 4
+    DestinationPlanet: 3
+    SpawnDelay: 3
+  - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
+      type: 3}
+    HostPlanet: 3
+    DestinationPlanet: 1
+    SpawnDelay: 3
+  BoundsSize: 1500
+  tutorial:
+    lessons: []

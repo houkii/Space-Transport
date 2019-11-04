@@ -71,22 +71,22 @@ MonoBehaviour:
   NpcsToSpawn:
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}
-    HostPlanet: 4
+    HostPlanet: 1
     DestinationPlanet: 2
     SpawnDelay: 0
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}
-    HostPlanet: 1
+    HostPlanet: 2
     DestinationPlanet: 3
     SpawnDelay: 0
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}
-    HostPlanet: 2
+    HostPlanet: 3
     DestinationPlanet: 4
     SpawnDelay: 0
   - TravelerPrefab: {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5,
       type: 3}
-    HostPlanet: 3
+    HostPlanet: 4
     DestinationPlanet: 1
     SpawnDelay: 0
   BoundsSize: 1500

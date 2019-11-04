@@ -109,6 +109,9 @@ public class NPCEntity : MonoBehaviour
         if (collision.gameObject.tag == "Planet" || collision.gameObject.tag == "Landable")
         {
             ResolveNPCRotation(collision.contacts[0].normal);
+
+            if (Animator.enabled == false)
+                OnCollisionEnter(collision);
         }
     }
 
