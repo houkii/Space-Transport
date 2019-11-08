@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7a91016adbf8c48a0e8f3cf3956e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedModifier: 90
+  speedModifier: 50
   OnGotAboard:
     m_PersistentCalls:
       m_Calls: []

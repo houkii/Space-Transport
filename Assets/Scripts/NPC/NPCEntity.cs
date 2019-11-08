@@ -88,6 +88,7 @@ public class NPCEntity : MonoBehaviour
         {
             if (HostPlanet == DestinationPlanet)
             {
+                speedModifier *= 1.3f;
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
                 //targetIndicator.DestroySelf();
             }
@@ -110,7 +111,7 @@ public class NPCEntity : MonoBehaviour
         {
             ResolveNPCRotation(collision.contacts[0].normal);
 
-            if (Animator.enabled == false)
+            if (!isAttached)
                 OnCollisionEnter(collision);
         }
     }
@@ -156,8 +157,8 @@ public class NPCEntity : MonoBehaviour
         Animator.SetTrigger("Run");
         while (true)
         {
-            yield return new WaitForFixedUpdate();
-            transform.position += transform.forward * speedModifier * Time.fixedDeltaTime;
+            //yield return new WaitForFixedUpdate();
+            transform.position += transform.forward * speedModifier * Time.deltaTime;
             yield return null;
         }
     }

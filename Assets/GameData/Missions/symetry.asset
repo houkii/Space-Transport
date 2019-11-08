@@ -29,7 +29,7 @@ MonoBehaviour:
       RotationSpeed: 2
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 90
+      Period: 180
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
         type: 3}
@@ -41,7 +41,7 @@ MonoBehaviour:
       RotationSpeed: 2
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 90
+      Period: 180
       Satellites: []
   Planets: []
   NpcsToSpawn:
