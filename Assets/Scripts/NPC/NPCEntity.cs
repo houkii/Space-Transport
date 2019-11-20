@@ -157,7 +157,7 @@ public class NPCEntity : MonoBehaviour
         Animator.SetTrigger("Run");
         while (true)
         {
-            //yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
             transform.position += transform.forward * speedModifier * Time.deltaTime;
             yield return null;
         }

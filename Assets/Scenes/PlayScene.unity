@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.09884266, g: 0.041577816, b: 0.056101494, a: 1}
+  m_IndirectSpecularColor: {r: 0.07179982, g: 0.026925389, b: 0.038699873, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6746,8 +6746,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 352122034}
   minCameraSize: 120
-  maxCameraSize: 600
-  defaultCameraPosition: {x: 0, y: 20, z: 2}
+  maxCameraSize: 700
+  defaultCameraPosition: {x: 0, y: 20, z: 2.5}
   maximumVerticalOffset: 15
   interpolationValue: 0.075
   skyboxRotateSpeed: 1.5

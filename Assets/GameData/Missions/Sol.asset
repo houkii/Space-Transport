@@ -89,4 +89,6 @@ MonoBehaviour:
     HostPlanet: 4
     DestinationPlanet: 3
     SpawnDelay: 0
-  BoundsSize: 1500
+  BoundsSize: 1700
+  tutorial:
+    lessons: []

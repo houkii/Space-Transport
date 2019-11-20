@@ -208,7 +208,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var colName = collision.contacts[0].thisCollider.name;
+        //var colName = collision.contacts[0].thisCollider.name;
+        var colName = collision.GetContact(0).thisCollider.name;
         if (colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
         {
             var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -7,6 +6,7 @@ public class Attractor : MonoBehaviour
 {
     //const float G = 667.4f;
     public Rigidbody rb;
+
     public bool isAffectedByPull = true;
     public bool isPulling = true;
     public List<Attractor> attractors = new List<Attractor>();
@@ -16,7 +16,7 @@ public class Attractor : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void Attract(Attractor objectToAttract)
+    private void Attract(Attractor objectToAttract)
     {
         Rigidbody rbToAttract = objectToAttract.rb;
         Vector3 direction = transform.position - rbToAttract.transform.position;
@@ -28,9 +28,9 @@ public class Attractor : MonoBehaviour
 
     private void FixedUpdate()
     {
-        foreach(Attractor attractor in attractors)
+        foreach (Attractor attractor in attractors)
         {
-            if(attractor != this)
+            if (attractor != this)
             {
                 Attract(attractor);
             }
@@ -39,7 +39,7 @@ public class Attractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!this.isPulling) return;
+        if (!isPulling) return;
 
         var attractor = other.gameObject.GetComponent<Attractor>();
         if (attractor != null && attractor.isAffectedByPull && !attractors.Contains(attractor))
@@ -50,7 +50,7 @@ public class Attractor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!this.isPulling) return;
+        if (!isPulling) return;
 
         var attractor = other.gameObject.GetComponent<Attractor>();
         //DetachAttractor(attractor);
@@ -65,7 +65,7 @@ public class Attractor : MonoBehaviour
     private void OnDestroy()
     {
         var allAttractors = FindObjectsOfType<Attractor>();
-        foreach(Attractor attractor in allAttractors)
+        foreach (Attractor attractor in allAttractors)
         {
             attractor.DetachAttractor(this);
         }

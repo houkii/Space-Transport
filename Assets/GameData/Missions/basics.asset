@@ -98,8 +98,4 @@ MonoBehaviour:
     SpawnDelay: 3
   BoundsSize: 2000
   tutorial:
-    lessons:
-    - title: 
-      info: 
-    - title: 
-      info: 
+    lessons: []

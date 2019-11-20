@@ -35,7 +35,7 @@ MonoBehaviour:
   ShowDebugLines: 0
   minScale: 1
   maxScale: 1
-  onScreenAlpha: 0.205
+  onScreenAlpha: 0.1
   offScreenAlpha: 0
   color: {r: 1, g: 1, b: 1, a: 0}
   hideable: 1
@@ -74,7 +74,7 @@ MonoBehaviour:
   ShowDebugLines: 0
   minScale: 1
   maxScale: 1
-  onScreenAlpha: 0.205
+  onScreenAlpha: 0.1
   offScreenAlpha: 0
   color: {r: 1, g: 1, b: 1, a: 0}
   hideable: 1
@@ -113,7 +113,7 @@ MonoBehaviour:
   ShowDebugLines: 0
   minScale: 1
   maxScale: 1
-  onScreenAlpha: 0.205
+  onScreenAlpha: 0.1
   offScreenAlpha: 0
   color: {r: 1, g: 1, b: 1, a: 0}
   hideable: 1
@@ -988,7 +988,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7817664553339815550}
   m_LocalRotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_LocalPosition: {x: 0, y: 0.463, z: 0}
+  m_LocalPosition: {x: 0, y: 0.455, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.05000002}
   m_Children:
   - {fileID: 2111143218731382068}
@@ -1109,7 +1109,7 @@ MonoBehaviour:
   ShowDebugLines: 0
   minScale: 1
   maxScale: 1
-  onScreenAlpha: 0.205
+  onScreenAlpha: 0.1
   offScreenAlpha: 0
   color: {r: 1, g: 1, b: 1, a: 0}
   hideable: 1
@@ -16600,7 +16600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.46
+      value: 0.457
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16739,7 +16739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.46
+      value: -0.455
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16882,7 +16882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.46
+      value: -0.457
       objectReference: {fileID: 0}
     - target: {fileID: 4176216229701232, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
       propertyPath: m_LocalPosition.z
