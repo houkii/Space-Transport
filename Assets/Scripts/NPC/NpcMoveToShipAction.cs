@@ -22,4 +22,13 @@ namespace NpcActions
             }
         }
     }
+
+    public class NpcNoneAction : Action
+    {
+        public override ActionType Type => ActionType.None;
+
+        public override void ProcessTriggerCollision(Collider other)
+        {
+        }
+    }
 }

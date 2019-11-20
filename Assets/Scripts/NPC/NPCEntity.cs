@@ -84,11 +84,11 @@ public class NPCEntity : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Animator.enabled = true;
-        if (collision.gameObject.tag == "Planet" && !isAttached)
+        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Planet")) && !isAttached)
         {
             if (HostPlanet == DestinationPlanet)
             {
-                speedModifier *= 1.3f;
+                speedModifier *= 1.2f;
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
                 //targetIndicator.DestroySelf();
             }
@@ -107,7 +107,7 @@ public class NPCEntity : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Planet" || collision.gameObject.tag == "Landable")
+        if (collision.gameObject.layer.Equals(LayerMask.NameToLayer("Planet")))
         {
             ResolveNPCRotation(collision.contacts[0].normal);
 
@@ -223,6 +223,7 @@ public class NPCEntity : MonoBehaviour
         Animator.enabled = false;
         OnGotAboard?.Invoke();
         isAttached = false;
+        CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.None);
 
         gameObject.SetActive(false);
         //HideNPC();
@@ -250,6 +251,12 @@ public class NPCEntity : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(MoveToCR(destination));
+    }
+
+    private void Update()
+    {
+        if (HostPlanet == DestinationPlanet && CurrentAction.Type != NpcActions.ActionType.MoveAway)
+            CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
     }
 
     #endregion public methods
