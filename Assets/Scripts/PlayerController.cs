@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private bool hasLanded = false;
     private bool isDead = false;
+    public bool IsDead => isDead;
     private bool joystickAvailable => !(transform.parent != null || (isLocked || hasLanded) || Joystick.Instance.Input.magnitude < .2f);
 
     public UnityEvent OnPlayerDied;

@@ -19,6 +19,8 @@ public class CameraController : Singleton<CameraController>
     private CircularBuffer angleBuffer = new CircularBuffer(50);
     private CircularBuffer sizeBuffer = new CircularBuffer(50);
 
+    private MinimapElement playerMinimapView;
+
     public float currentToMaxCameraSizeRation => camera.orthographicSize / maxCameraSize;
 
     public override void Awake()
@@ -30,6 +32,8 @@ public class CameraController : Singleton<CameraController>
         effects = GetComponent<Effects>();
         var playerPos = PlayerController.Instance.transform.position;
         transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
+
+        playerMinimapView = PlayerController.Instance.gameObject.transform.GetComponentInChildren<MinimapElement>();
     }
 
     private void OnEnable()
@@ -150,6 +154,8 @@ public class CameraController : Singleton<CameraController>
             RadarCamera.transform.localPosition = new Vector3(0, 300, 0);
             RadarCamera.transform.rotation = Quaternion.identity;
             RadarCamera.orthographicSize = 1800;
+            playerMinimapView.transform.parent.transform.localScale = GameController.Instance.Settings.PlayerScaleMiniMap1;
+
             return true;
         }
         else
@@ -158,6 +164,7 @@ public class CameraController : Singleton<CameraController>
             RadarCamera.transform.position = new Vector3(0, 0, -1500);
             RadarCamera.transform.rotation = Quaternion.identity;
             RadarCamera.orthographicSize = 3500;
+            playerMinimapView.transform.parent.transform.localScale = GameController.Instance.Settings.PlayerScaleMiniMap2;
             return false;
         }
     }

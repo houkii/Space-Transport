@@ -87,19 +87,26 @@ public class DeliveryRewardArgs : IRewardArgs
 {
     public float MaximumTime { get; set; }
     public float DeliveryTime { get; set; }
-    public float CurrentTime { get; private set; }
-    public float CurrentToMaxTimeRatio => CurrentTime / MaximumTime;
+    public float RemainingTime { get; private set; }
+
+    public float CurrentToMaxTimeRatio => RemainingTime / DeliveryTime;
 
     public DeliveryRewardArgs(float _maxTime, float _deliveryTime = 0)
     {
         MaximumTime = _maxTime;
         DeliveryTime = _deliveryTime;
-        CurrentTime = _maxTime;
+        RemainingTime = _deliveryTime;
     }
 
     public void Process()
     {
-        CurrentTime -= Time.deltaTime;
+        RemainingTime -= Time.deltaTime;
+
+        if (RemainingTime < 0 && !PlayerController.Instance.IsDead)
+        {
+            DialogCanvasManager.Instance.midInfo.Show("Out of oxygen. Traveller died.");
+            PlayerController.Instance.Kill();
+        }
     }
 }
 

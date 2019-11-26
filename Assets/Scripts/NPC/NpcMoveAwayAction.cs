@@ -16,6 +16,7 @@ namespace NpcActions
             //npc.ExitShip();
             npc.MoveTo(npc.HostPlanet.PlanetBack);
             npc.OnReachedDestination?.Invoke();
+            ChangeLayer();
         }
 
         public override void ProcessTriggerCollision(Collider other)
@@ -45,6 +46,12 @@ namespace NpcActions
         {
             npc.transform.DOScale(0, .75f).SetEase(Ease.InBack)
                 .OnComplete(() => GameObject.Destroy(npc.gameObject));
+        }
+
+        private void ChangeLayer()
+        {
+            foreach (Transform child in npc.transform)
+                child.gameObject.layer = LayerMask.NameToLayer("NonPlayer");
         }
     }
 }

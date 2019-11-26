@@ -28,7 +28,6 @@ public class PlanetController : MonoBehaviour
     public Vector3 CurrentVelocity => (positions[1] - positions[0]) / Time.fixedDeltaTime;
 
     private float angle = 0;
-    //private float initialAngle;
 
     private void Awake()
     {
@@ -58,9 +57,8 @@ public class PlanetController : MonoBehaviour
             miniMapIndex.text = Data.ID.ToString();
 
         if (Data.CentralObject != null)
-        {
             Data.Center = Data.CentralObject.position;
-        }
+
         return this;
     }
 
@@ -116,7 +114,7 @@ public class PlanetController : MonoBehaviour
     public Transform GetNearestPlantformTransform(Vector3 position)
     {
         Transform nearestPlatform = transform;
-        float currentLowestDistance = 9999;
+        float currentLowestDistance = float.MaxValue;
         foreach (var platform in LandingPlatforms)
         {
             var distanceToPlatform = Vector3.Distance(position, platform.transform.position);

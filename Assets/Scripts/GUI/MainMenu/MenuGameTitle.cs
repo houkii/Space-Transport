@@ -20,12 +20,12 @@ public class MenuGameTitle : MovableCanvasElement
     private Sequence GetTitleSequence()
     {
         Sequence titleSequence = DOTween.Sequence();
-        titleSequence.Append(top.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 4f).SetEase(Ease.OutElastic))
-                .Join(bottom.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 4f).SetEase(Ease.OutElastic))
+        titleSequence.Append(top.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 3.5f).SetEase(Ease.OutElastic))
+                .Join(bottom.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 3.5f).SetEase(Ease.OutElastic))
                 .AppendCallback(() => mainMenu.Show())
                 .Join(DOTween.To(() => titleGroup.cellSize,
                                 x => titleGroup.cellSize = x,
-                                defaultCellSize, 15f)
+                                defaultCellSize, 12f)
                                 .SetEase(Ease.InOutSine)
                                 .SetLoops(int.MaxValue, LoopType.Yoyo));
 

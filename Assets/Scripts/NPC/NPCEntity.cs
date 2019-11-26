@@ -218,7 +218,10 @@ public class NPCEntity : MonoBehaviour
         StopAllCoroutines();
         PlaySceneCanvasController.Instance.TravellersPanelController.AddEntry(this);
         PlayerController.Instance.AddPassenger(this);
-        DeliveryRewardData = new DeliveryRewardArgs(Time.time + 60);
+        DeliveryRewardData = new DeliveryRewardArgs(
+            Time.time + GameController.Instance.Settings.OxygenTimer,
+            GameController.Instance.Settings.OxygenTimer);
+
         HostPlanet.CurrentTraveller = null;
         Animator.enabled = false;
         OnGotAboard?.Invoke();
@@ -237,7 +240,7 @@ public class NPCEntity : MonoBehaviour
         transform.rotation = Quaternion.identity;
         transform.position = HostPlanet.Waypoints[UnityEngine.Random.Range(0, HostPlanet.Waypoints.Count)].position;
         gameObject.SetActive(true);
-        DeliveryRewardData.DeliveryTime = Time.time;
+        //DeliveryRewardData.DeliveryTime = Time.time;
         OnExitShip?.Invoke();
     }
 
@@ -256,7 +259,10 @@ public class NPCEntity : MonoBehaviour
     private void Update()
     {
         if (HostPlanet == DestinationPlanet && CurrentAction.Type != NpcActions.ActionType.MoveAway)
+        {
+            StopAllCoroutines();
             CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
+        }
     }
 
     #endregion public methods
