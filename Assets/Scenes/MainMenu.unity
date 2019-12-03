@@ -653,7 +653,6 @@ MonoBehaviour:
   MissionController:
     spawnRandomTravellers: 1
     availableTravellers:
-    - {fileID: 498348283861695024, guid: 45e7cc96b3fec9545a38d73dc3a53914, type: 3}
     - {fileID: 7062545991015748886, guid: 92378de64ded0ba419278b2b742294a5, type: 3}
     availableMissions:
     - {fileID: 11400000, guid: 8e95131f37a17354da3630655dbd118e, type: 2}

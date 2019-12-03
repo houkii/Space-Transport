@@ -30,7 +30,7 @@ namespace NpcActions
                         GameObject.Destroy(npc.View.gameObject);
                     DestroySequence();
                 }
-                else
+                else if (npc.MovementDestination != npc.HostPlanet.PlanetBack)
                 {
                     npc.MoveTo(npc.HostPlanet.PlanetBack);
                 }

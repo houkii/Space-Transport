@@ -29,6 +29,8 @@ public class NPCEntity : MonoBehaviour
         set { SetCurrentAction(value); }
     }
 
+    public Transform MovementDestination { get; private set; }
+
     public PlanetController DestinationPlanet { get; set; }
     public NpcEntityCanvas View { get; private set; }
 
@@ -88,7 +90,7 @@ public class NPCEntity : MonoBehaviour
         {
             if (HostPlanet == DestinationPlanet)
             {
-                speedModifier *= 1.2f;
+                //speedModifier *= 1.2f;
                 CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.MoveAway);
                 //targetIndicator.DestroySelf();
             }
@@ -150,7 +152,7 @@ public class NPCEntity : MonoBehaviour
     private IEnumerator MoveToCR(Transform destination)
     {
         Animator.ResetTrigger("Idle");
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         Animator.enabled = true;
         movementTarget = destination;
         Animator.ResetTrigger("Idle");
@@ -198,15 +200,23 @@ public class NPCEntity : MonoBehaviour
 
     private void HideNPC()
     {
+        SetColliders(false);
         transform.DOScale(0, .65f).SetEase(Ease.OutBack).OnComplete(() => gameObject.SetActive(false));
     }
 
     private void ShowNPC()
     {
-        if (!gameObject.activeSelf)
-            gameObject.SetActive(true);
-        transform.localScale = Vector3.zero;
-        transform.DOScale(defaultScale.x, .65f).SetEase(Ease.OutCirc);
+        SetColliders(true);
+        gameObject.SetActive(true);
+        transform.localScale = defaultScale;
+        //transform.DOScale(defaultScale.x, .65f).SetEase(Ease.OutCirc);
+    }
+
+    private void SetColliders(bool active)
+    {
+        GetComponent<Rigidbody>().isKinematic = !active;
+        foreach (var coll in transform.GetComponents<Collider>())
+            coll.enabled = active;
     }
 
     #endregion private methods
@@ -228,18 +238,19 @@ public class NPCEntity : MonoBehaviour
         isAttached = false;
         CurrentAction = NpcActions.ActionFactory.GetAction(NpcActions.ActionType.None);
 
-        gameObject.SetActive(false);
-        //HideNPC();
+        //gameObject.SetActive(false);
+        HideNPC();
     }
 
     public void ExitShip(PlanetController planet)
     {
         PlaySceneCanvasController.Instance.TravellersPanelController.RemoveEntryOfNpc(this);
         HostPlanet = planet;
-        //ShowNPC();
+        ShowNPC();
         transform.rotation = Quaternion.identity;
         transform.position = HostPlanet.Waypoints[UnityEngine.Random.Range(0, HostPlanet.Waypoints.Count)].position;
-        gameObject.SetActive(true);
+        //transform.position = HostPlanet.SpawnPosition.position;
+        //gameObject.SetActive(true);
         //DeliveryRewardData.DeliveryTime = Time.time;
         OnExitShip?.Invoke();
     }
@@ -253,6 +264,7 @@ public class NPCEntity : MonoBehaviour
     public void MoveTo(Transform destination)
     {
         StopAllCoroutines();
+        MovementDestination = destination;
         StartCoroutine(MoveToCR(destination));
     }
 
