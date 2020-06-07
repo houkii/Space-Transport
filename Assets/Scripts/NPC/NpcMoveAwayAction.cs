@@ -11,9 +11,6 @@ namespace NpcActions
         public override void Process(NPCEntity npc)
         {
             base.Process(npc);
-            Debug.Log("Moving Away...");
-            //npc.HostPlanet = npc.DestinationPlanet;
-            //npc.ExitShip();
             npc.MoveTo(npc.HostPlanet.PlanetBack);
             npc.OnReachedDestination?.Invoke();
             ChangeLayer();

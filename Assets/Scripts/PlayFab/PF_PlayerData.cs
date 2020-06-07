@@ -34,7 +34,6 @@ public class PF_PlayerData : MonoBehaviour
         PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(), (GetUserInventoryResult result) =>
         {
             Coins = result.VirtualCurrency["GM"];
-            //Debug.Log("USER COINS: " + Coins);
             foreach (ItemInstance item in result.Inventory)
             {
                 Inventory.Add(item);

@@ -46,7 +46,6 @@ public class RewardsView : Singleton<RewardsView>
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            //ShowReward(new DeliveryReward(typeof(DeliveryRewardArgs)));
             var newDelivery = new DeliveryReward(typeof(DeliveryRewardArgs));
         }
     }

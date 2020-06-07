@@ -53,7 +53,6 @@ public class Attractor : MonoBehaviour
         if (!isPulling) return;
 
         var attractor = other.gameObject.GetComponent<Attractor>();
-        //DetachAttractor(attractor);
     }
 
     private void DetachAttractor(Attractor attractor)

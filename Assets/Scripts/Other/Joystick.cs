@@ -3,11 +3,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-
-/// <summary>
-/// Virtual Joystick class.
-/// </summary>
-
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     public enum JoyType { Trigger, Continous };

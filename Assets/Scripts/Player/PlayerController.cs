@@ -9,15 +9,25 @@ using UnityEngine.Events;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
-    public float CurrentToMaximumVelocityMagnitudeRatio => (rigidbody.velocity.magnitude / maxVelocityMagnitude);
-    public float VelocityToDirectionAngle => Vector3.Angle(rigidbody.velocity.normalized, transform.forward);
-    public float VelocityToDirectionSignedAngle => Vector3.SignedAngle(transform.forward, rigidbody.velocity.normalized, transform.up);
+    public float averagedVelocityMagnitude;
+    public Vector3 averagedMovementVector;
     public PlanetController HostPlanet { get; private set; }
+    public Vector3 DefaultPlayerScale { get; private set; }
+    public UnityEvent OnPlayerDied;
+    public UnityAction<PlanetController> OnPlayerLanded;
+    public UnityAction<PlanetController> OnPlayerTookOff;
+    public UnityEvent OnFuelExhausted;
+    public PlayerStatistics Stats;
+    public UnityEvent OnNewPersonalHighScore = new UnityEvent();
+    public UnityEvent OnNewGlobalHighScore = new UnityEvent();
+    public PlanetController PreviousPlanetHost;
 
     [SerializeField] private float maxVelocityMagnitude = 30f;
     [SerializeField] private GameObject propulsionPS;
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private ShipThruster shipThruster;
+    [SerializeField] private PlayerEffects playerEffects;
+    [SerializeField] private ShipSounds Sounds;
 
     private ParticleSystem.EmissionModule propulsionEmission;
     private Rigidbody rigidbody;
@@ -28,31 +38,22 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private bool hasLanded = false;
     private bool isDead = false;
-    public bool IsDead => isDead;
-    private bool joystickAvailable => !(transform.parent != null || (isLocked || hasLanded) || Joystick.Instance.Input.magnitude < .2f);
-
-    public UnityEvent OnPlayerDied;
-    public UnityAction<PlanetController> OnPlayerLanded;
-    public UnityAction<PlanetController> OnPlayerTookOff;
-    public UnityEvent OnFuelExhausted;
-
-    public PlayerStatistics Stats;
-
     private List<NPCEntity> Passengers = new List<NPCEntity>();
     private ShipModelController shipModelController;
     private Coroutine fuelLoading;
-    //private Dictionary<NPCEntity, DeliveryRewardArgs> PassengerRewardDict = new Dictionary<NPCEntity, DeliveryRewardArgs>()
-
     private AudioSource Audio;
     private AudioSource Audio2;
+    private static readonly int averagedMovementVectorArraySize = 30;
+    private static Vector3[] emptyMovementVectorArray = new Vector3[averagedMovementVectorArraySize];
+    private CircularBuffer<Vector3> movementBuff = new CircularBuffer<Vector3>(averagedMovementVectorArraySize, emptyMovementVectorArray);
 
-    public Vector3 DefaultPlayerScale { get; private set; }
+    private bool joystickAvailable => !(transform.parent != null || (isLocked || hasLanded) || Joystick.Instance.Input.magnitude < .2f);
+    public float CurrentToMaximumVelocityMagnitudeRatio => (rigidbody.velocity.magnitude / maxVelocityMagnitude);
+    public float VelocityToDirectionAngle => Vector3.Angle(rigidbody.velocity.normalized, transform.forward);
+    public float VelocityToDirectionSignedAngle => Vector3.SignedAngle(transform.forward, rigidbody.velocity.normalized, transform.up);
+    public float DelayedForwardAngle => Vector3.SignedAngle(transform.forward, averagedMovementVector, transform.up);
+    public bool IsDead => isDead;
 
-    [SerializeField] private PlayerEffects playerEffects;
-    [SerializeField] private ShipSounds Sounds;
-
-    public UnityEvent OnNewPersonalHighScore = new UnityEvent();
-    public UnityEvent OnNewGlobalHighScore = new UnityEvent();
 
     private void Awake()
     {
@@ -84,10 +85,7 @@ public class PlayerController : MonoBehaviour
         });
 
         CameraController.Instance.OnStandardViewSet.AddListener(CorrectVelocity);
-
         Stats.OnFuelFull.AddListener(StopLoadingFuel);
-        //playerEffects.PlayIntroSequence();
-
         StartCoroutine(WaitForTutorialCompletion());
     }
 
@@ -106,6 +104,15 @@ public class PlayerController : MonoBehaviour
         ProximityCheck();
     }
 
+    private void FixedUpdate()
+    {
+        HandleJoystickInput();
+        ProcessMovementBuffer();
+
+        if (isMoving)
+            Move();
+    }
+
     private void ProximityCheck()
     {
         if (transform.position.magnitude > GameController.Instance.MissionController.CurrentMission.BoundsSize * 1.1f)
@@ -114,21 +121,6 @@ public class PlayerController : MonoBehaviour
                 DialogCanvasManager.Instance.midInfo.Show("You're too far away!");
         }
     }
-
-    private void FixedUpdate()
-    {
-        HandleJoystickInput();
-        ProcessMovementBuffer();
-        Debug.DrawLine(transform.position, transform.position + averagedMovementVector * 100, Color.red);
-        Debug.DrawLine(transform.position, transform.position + transform.forward);
-
-        if (isMoving)
-        {
-            Move();
-        }
-    }
-
-    #region private methods
 
     private IEnumerator MissionEndedCR()
     {
@@ -145,10 +137,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isLocked) return;
 
-        //if (Input.GetKey(KeyCode.Space))
-        //{
-        //    Move();
-        //}
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Rotate(-Vector3.up * 5);
@@ -183,14 +171,6 @@ public class PlayerController : MonoBehaviour
         {
             GameController.Instance.MissionController.OnMissionCompleted?.Invoke();
         }
-
-        //if(transform.parent != null && Vector3.Distance(transform.position, transform.parent.transform.position) > 80f)
-        //{
-        //    //rigidbody.velocity += transform.parent.GetComponent<Rigidbody>().velocity;
-        //    //rigidbody.angularVelocity += transform.parent.GetComponent<Rigidbody>().angularVelocity;
-        //    transform.SetParent(null);
-
-        //}
     }
 
     private void HandleJoystickInput()
@@ -209,12 +189,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //var colName = collision.contacts[0].thisCollider.name;
         var colName = collision.GetContact(0).thisCollider.name;
         if (colName == "PlayerLander" && collision.gameObject.tag == "Landable" && gameObject.activeSelf)
         {
             var currentPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
-            //GetLandingData(ref landingData, collision.contacts[0], currentPlanetHost);
             float angle;
             GetLandingData(ref landingData, collision.gameObject.transform.forward, currentPlanetHost, out angle);
             if (angle > GameController.Instance.Settings.MaxLandingAngle)
@@ -235,7 +213,6 @@ public class PlayerController : MonoBehaviour
     {
         playerEffects.ShowExplosion(transform.position, transform.rotation);
         Camera.main.transform.DOShakeRotation(.45f, 5f, 30).OnComplete(() => OnPlayerDied?.Invoke());
-
         var colliders = transform.GetComponents<Collider>();
         foreach (Collider coll in colliders) Destroy(coll);
         isDead = true;
@@ -245,13 +222,43 @@ public class PlayerController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public PlanetController PreviousPlanetHost;
+    public void StartMovement()
+    {
+        if (!isMoving && Stats.Fuel > 0)
+        {
+            StartEngine();
+            isMoving = true;
+        }
+    }
+
+    public void StopMovement()
+    {
+        if (isMoving)
+        {
+            StopEngine();
+            isMoving = false;
+        }
+    }
+
+    public void AddPassenger(NPCEntity entity)
+    {
+        Audio2.PlayOneShot(Sounds.GetOnBoard);
+        entity.OnReachedDestination.AddListener(() =>
+            AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
+        Passengers.Add(entity);
+        Vibration.Vibrate(15);
+        playerEffects.ShowTravellerEnterFX(shipThruster.transform.position, transform.rotation);
+    }
+
+    public void RemovePassenger(NPCEntity entity)
+    {
+        Passengers.Remove(entity);
+    }
 
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Landable")
         {
-            //var previousPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
             PreviousPlanetHost = collision.gameObject.GetComponentInParent<PlanetController>();
             TakeOff(PreviousPlanetHost);
         }
@@ -286,13 +293,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isLocked = false;
     }
-
-    //private void GetLandingData(ref LandingRewardArgs landingData, ContactPoint landingPoint, PlanetController planet)
-    //{
-    //    var angle = Mathf.Abs(90 - Vector3.Angle(landingPoint.normal, transform.right));
-    //    Debug.Log(angle);
-    //    landingData = new LandingRewardArgs(angle, rigidbody.velocity.magnitude);
-    //}
 
     private void GetLandingData(ref LandingRewardArgs landingData, Vector3 landingObjUpVector, PlanetController planet, out float angle)
     {
@@ -384,7 +384,6 @@ public class PlayerController : MonoBehaviour
             {
                 AddScore(Reward.RewardType.LandingReward, landingData);
                 AddScore(Reward.RewardType.FuelReward, new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel));
-                //PlaySceneCanvasController.Instance.ShowLandingInfo(this.landingData);
                 StartCoroutine(ReleasePassengersCR(leavers, planet));
             }
         }
@@ -454,53 +453,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    #endregion private methods
-
-    #region public methods
-
-    public void StartMovement()
-    {
-        if (!isMoving && Stats.Fuel > 0)
-        {
-            StartEngine();
-            isMoving = true;
-        }
-    }
-
-    public void StopMovement()
-    {
-        if (isMoving)
-        {
-            StopEngine();
-            isMoving = false;
-        }
-    }
-
-    public void AddPassenger(NPCEntity entity)
-    {
-        Audio2.PlayOneShot(Sounds.GetOnBoard);
-        entity.OnReachedDestination.AddListener(() =>
-            AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
-        Passengers.Add(entity);
-        Vibration.Vibrate(15);
-        playerEffects.ShowTravellerEnterFX(shipThruster.transform.position, transform.rotation);
-    }
-
-    public void RemovePassenger(NPCEntity entity)
-    {
-        Passengers.Remove(entity);
-    }
-
-    #endregion public methods
-
-    #region trashcoding
-
-    public float averagedVelocityMagnitude;
-    public Vector3 averagedMovementVector;
-    private static readonly int averagedMovementVectorArraySize = 30;
-    private static Vector3[] emptyMovementVectorArray = new Vector3[averagedMovementVectorArraySize];
-    private CircularBuffer<Vector3> movementBuff = new CircularBuffer<Vector3>(averagedMovementVectorArraySize, emptyMovementVectorArray);
-
     private void ProcessMovementBuffer()
     {
         movementBuff.PopBack();
@@ -528,175 +480,7 @@ public class PlayerController : MonoBehaviour
         }
         return (vectorSum / movementBuff.Capacity);
     }
-
-    public float DelayedForwardAngle => Vector3.SignedAngle(transform.forward, averagedMovementVector, transform.up);
-
-    #endregion trashcoding
 }
 
-[Serializable]
-public class ShipSounds
-{
-    public AudioClip StartEngine;
-    public AudioClip Running;
-    public AudioClip StopEngine;
-    public AudioClip LandingSound;
 
-    public AudioClip GetOnBoard;
-    public AudioClip DestinationReached;
 
-    public float engineStartPitch = 0.75f;
-    public float engineEndPitch = 1.1f;
-    public float tweenTime = 4f;
-
-    public float RandomPitch => UnityEngine.Random.Range(-.05f, .05f);
-
-    public Tween pitchTween;
-}
-
-public static class VFX
-{
-    public static void PlayTeleportEffect(Transform transform)
-    {
-        Rigidbody[] rbs = transform.GetComponentsInChildren<Rigidbody>();
-        Collider[] colls = transform.GetComponentsInChildren<Collider>();
-
-        foreach (var rb in rbs)
-        {
-            rb.isKinematic = true;
-        }
-
-        foreach (var coll in colls)
-        {
-            coll.enabled = false;
-        }
-
-        Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOScale(0, 1f).SetEase(Ease.OutSine));
-    }
-}
-
-[Serializable]
-public class PlayerEffects
-{
-    public GameObject LandingFX;
-    public GameObject FuelLoadingFX;
-    public GameObject TravellerEnterFX;
-    public GameObject ExplosionFX;
-    public GameObject BlackHoleFX;
-
-    private GameObject fuelLoadingFX;
-
-    public void ShowLandingFX(Vector3 position, Quaternion rotation)
-    {
-        var obj = GameObject.Instantiate(LandingFX, position, rotation);
-        obj.transform.SetParent(PlayerController.Instance.transform);
-        GameObject.Destroy(obj, 2.5f);
-    }
-
-    public void ShowTravellerEnterFX(Vector3 position, Quaternion rotation)
-    {
-        var obj = GameObject.Instantiate(TravellerEnterFX, position, rotation);
-        obj.transform.SetParent(PlayerController.Instance.transform);
-        GameObject.Destroy(obj, 1f);
-    }
-
-    public void ShowFuelLoading(Vector3 position, Quaternion rotation)
-    {
-        if (fuelLoadingFX == null)
-        {
-            fuelLoadingFX = GameObject.Instantiate(FuelLoadingFX, position, rotation);
-            fuelLoadingFX.transform.SetParent(PlayerController.Instance.transform);
-        }
-        else
-        {
-            fuelLoadingFX.SetActive(true);
-            fuelLoadingFX.transform.position = position;
-            fuelLoadingFX.transform.rotation = rotation;
-        }
-    }
-
-    public void HideFuelLoading()
-    {
-        fuelLoadingFX.SetActive(false);
-    }
-
-    public void ShowExplosion(Vector3 position, Quaternion rotation)
-    {
-        var obj = GameObject.Instantiate(ExplosionFX, position, rotation);
-        GameObject.Destroy(obj, 2.5f);
-    }
-
-    public void PlayIntroSequence()
-    {
-        var player = PlayerController.Instance.transform;
-        var defaultPlayerScale = PlayerController.Instance.DefaultPlayerScale;
-        var obj = GameObject.Instantiate(BlackHoleFX, player.position + new Vector3(0, 0, 75f), player.rotation);
-        obj.transform.localScale = Vector3.zero;
-        player.localScale = Vector3.zero;
-
-        Sequence BHSeq = DOTween.Sequence();
-        BHSeq.Append(obj.transform.DOScale(220, .75f).SetEase(Ease.OutBack))
-            .AppendInterval(.35f)
-            .Append(obj.transform.DOScale(0, .45f).SetEase(Ease.InBack))
-            .AppendCallback(() => GameObject.Destroy(obj));
-
-        Sequence playerSeq = DOTween.Sequence();
-        playerSeq.AppendInterval(1.2f)
-            .Append(player.DOScale(defaultPlayerScale.x, 1f).SetEase(Ease.OutElastic))
-            .Join(Camera.main.transform.DOShakeRotation(1f, 1.25f));
-    }
-
-    public void PlayOutroSequence()
-    {
-        var player = PlayerController.Instance.transform;
-
-        Rigidbody[] rbs = player.GetComponentsInChildren<Rigidbody>();
-        Collider[] colls = player.GetComponentsInChildren<Collider>();
-        var attractor = player.GetComponent<Attractor>();
-        attractor.isAffectedByPull = false;
-        attractor.isPulling = false;
-
-        foreach (var rb in rbs)
-        {
-            rb.isKinematic = true;
-        }
-
-        foreach (var coll in colls)
-        {
-            coll.enabled = false;
-        }
-
-        var scaler = player.transform.localScale.x * player.transform.parent.transform.localScale.x;
-        var obj = GameObject.Instantiate(BlackHoleFX, player.position + new Vector3(0, 0, 25f), player.rotation);
-
-        obj.transform.SetParent(player);
-        obj.transform.localScale = Vector3.zero;
-        CameraViews.ActiveView.Disable();
-        Camera.main.transform.SetParent(null);
-
-        Sequence BHSeq = DOTween.Sequence();
-        BHSeq.Append(obj.transform.DOScale(220 / scaler, 1f).SetEase(Ease.OutBack))
-            .AppendInterval(.35f)
-            .Append(obj.transform.DOScale(0, .45f).SetEase(Ease.InBack))
-            .AppendCallback(() => GameObject.Destroy(obj));
-
-        Sequence playerSeq = DOTween.Sequence();
-        playerSeq.AppendInterval(.6f)
-            //.AppendCallback(() =>
-            //{
-            //    CameraController.Instance.StopAllCoroutines();
-            //    CameraViews.ActiveView.Disable();
-            //})
-            .Append(player.DOScale(0, 1f).SetEase(Ease.InElastic))
-            .Join(Camera.main.transform.DOShakeRotation(1f, 1.25f));
-    }
-
-    public void PlayLostFuelSequence()
-    {
-        Sequence lostFuelSeq = DOTween.Sequence();
-        lostFuelSeq.Append(Camera.main.transform.DOShakeRotation(1.25f, 3))
-        .AppendInterval(1f)
-        .AppendCallback(() => PlayerController.Instance.Kill());
-    }
-}

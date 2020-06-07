@@ -25,7 +25,6 @@ public class Singleton<T> : MonoBehaviour where T : Component
 
     public virtual void Awake()
     {
-        //DontDestroyOnLoad(this.gameObject);
         if (instance == null)
             instance = this as T;
         else

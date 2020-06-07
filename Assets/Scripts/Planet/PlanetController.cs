@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class PlanetController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject TravellerPrefab;
-
-    [SerializeField]
-    private TextMeshPro miniMapIndex;
-
-    private PlanetInstance Data;
-    private TargetIndicator targetIndicator;
-
     public GameObject CurrentTraveller;
     public PlatformController[] LandingPlatforms;
     public Transform PlanetBack;
@@ -20,14 +11,19 @@ public class PlanetController : MonoBehaviour
     public Transform ReleaseSpot;
     public List<Transform> Waypoints;
 
+    [SerializeField]
+    private GameObject TravellerPrefab;
+    [SerializeField]
+    private TextMeshPro miniMapIndex;
+    private PlanetInstance Data;
+    private TargetIndicator targetIndicator;
     private Material planetMaterial;
-
     private Vector3 previousPos;
-
     private List<Vector3> positions = new List<Vector3> { Vector3.zero, Vector3.zero };
+    private float angle = 0;
+
     public Vector3 CurrentVelocity => (positions[1] - positions[0]) / Time.fixedDeltaTime;
 
-    private float angle = 0;
 
     private void Awake()
     {
@@ -43,6 +39,22 @@ public class PlanetController : MonoBehaviour
         angle = Vector3.SignedAngle(Vector3.right, transform.position.normalized, Vector3.forward) * Mathf.Deg2Rad;
         GetComponent<Rigidbody>().mass *= GameController.Instance.Settings.PlanetMassScale;
         angle = GetInitialAngle();
+    }
+
+    public Transform GetNearestPlantformTransform(Vector3 position)
+    {
+        Transform nearestPlatform = transform;
+        float currentLowestDistance = float.MaxValue;
+        foreach (var platform in LandingPlatforms)
+        {
+            var distanceToPlatform = Vector3.Distance(position, platform.transform.position);
+            if (distanceToPlatform < currentLowestDistance)
+            {
+                currentLowestDistance = distanceToPlatform;
+                nearestPlatform = platform.transform;
+            }
+        }
+        return nearestPlatform;
     }
 
     public PlanetController Initialize(PlanetInstance data)
@@ -110,27 +122,6 @@ public class PlanetController : MonoBehaviour
         planetMaterial.SetVector("_BaseColor", new Vector4(color.r, color.g, color.b, color.a));
         renderer.sharedMaterials = new Material[] { planetMaterial };
     }
-
-    public Transform GetNearestPlantformTransform(Vector3 position)
-    {
-        Transform nearestPlatform = transform;
-        float currentLowestDistance = float.MaxValue;
-        foreach (var platform in LandingPlatforms)
-        {
-            var distanceToPlatform = Vector3.Distance(position, platform.transform.position);
-            if (distanceToPlatform < currentLowestDistance)
-            {
-                currentLowestDistance = distanceToPlatform;
-                nearestPlatform = platform.transform;
-            }
-        }
-        return nearestPlatform;
-    }
-
-    //private void LateUpdate()
-    //{
-    //    miniMapIndex.transform.rotation = Quaternion.identity;
-    //}
 }
 
 public static class PlanetColors

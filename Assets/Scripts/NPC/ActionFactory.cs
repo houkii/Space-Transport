@@ -16,10 +16,8 @@ namespace NpcActions
             var ActionTypes = Assembly.GetAssembly(typeof(NpcActions.Action)).GetTypes().
                 Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(NpcActions.Action)));
 
-            // Dictinary for finding action types
             ActionsDictionary = new Dictionary<ActionType, Type>();
 
-            // Get ActionTypes and put them into the dictionary
             foreach (var type in ActionTypes)
             {
                 var tempAction = Activator.CreateInstance(type) as Action;

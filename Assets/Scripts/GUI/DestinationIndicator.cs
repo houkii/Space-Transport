@@ -24,7 +24,6 @@ public class DestinationIndicator : MonoBehaviour
             var destinationVector = Destination.position;
 
             float distance = Vector3.Distance(PlayerController.Instance.transform.position, Destination.position);
-            //Debug.LogError(distance);
             if (distance <= (200f + 100 * CameraController.Instance.currentToMaxCameraSizeRation))
             {
                 var landingPlatform = Destination.GetComponent<PlanetController>().GetNearestPlantformTransform(PlayerController.Instance.transform.position);
@@ -54,14 +53,7 @@ public class DestinationIndicator : MonoBehaviour
 
     private void HandleRoute(NPCEntity entity)
     {
-        //gameObject.SetActive(true);
         Destination = entity.HostPlanet.transform;
         entity.OnGotAboard.AddListener(() => Destination = entity.DestinationPlanet.transform);
-        //entity.OnExitShip += () => gameObject.SetActive(false);
     }
-
-    //private void OnDestroy()
-    //{
-    //    GameController.Instance.MissionController.OnEntitySpawned -= HandleRoute;
-    //}
 }

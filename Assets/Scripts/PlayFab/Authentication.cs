@@ -38,7 +38,7 @@ public static class Authentication
         {
             Debug.LogError(error.ErrorMessage);
             LogMessage(error.ErrorMessage);
-            if (error.ErrorMessage == "User not found") //acc not found
+            if (error.ErrorMessage == "User not found")
             {
                 CreateAccount(userName, password);
             }
@@ -71,7 +71,7 @@ public static class Authentication
         PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest()
         {
             CreateAccount = true,
-            CustomId = PlayFabSettings.DeviceUniqueIdentifier// + UnityEngine.Random.Range(0, 9999).ToString()
+            CustomId = PlayFabSettings.DeviceUniqueIdentifier
         }, OnPlayfabSuccess, OnPlayFabError);
     }
 

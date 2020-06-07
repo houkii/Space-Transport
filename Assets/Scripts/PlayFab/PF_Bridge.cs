@@ -1,13 +1,8 @@
 ﻿public static class PF_Bridge
 {
-    // signature & callback for rasing errors, the enum can be useful for tracking what API call threw the error.
     public delegate void PlayFabErrorHandler(string details, PlayFabAPIMethods method, MessageDisplayStyle displayStyle);
-
     public static event PlayFabErrorHandler OnPlayFabCallbackError;
-
-    // called after a successful API callback (useful for stopping the spinner)
     public delegate void CallbackSuccess(string details, PlayFabAPIMethods method, MessageDisplayStyle displayStyle);
-
     public static event CallbackSuccess OnPlayfabCallbackSuccess;
 
     public static void RaiseCallbackSuccess(string details, PlayFabAPIMethods method, MessageDisplayStyle style)

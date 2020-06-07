@@ -76,7 +76,6 @@ public class PlatformController : MonoBehaviour
             if (planet == parentPlanetController)
             {
                 baseColor = Color.yellow;
-                //this.MoveDown();
             }
         };
 
@@ -85,7 +84,6 @@ public class PlatformController : MonoBehaviour
             if (planet == parentPlanetController)
             {
                 baseColor = Color.green;
-                //this.MoveUp();
             }
         };
     }

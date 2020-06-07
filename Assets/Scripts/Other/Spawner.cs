@@ -18,7 +18,6 @@ public class Spawner : MonoBehaviour
 
     public void Awake()
     {
-        //base.Awake();
         DontDestroyOnLoad(gameObject);
         PrepareMeshes();
     }
@@ -45,21 +44,6 @@ public class Spawner : MonoBehaviour
             }
 
             SpawnAsteroidBounds(GameController.Instance.MissionController.CurrentMission.BoundsSize);
-
-            //foreach (Mesh mesh in meshesToRender)
-            //{
-            //    Spawn(65, mesh, 1000, 1300, -15, 45);
-            //}
-
-            //foreach (Mesh mesh in meshesToRender)
-            //{
-            //    Spawn(3, mesh, 200, 1200, 100, 200);
-            //}
-
-            //foreach (Mesh mesh in meshesToRender)
-            //{
-            //    Spawn(3, mesh, 200, 1200, 100, 200);
-            //}
         }
         else if (scene.name == "MainMenu")
         {
@@ -235,10 +219,6 @@ public class MoveSystem : ComponentSystem
     {
         Entities.ForEach((ref Translation translation, ref Rotation rotation, ref MoveComponent moveData) =>
         {
-            //var entityPos = new Vector2(translation.Value.x, translation.Value.y);
-            //var newPosXY = Utils.GetRotatedPosition(entityPos, translation.Value.z / 50 * Time.deltaTime);
-            //translation.Value = new Unity.Mathematics.float3(newPosXY.x + moveData.origin.x, newPosXY.y + moveData.origin.y, translation.Value.z);
-
             var entityPos = new Vector2(moveData.current.x, moveData.current.y);
             var newPosXY = Utils.GetRotatedPosition(entityPos, translation.Value.z / 50 * Time.deltaTime);
             moveData.current = new Unity.Mathematics.float2(newPosXY.x, newPosXY.y);
@@ -247,7 +227,7 @@ public class MoveSystem : ComponentSystem
             rotation.Value = Unity.Mathematics.quaternion.Euler(
                 moveData.rotationSpeeds.x * Time.unscaledTime,
                 moveData.rotationSpeeds.y * Time.unscaledTime,
-                0//moveData.rotationSpeeds.z * Time.unscaledTime
+                0
             );
         });
     }

@@ -7,25 +7,22 @@ using UnityEngine.Events;
 [Serializable]
 public class MissionController
 {
-    [SerializeField] private bool spawnRandomTravellers = true;
-    [SerializeField] private List<GameObject> availableTravellers;
-
-    [SerializeField]
-    private List<Mission> availableMissions;
-
     public List<Mission> AvailableMissions { get { return availableMissions; } }
-    private Queue<TravellerInstance> NpcsToSpawn = new Queue<TravellerInstance>();
-
     public Mission CurrentMission { get; private set; }
     public Dictionary<string, PlanetController> MissionPlanets { get; private set; }
-    public int CurrentMissionID { get; private set; }
     public UnityAction<NPCEntity> OnEntitySpawned { get; set; }
+    public int CurrentMissionID { get; private set; }
+    public int TotalNpcs { get; private set; }
+    public bool MissionCompleted => NpcsLeft == 0;
     public UnityEvent OnMissionCompleted = new UnityEvent();
     public UnityEvent OnMissionInitialized = new UnityEvent();
-    public bool MissionCompleted => NpcsLeft == 0;
 
-    public int TotalNpcs { get; private set; }
+    [SerializeField] private bool spawnRandomTravellers = true;
+    [SerializeField] private List<GameObject> availableTravellers;
+    [SerializeField] private List<Mission> availableMissions;
     private int npcsLeft;
+    private Queue<TravellerInstance> NpcsToSpawn = new Queue<TravellerInstance>();
+
 
     public int NpcsLeft
     {
@@ -63,24 +60,12 @@ public class MissionController
         GameController.Instance.StartCoroutine(CurrentMission.tutorial.Show());
     }
 
-    //private void InitializePlanets()
-    //{
-    //    foreach(PlanetInstance planetData in CurrentMission.Planets)
-    //    {
-    //        var planetObject = GameObject.Instantiate(planetData.Prefab, planetData.Position, planetData.Rotation);
-    //        planetObject.name = String.Format("Planet {0}", planetData.ID);
-    //        var planetController = planetObject.GetComponent<PlanetController>().Initialize(planetData);
-    //        MissionPlanets.Add(planetController);
-    //    }
-    //}
-
     private void InitializePlanetarySystems(ref List<PlanetarySystemInstance> systems)
     {
         foreach (PlanetarySystemInstance system in systems)
         {
             var centralObject = GameObject.Instantiate(system.CentralObjectPrefab, system.Origin, Quaternion.identity);
             InitializePlanets(ref system.Planets, centralObject.transform);
-            //Spawner.Instance.SpawnAsteroids(system.Origin);
         }
     }
 
@@ -96,8 +81,6 @@ public class MissionController
             }
 
             var planetObject = GameObject.Instantiate(planetData.Prefab, planetData.Position, planetData.Rotation);
-            //planetObject.name = String.Format("Planet {0}", planetData.ID);
-
             planetObject.name = planetData.ID;
 
             var planetController = planetObject.GetComponent<PlanetController>().Initialize(planetData);

@@ -42,8 +42,6 @@ public abstract class Reward : IReward
 
     protected abstract int CalculateReward();
 
-    //protected abstract string GetName();
-
     public Reward(Type typeOfArgs)
     {
         argsType = typeOfArgs;
@@ -120,8 +118,6 @@ public class DeliveryReward : Reward
     {
         var data = Args as DeliveryRewardArgs;
         int score = (int)(data.CurrentToMaxTimeRatio * GameController.Instance.Settings.DeliveryRewardMultiplier);
-        //int score = (int)(data.MaximumTime - data.DeliveryTime);
-        //int score = (int)((float)(data.MaximumTime - data.DeliveryTime) / data.MaximumTime) * GameController.Instance.Settings.DeliveryRewardMultiplier;
         return score;
     }
 }
