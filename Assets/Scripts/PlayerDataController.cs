@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerData
+public class PlayerDataController
 {
     public enum MissionState { Unavailable = 0, Available = 1, Skipped = 2 }
     public Dictionary<string, MissionState> missionCompletes = new Dictionary<string, MissionState>();

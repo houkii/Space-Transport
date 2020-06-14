@@ -20,8 +20,6 @@ public class OvelappingCanvas : MovableCanvasElement
         textTween.Kill();
         this.message.color = new Color(this.message.color.r, this.message.color.g, this.message.color.b, 1);
         textTween = this.message.DOFade(.55f, .5f).SetEase(Ease.OutExpo).SetLoops(int.MaxValue, LoopType.Yoyo);
-        //if (onShown != null)
-        //    OnShown.AddListener(onShown);
         base.Show().OnComplete(() => onShown?.Invoke());
     }
 

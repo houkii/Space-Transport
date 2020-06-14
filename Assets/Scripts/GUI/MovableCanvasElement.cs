@@ -4,16 +4,15 @@ using UnityEngine.Events;
 
 public class MovableCanvasElement : MonoBehaviour
 {
+    public UnityEvent OnShown;
+
+    protected RectTransform RT;
     private Vector2 activePosition;
     [SerializeField] private Vector2 inactivePosition;
     [SerializeField] private float tweenTime = .75f;
     [SerializeField] private Ease showEase = Ease.OutBack;
     [SerializeField] private Ease hideEase = Ease.InBack;
     [SerializeField] private bool activeOnStart = true;
-
-    public UnityEvent OnShown;
-
-    protected RectTransform RT;
 
     protected virtual void Awake()
     {

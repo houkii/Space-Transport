@@ -39,8 +39,6 @@ public class SummaryPanelController : MonoBehaviour
             (GameController.Instance.MissionController.TotalNpcs - GameController.Instance.MissionController.NpcsLeft),
             GameController.Instance.MissionController.TotalNpcs);
 
-        //TotalFuelUsedText.text = string.Format("{0:0.#}", PlayerController.Instance.Stats.TotalFuelUsed);
-        //TotalPointsText.text = string.Format("{0}", PlayerController.Instance.Stats.Score);
         TotalFuelUsedText.Set(PlayerController.Instance.Stats.TotalFuelUsed, "{0:0.0}");
         TotalPointsText.Set(PlayerController.Instance.Stats.Score, "{0:0}");
 

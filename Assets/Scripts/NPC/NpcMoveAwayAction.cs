@@ -8,9 +8,9 @@ namespace NpcActions
         public override ActionType Type => ActionType.MoveAway;
         public override bool IsLocked => true;
 
-        public override void Process(NPCEntity npc)
+        public override void Initialize(NPCEntity npc)
         {
-            base.Process(npc);
+            base.Initialize(npc);
             npc.MoveTo(npc.HostPlanet.PlanetBack);
             npc.OnReachedDestination?.Invoke();
             ChangeLayer();

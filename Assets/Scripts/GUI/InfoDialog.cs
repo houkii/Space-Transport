@@ -7,7 +7,6 @@ public class InfoDialog : MovableCanvasElement
 {
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI message;
-
     [SerializeField] private Button okButton;
 
     public void Show(string title, string message, UnityAction onClickedOK)

@@ -12,7 +12,6 @@ public class ShipModelController : MonoBehaviour
     [SerializeField] private GameObject Thruster;
     [SerializeField] private GameObject LeftWing;
     [SerializeField] private GameObject RightWing;
-
     [SerializeField] private float wingsAngleMax = 25f;
     [SerializeField] private float wingsAngleMin = 0f;
     [SerializeField] private float wingsAngleLanded = 5f;
@@ -22,7 +21,6 @@ public class ShipModelController : MonoBehaviour
     private Color emissionStartColor;
     private Color emissionSecondColor = Color.yellow;
     private Material shipMaterial;
-
     private Sequence activeSequence;
     private Sequence colorSequence;
 

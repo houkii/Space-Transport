@@ -7,15 +7,15 @@ using UnityEngine.Events;
 [Serializable]
 public class MissionController
 {
+    public UnityEvent OnMissionCompleted = new UnityEvent();
+    public UnityEvent OnMissionInitialized = new UnityEvent();
     public List<Mission> AvailableMissions { get { return availableMissions; } }
     public Mission CurrentMission { get; private set; }
     public Dictionary<string, PlanetController> MissionPlanets { get; private set; }
     public UnityAction<NPCEntity> OnEntitySpawned { get; set; }
     public int CurrentMissionID { get; private set; }
     public int TotalNpcs { get; private set; }
-    public bool MissionCompleted => NpcsLeft == 0;
-    public UnityEvent OnMissionCompleted = new UnityEvent();
-    public UnityEvent OnMissionInitialized = new UnityEvent();
+
 
     [SerializeField] private bool spawnRandomTravellers = true;
     [SerializeField] private List<GameObject> availableTravellers;
@@ -39,6 +39,7 @@ public class MissionController
 
     public string NextMissionName =>
         availableMissions[(CurrentMissionID + 1) <= availableMissions.Count ? (CurrentMissionID + 1) : CurrentMissionID].name;
+    public bool MissionCompleted => NpcsLeft == 0;
 
     public void InitializeMission(int missionID)
     {

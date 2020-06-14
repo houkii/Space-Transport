@@ -6,7 +6,6 @@ using UnityEngine;
 public class MiddleInfo : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI message;
-
     private Color defaultColor;
     private Color fadedColor;
     private Sequence colSeq;

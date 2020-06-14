@@ -7,9 +7,7 @@ using UnityEngine;
 public static class CameraViews
 {
     public delegate void CameraViewChangedDelegate(CameraView view);
-
     public static CameraViewChangedDelegate OnCameraViewChanged;
-
     public static CameraView ActiveView { get; private set; }
 
     public static void SetActive(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)

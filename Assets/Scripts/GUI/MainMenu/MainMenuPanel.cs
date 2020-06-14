@@ -8,7 +8,6 @@ public class MainMenuPanel : MovableCanvasElement
 {
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
-
     private Vector2 defaultDeltaSize;
     private GridLayoutGroup buttonGroup;
     private Vector2 defaultLayoutGroupSpacing;

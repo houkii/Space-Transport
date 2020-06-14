@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 using DG.Tweening;
 
 public class NpcEntityCanvas : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI name;
-    [SerializeField]
-    private Vector3 offset = new Vector3(40, 80, 0);
+    [SerializeField] private TextMeshProUGUI name;
+    [SerializeField] private Vector3 offset = new Vector3(40, 80, 0);
     private NPCEntity target;
 
     public SpeechBubble SpeechBubble { get; private set; }

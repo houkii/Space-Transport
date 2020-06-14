@@ -17,7 +17,6 @@ public abstract class Reward : IReward
     public delegate void RewardGranted(Reward reward);
 
     public static event RewardGranted OnRewardGranted;
-
     public int Value { get; private set; }
 
     protected IRewardArgs Args;
@@ -70,7 +69,6 @@ public class LandingReward : Reward
 
     protected override int CalculateReward()
     {
-        //dynamic data = Convert.ChangeType(Args, argsType);
         var data = Args as LandingRewardArgs;
         int score = (int)(((45 - data.Angle) / 45.0f) * GameController.Instance.Settings.LandingRewardMultiplier);
         return score;
@@ -159,28 +157,3 @@ public class FuelReward : Reward
 }
 
 #endregion FuelReward
-
-#region RewardFactory
-
-public class RewardFactory
-{
-    public int GetReward(Reward.RewardType rewardType, IRewardArgs rewardArgs)
-    {
-        switch (rewardType)
-        {
-            case Reward.RewardType.DeliveryReward:
-                return new DeliveryReward(typeof(DeliveryRewardArgs)).GetReward(rewardArgs);
-
-            case Reward.RewardType.LandingReward:
-                return new LandingReward(typeof(LandingRewardArgs)).GetReward(rewardArgs);
-
-            case Reward.RewardType.FuelReward:
-                return new FuelReward(typeof(FuelRewardArgs)).GetReward(rewardArgs);
-
-            default:
-                throw new System.NotImplementedException();
-        }
-    }
-}
-
-#endregion RewardFactory

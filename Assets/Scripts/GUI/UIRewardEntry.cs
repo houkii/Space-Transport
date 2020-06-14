@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class UIRewardEntry : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI rewardName;
-    [SerializeField] private TextMeshProUGUI rewardValue;
-
     public int direction;
 
+    [SerializeField] private TextMeshProUGUI rewardName;
+    [SerializeField] private TextMeshProUGUI rewardValue;
     private RectTransform rt;
     private Reward reward;
 
@@ -23,7 +22,6 @@ public class UIRewardEntry : MonoBehaviour
         this.direction = direction;
     }
 
-    // direction: 1 is right else if left
     public void Show()
     {
         var rewardTypeName = reward.GetType().ToString();

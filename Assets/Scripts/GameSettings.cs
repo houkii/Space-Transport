@@ -17,19 +17,14 @@ public class GameSettings
     public float StartingFuel = 800;
     public float MaxLandingAngle = 15f;
     public float OxygenTimer = 45f;
-
+    public float ConnectionRetryTime = 5.0f;
     public Vector3 PlayerScaleMiniMap1 = new Vector3(45, 55, 25);
     public Vector3 PlayerScaleMiniMap2 = new Vector3(90, 110, 50);
-
     public int MaxRewardForTotalFuelUsed = 1000000;
     public int MaxRewardForRemainingFuel = 1500;
     public int DeliveryRewardMultiplier = 2000;
     public int LandingRewardMultiplier = 5;
-
-    public float ConnectionRetryTime = 5.0f;
-
     public bool InfoActive = true;
-
     public Slider GSlider;
     public Slider DistanceSlider;
     public Slider DragSlider;

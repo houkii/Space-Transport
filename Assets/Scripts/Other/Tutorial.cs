@@ -6,12 +6,11 @@ using UnityEngine;
 [System.Serializable]
 public class Tutorial
 {
-    [SerializeField] private List<Lesson> lessons;
-    public bool HasLessons => lessons.Count > 0;
-    public bool Complete { get; set; }
-
     public Action OnTutorialCompleted;
+    public bool Complete { get; set; }
+    public bool HasLessons => lessons.Count > 0;
 
+    [SerializeField] private List<Lesson> lessons;
     private bool currentLessonViewed = false;
 
     public IEnumerator Show()
@@ -37,26 +36,5 @@ public class Tutorial
     private void ShowLesson(Lesson lesson)
     {
         DialogCanvasManager.Instance.Info.Show(lesson.Title, lesson.Info, () => currentLessonViewed = true);
-    }
-}
-
-[System.Serializable]
-public class Lesson
-{
-    [SerializeField] private string title;
-    [SerializeField] private string info;
-
-    public string Title => title;
-    public string Info => GetInfoString();
-
-    public Lesson(string title, string info)
-    {
-        this.title = title;
-        this.info = info;
-    }
-
-    private string GetInfoString()
-    {
-        return info.Replace("@", System.Environment.NewLine);
     }
 }

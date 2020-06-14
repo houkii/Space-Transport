@@ -5,13 +5,9 @@ using DG.Tweening;
 
 public class TravellersPanelController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject travellerUIEntryPrefab;
-    [SerializeField]
-    private float topOffset = 27.5f;
-    [SerializeField]
-    private float verticalSpacing = 15f;
-
+    [SerializeField] private GameObject travellerUIEntryPrefab;
+    [SerializeField] private float topOffset = 27.5f;
+    [SerializeField] private float verticalSpacing = 15f;
     private List<TravellerUIEntry> travellerEntries = new List<TravellerUIEntry>();
 
     public void AddEntry(NPCEntity npc)

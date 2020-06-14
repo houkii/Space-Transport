@@ -6,25 +6,20 @@ using UnityEngine;
 
 public class UDButton : Button
 {
-    [SerializeField]
-    ButtonDownEvent onDown = new ButtonDownEvent();
-
-    [SerializeField]
-    ButtonDownEvent onUp = new ButtonDownEvent();
+    [SerializeField] ButtonDownEvent onDown = new ButtonDownEvent();
+    [SerializeField] ButtonDownEvent onUp = new ButtonDownEvent();
 
     protected UDButton() { }
 
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-
         OnDown?.Invoke();
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
         base.OnPointerUp(eventData);
-
         OnUp?.Invoke();
     }
 

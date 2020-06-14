@@ -6,9 +6,9 @@ namespace NpcActions
     {
         public override ActionType Type => ActionType.MoveToShip;
 
-        public override void Process(NPCEntity npc)
+        public override void Initialize(NPCEntity npc)
         {
-            base.Process(npc);
+            base.Initialize(npc);
             npc.MoveTo(PlayerController.Instance.transform);
             npc.View.SpeechBubble.ShowInfo(npc.DestinationPlanet.transform.name);
         }

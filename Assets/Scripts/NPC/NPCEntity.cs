@@ -223,7 +223,7 @@ public class NPCEntity : MonoBehaviour
         if (currentAction == null || (!currentAction.IsLocked && currentAction.Type != action.Type))
         {
             currentAction = action;
-            currentAction.Process(this);
+            currentAction.Initialize(this);
             CurrentActionString = currentAction.ToString();
         }
     }

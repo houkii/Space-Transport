@@ -6,7 +6,6 @@ public class VelocityIndicator : MonoBehaviour
     [SerializeField] private Rigidbody targetBody;
     [SerializeField] private float size = 12f;
     [SerializeField] private float offsetRadius = 20f;
-    [SerializeField] private Material indicatorMaterial;
 
     private void Awake()
     {

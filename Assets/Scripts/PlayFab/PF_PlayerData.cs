@@ -9,10 +9,8 @@ public class PF_PlayerData : MonoBehaviour
     public static string PlayerName;
     public static string PlayfabID;
     public static string PlayfabUsername;
-
     public static int Coins;
     public static readonly List<ItemInstance> Inventory = new List<ItemInstance>();
-
     public static Dictionary<string, int> Statistics = new Dictionary<string, int>();
     public static Dictionary<string, int> RankPositions = new Dictionary<string, int>();
     public static Dictionary<string, int> TopScores = new Dictionary<string, int>();

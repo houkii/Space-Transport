@@ -9,9 +9,9 @@ namespace NpcActions
         private int currentWaypointID;
         public override ActionType Type => ActionType.Wonder;
 
-        public override void Process(NPCEntity npc)
+        public override void Initialize(NPCEntity npc)
         {
-            base.Process(npc);
+            base.Initialize(npc);
             currentWaypointID = Random.Range(0, npc.HostPlanet.Waypoints.Count);
             npc.MoveTo(npc.HostPlanet.Waypoints[currentWaypointID]);
             Debug.Log("Wondering...");

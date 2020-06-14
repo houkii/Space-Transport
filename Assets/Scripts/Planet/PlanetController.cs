@@ -11,18 +11,16 @@ public class PlanetController : MonoBehaviour
     public Transform ReleaseSpot;
     public List<Transform> Waypoints;
 
-    [SerializeField]
-    private GameObject TravellerPrefab;
-    [SerializeField]
-    private TextMeshPro miniMapIndex;
+    [SerializeField] private GameObject TravellerPrefab;
+    [SerializeField] private TextMeshPro miniMapIndex;
     private PlanetInstance Data;
     private TargetIndicator targetIndicator;
     private Material planetMaterial;
     private Vector3 previousPos;
-    private List<Vector3> positions = new List<Vector3> { Vector3.zero, Vector3.zero };
+    private List<Vector3> chachedPositions = new List<Vector3> { Vector3.zero, Vector3.zero };
     private float angle = 0;
 
-    public Vector3 CurrentVelocity => (positions[1] - positions[0]) / Time.fixedDeltaTime;
+    public Vector3 CurrentVelocity => (chachedPositions[1] - chachedPositions[0]) / Time.fixedDeltaTime;
 
 
     private void Awake()
@@ -81,9 +79,14 @@ public class PlanetController : MonoBehaviour
 
         transform.Rotate(transform.forward, Data.RotationSpeed * Time.fixedDeltaTime);
         OrbitalMove();
-        positions.Add(transform.position);
-        if (positions.Count == 3)
-            positions.RemoveAt(0);
+        HandleCachedPositions();
+    }
+
+    private void HandleCachedPositions()
+    {
+        chachedPositions.Add(transform.position);
+        if (chachedPositions.Count == 3)
+            chachedPositions.RemoveAt(0);
     }
 
     private void OrbitalMove()
@@ -124,13 +127,3 @@ public class PlanetController : MonoBehaviour
     }
 }
 
-public static class PlanetColors
-{
-    public static Color32 Grey = new Color32(0x8A, 0xFF, 0xB7, 0xFF);
-    public static Color32 Yellow = new Color32(0xFF, 0xE8, 0xB7, 0xFF);
-    public static Color32 Orange = new Color32(0xFF, 0xBE, 0x87, 0xFF);
-    public static Color32 LightRed = new Color32(0xE3, 0x8A, 0x74, 0xFF);
-    public static Color32 DarkRed = new Color32(0xBF, 0x59, 0x67, 0xFF);
-
-    public static List<Color32> Colors = new List<Color32> { Grey, Yellow, Orange, LightRed, DarkRed };
-}

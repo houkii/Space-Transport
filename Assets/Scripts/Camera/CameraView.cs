@@ -5,7 +5,6 @@ using UnityEngine;
 public interface ICameraView
 {
     void Enable(Action onComplete);
-
     void Disable();
 }
 

@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 public class CameraController : Singleton<CameraController>
 {
+    public UnityEvent OnStandardViewSet;
+    public Camera RadarCamera;
+
     [SerializeField] private PlayerController player;
     [SerializeField] private float minCameraSize = 120f;
     [SerializeField] private float maxCameraSize = 150f;
@@ -10,16 +13,12 @@ public class CameraController : Singleton<CameraController>
     [SerializeField] private float maximumVerticalOffset = 9f;
     [SerializeField] private float interpolationValue = 0.05f;
     [SerializeField] private float skyboxRotateSpeed = 1.5f;
-
-    public UnityEvent OnStandardViewSet;
-    public Camera RadarCamera;
-
     private Camera camera;
     private Effects effects;
     private CircularBuffer angleBuffer = new CircularBuffer(50);
     private CircularBuffer sizeBuffer = new CircularBuffer(50);
-
     private MinimapElement playerMinimapView;
+    private CameraView previousView;
 
     public float currentToMaxCameraSizeRation => camera.orthographicSize / maxCameraSize;
 
@@ -34,6 +33,11 @@ public class CameraController : Singleton<CameraController>
         transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
 
         playerMinimapView = PlayerController.Instance.gameObject.transform.GetComponentInChildren<MinimapElement>();
+    }
+
+    public void NormalLook()
+    {
+        CameraViews.SetActive(CameraView.CameraViewType.NormalLook, SetStandardViewParams);
     }
 
     private void OnEnable()
@@ -82,11 +86,6 @@ public class CameraController : Singleton<CameraController>
         OnStandardViewSet?.Invoke();
     }
 
-    public void NormalLook()
-    {
-        CameraViews.SetActive(CameraView.CameraViewType.NormalLook, SetStandardViewParams);
-    }
-
     private void RegisterCallbacks()
     {
         PlayerController.Instance.OnPlayerLanded += (x) =>
@@ -109,11 +108,8 @@ public class CameraController : Singleton<CameraController>
         });
     }
 
-    private CameraView previousView;
-
     public void ShowQuickDistantView()
     {
-        //PlaySceneCanvasController.Instance.HideIndicators();
         transform.parent = null;
         transform.rotation = Quaternion.Euler(Vector3.zero);
         previousView = CameraViews.ActiveView;
@@ -129,7 +125,6 @@ public class CameraController : Singleton<CameraController>
         }
         else
         {
-            //PlaySceneCanvasController.Instance.ShowIndicators();
             CameraViews.SetActive(CameraView.CameraViewType.Standard);
         }
     }

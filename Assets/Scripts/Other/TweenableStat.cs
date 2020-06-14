@@ -1,16 +1,11 @@
 ﻿using DG.Tweening;
-using System;
 using TMPro;
-using UnityEngine;
 
 [System.Serializable]
 public class TweenableStat : TextMeshProUGUI
 {
     public float TweenTime = 2.0f;
     public Ease Ease = Ease.OutExpo;
-
-    private string formatType;
-    private Sequence activeSequence;
 
     private float value;
     public float Value
@@ -22,6 +17,9 @@ public class TweenableStat : TextMeshProUGUI
             text = string.Format(formatType, value);
         }
     }
+
+    private string formatType;
+    private Sequence activeSequence;
 
     public virtual void Set(float number, string formatType)
     {

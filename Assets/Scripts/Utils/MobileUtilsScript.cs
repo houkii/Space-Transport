@@ -3,12 +3,9 @@ using System.Collections;
 
 public class MobileUtilsScript : MonoBehaviour
 {
-
     private int FramesPerSec;
     private float frequency = 1.0f;
     private string fps;
-
-
 
     void Start()
     {
@@ -17,7 +14,7 @@ public class MobileUtilsScript : MonoBehaviour
 
     private IEnumerator FPS()
     {
-        for (; ; )
+        while(true)
         {
             // Capture frame-per-second
             int lastFrameCount = Time.frameCount;
@@ -25,8 +22,6 @@ public class MobileUtilsScript : MonoBehaviour
             yield return new WaitForSeconds(frequency);
             float timeSpan = Time.realtimeSinceStartup - lastTime;
             int frameCount = Time.frameCount - lastFrameCount;
-
-            // Display it
 
             fps = string.Format("FPS: {0}", Mathf.RoundToInt(frameCount / timeSpan));
         }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class RewardsView : Singleton<RewardsView>
 {
     [SerializeField] private GameObject UIRewardPrefab;
-    [SerializeField] private float rewardEntryRange = 175f;
     private Coroutine showRewardsCR = null;
     private Queue<Action> UIRewardsQueue = new Queue<Action>();
 
@@ -40,14 +39,6 @@ public class RewardsView : Singleton<RewardsView>
         var rewardEntry = rewardObj.GetComponent<UIRewardEntry>();
         rewardEntry.Initialize(reward, currentDir);
         UIRewardsQueue.Enqueue(() => rewardEntry.Show());
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            var newDelivery = new DeliveryReward(typeof(DeliveryRewardArgs));
-        }
     }
 
     private IEnumerator ShowInQueue()

@@ -9,13 +9,14 @@ public class GameController : Singleton<GameController>
     public MissionController MissionController;
     public RewardFactory Rewards { get; private set; }
     public GameSettings Settings;
-    public PlayerData PlayerData;
+    public PlayerDataController PlayerData;
     public int MissionID { get; private set; }
+    public int androidApiLevel { get; private set; }
     public bool DevModeEnabled = true;
     public ColorPalette ColorPaletteDarkPink;
     public ColorPalette ColorPaletteLightPink;
-
-    public int androidApiLevel { get; private set; }
+    public void SetG(float val) => Settings.G = val;
+    public void SetDistanceScaler(float val) => Settings.DistanceScaler = val;
 
     private void Start()
     {
@@ -34,22 +35,7 @@ public class GameController : Singleton<GameController>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneController.Instance.LoadMainMenu();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            RestartMission();
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            PlayerController.Instance.Stats.AddScore(Rewards.GetReward(Reward.RewardType.DeliveryReward, new DeliveryRewardArgs(5, 5)));
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            MissionController.OnMissionCompleted?.Invoke();
-        }
+        HandleInput();
     }
 
     public void InitializePlayScene()
@@ -107,7 +93,20 @@ public class GameController : Singleton<GameController>
         }
     }
 
-    public void SetG(float val) => Settings.G = val;
-    public void SetDistanceScaler(float val) => Settings.DistanceScaler = val;
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneController.Instance.LoadMainMenu();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            RestartMission();
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            MissionController.OnMissionCompleted?.Invoke();
+        }
+    }
 }
 

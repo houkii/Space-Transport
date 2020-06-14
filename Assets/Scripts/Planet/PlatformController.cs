@@ -10,7 +10,6 @@ public class PlatformController : MonoBehaviour
     [SerializeField] private float ceiling = 3f;
     [SerializeField] private float speed = 2f;
     [SerializeField] private Vector3 bottomLocalPosition;
-
     private Renderer renderer;
     private Material mat;
     private Color finalColor;

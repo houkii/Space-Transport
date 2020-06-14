@@ -4,15 +4,11 @@ using UnityEngine.UI;
 
 public class TravellerUIEntry : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI astronautName;
-
-    [SerializeField]
-    private TextMeshProUGUI destinationName;
-
-    private Slider timeSlider;
-
     public NPCEntity Npc { get; private set; }
+
+    [SerializeField] private TextMeshProUGUI astronautName;
+    [SerializeField] private TextMeshProUGUI destinationName;
+    private Slider timeSlider;
 
     private void Awake()
     {

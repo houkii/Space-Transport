@@ -18,7 +18,6 @@ public class TargetIndicator : MonoBehaviour
     [Range(0, 300)]
     public float m_edgeBuffer;
 
-    //public Vector3 m_targetIconScale;
     [Space]
     public bool ShowDebugLines;
 
@@ -37,7 +36,7 @@ public class TargetIndicator : MonoBehaviour
         mainCamera = Camera.main;
         screenCenter = new Vector3(0.5f * Screen.height, 0.5f * Screen.width);
         targetsHolder = GameObject.Find("IndicatorsHolder");
-        InstainateTargetIcon();
+        InstantiateTargetIcon();
         SetupCallbacks();
     }
 
@@ -60,14 +59,12 @@ public class TargetIndicator : MonoBehaviour
         UpdateTargetIcon();
     }
 
-    private void InstainateTargetIcon()
+    private void InstantiateTargetIcon()
     {
         m_icon = new GameObject().AddComponent<RectTransform>();
         m_icon.transform.SetParent(targetsHolder.transform);
         m_icon.localScale = Vector3.one * maxScale;
         m_icon.name = name + ": target icon";
-        //iconText = m_icon.gameObject.AddComponent<TextMeshProUGUI>();
-        //iconText.text = transform.name;
         m_iconImage = m_icon.gameObject.AddComponent<Image>();
         m_iconImage.sprite = m_targetIconOnScreen;
         m_iconImage.color = color;
@@ -82,7 +79,7 @@ public class TargetIndicator : MonoBehaviour
             newPos.x = 1f - newPos.x;
             newPos.y = 1f - newPos.y;
             newPos.z = 0;
-            newPos = Vector3Maxamize(newPos);
+            newPos = Vector3Maximize(newPos);
         }
         newPos = mainCamera.ViewportToScreenPoint(newPos);
 
@@ -132,7 +129,6 @@ public class TargetIndicator : MonoBehaviour
         {
             float distance = Vector3.Distance(screenCenter, pos);
             float scaler = Screen.height / Mathf.Pow(distance, 2);
-            //Debug.Log(scaler);
             Vector3 newScale = Vector3.one * maxScale * Mathf.Clamp(scaler, minScale, maxScale);
             if (m_icon.localScale != null)
                 m_icon.localScale = Vector3.Lerp(m_icon.localScale, newScale, 0.1f);
@@ -157,18 +153,13 @@ public class TargetIndicator : MonoBehaviour
 
     private void SetRotation()
     {
-        //float zRotation = 0;
         float zRotation = transform.localRotation.eulerAngles.x + 90;
         if (transform.parent != null)
         {
             zRotation += transform.parent.transform.rotation.eulerAngles.z;
         }
 
-        m_icon.rotation = Quaternion.Euler(new Vector3(
-            0,
-            0,
-            zRotation - Camera.main.transform.rotation.eulerAngles.z
-        ));
+        m_icon.rotation = Quaternion.Euler(new Vector3(0, 0, zRotation - Camera.main.transform.rotation.eulerAngles.z));
     }
 
     private void SetupCallbacks()
@@ -207,7 +198,7 @@ public class TargetIndicator : MonoBehaviour
         Debug.DrawLine(forwardPlaneCenter, forwardPlaneCenter + cameraRight, Color.red);
     }
 
-    public Vector3 Vector3Maxamize(Vector3 vector)
+    public Vector3 Vector3Maximize(Vector3 vector)
     {
         Vector3 returnVector = vector;
         float max = 0;

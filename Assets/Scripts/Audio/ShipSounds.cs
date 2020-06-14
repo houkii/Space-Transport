@@ -17,25 +17,3 @@ public class ShipSounds
     public float RandomPitch => UnityEngine.Random.Range(-.05f, .05f);
     public Tween pitchTween;
 }
-
-public static class VFX
-{
-    public static void PlayTeleportEffect(Transform transform)
-    {
-        Rigidbody[] rbs = transform.GetComponentsInChildren<Rigidbody>();
-        Collider[] colls = transform.GetComponentsInChildren<Collider>();
-
-        foreach (var rb in rbs)
-        {
-            rb.isKinematic = true;
-        }
-
-        foreach (var coll in colls)
-        {
-            coll.enabled = false;
-        }
-
-        Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOScale(0, 1f).SetEase(Ease.OutSine));
-    }
-}

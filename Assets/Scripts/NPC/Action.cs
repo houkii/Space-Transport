@@ -6,16 +6,15 @@ namespace NpcActions
 
     public abstract class Action
     {
-        protected NPCEntity npc;
         public virtual bool IsLocked => false;
+        protected NPCEntity npc;
 
-        public virtual void Process(NPCEntity npc)
+        public virtual void Initialize(NPCEntity npc)
         {
             this.npc = npc;
         }
 
         public abstract ActionType Type { get; }
-
         public abstract void ProcessTriggerCollision(Collider other);
     }
 }

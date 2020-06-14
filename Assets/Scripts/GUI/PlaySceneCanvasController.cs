@@ -5,6 +5,8 @@ using System.Linq;
 
 public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
 {
+    public TravellersPanelController TravellersPanelController { get; private set; }
+
     [SerializeField] private GameObject npcEntityCanvasPrefab;
     [SerializeField] private GameObject npcCanvasHolder;
     [SerializeField] private SummaryPanelController summaryWindow;
@@ -12,7 +14,6 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
     [SerializeField] private GameObject indicatorsHolder;
     private List<MovableCanvasElement> movableElements = new List<MovableCanvasElement>();
     
-    public TravellersPanelController TravellersPanelController { get; private set; }
 
     public override void Awake()
     {
@@ -20,8 +21,6 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
         TravellersPanelController = GetComponentInChildren<TravellersPanelController>();
         movableElements = GetComponentsInChildren<MovableCanvasElement>().ToList();
         PlayerController.Instance.OnPlayerDied.AddListener(ShowEndGameUI);
-        //PlayerController.Instance.OnPlayerLanded += (x) => { HideIndicators(); };
-        //PlayerController.Instance.OnPlayerTookOff += (x) => { ShowIndicators(); };
         GameController.Instance.MissionController.OnMissionCompleted.AddListener(ShowEndGameUI);
     }
 

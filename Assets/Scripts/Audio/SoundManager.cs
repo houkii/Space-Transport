@@ -8,14 +8,13 @@ using UnityEngine.UI;
 
 public class SoundManager : Singleton<SoundManager>
 {
-    private AudioSource actionAudio;
-    private AudioSource musicAudio;
-
     [SerializeField] private AudioClip menuForwardButton;
     [SerializeField] private AudioClip menuBackButton;
     [SerializeField] private AudioClip menuTheme;
     [SerializeField] private AudioClip missionFailedTheme;
     [SerializeField] private List<AudioClip> Explosions;
+    private AudioSource actionAudio;
+    private AudioSource musicAudio;
 
     public override void Awake()
     {

@@ -5,24 +5,16 @@ using UnityEngine.UI;
 
 public class TopPanelController : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI scoreValue;
+    [SerializeField] private TextMeshProUGUI scoreValue;
+    [SerializeField] private Slider fuelSlider;
+    [SerializeField] private Button infoButton;
+    [SerializeField] private Button radarButton;
+    private Sequence updateScoreSequence;
 
     private int CurrentScore
     {
-        set
-        {
-            scoreValue.text = value.ToString();
-        }
+        set => scoreValue.text = value.ToString();
     }
-
-    [SerializeField]
-    private Slider fuelSlider;
-
-    private Sequence updateScoreSequence;
-
-    [SerializeField] private Button infoButton;
-    [SerializeField] private Button radarButton;
 
     private void Start()
     {
