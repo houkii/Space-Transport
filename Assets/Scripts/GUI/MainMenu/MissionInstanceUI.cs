@@ -11,10 +11,9 @@ public class MissionInstanceUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rank;
     [SerializeField] private TextMeshProUGUI highScore;
     [SerializeField] private Image lockImage;
-
     private string missionName;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         if (PlayFabClientAPI.IsClientLoggedIn())
         {
@@ -22,24 +21,9 @@ public class MissionInstanceUI : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         PF_Bridge.OnPlayfabCallbackSuccess -= HandleCallbackSuccess;
-    }
-
-    private void HandleCallbackSuccess(string details, PlayFabAPIMethods method, MessageDisplayStyle displayStyle)
-    {
-        if (details != missionName)
-            return;
-
-        if (method == PlayFabAPIMethods.GetPlayerLeaderboard)
-        {
-            SetPlayerScore();
-        }
-        else if (method == PlayFabAPIMethods.GetFriendsLeaderboard)
-        {
-            SetHighestRankScore();
-        }
     }
 
     public void Initialize(string missionName)
@@ -66,6 +50,21 @@ public class MissionInstanceUI : MonoBehaviour
         {
             lockImage.gameObject.SetActive(true);
             button.onClick.AddListener(() => DialogCanvasManager.Instance.midInfo.Show("Mission Locked!"));
+        }
+    }
+
+    private void HandleCallbackSuccess(string details, PlayFabAPIMethods method, MessageDisplayStyle displayStyle)
+    {
+        if (details != missionName)
+            return;
+
+        if (method == PlayFabAPIMethods.GetPlayerLeaderboard)
+        {
+            SetPlayerScore();
+        }
+        else if (method == PlayFabAPIMethods.GetFriendsLeaderboard)
+        {
+            SetHighestRankScore();
         }
     }
 

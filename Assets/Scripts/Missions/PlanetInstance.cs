@@ -23,6 +23,5 @@ public class PlanetInstance
     public float Period;
     public float Radius => Vector3.Distance(Position, Center);
     public float AngularFrequency => 2 * Mathf.PI * (1 / Period);
-
     public List<PlanetInstance> Satellites = new List<PlanetInstance>();
 }

@@ -5,6 +5,7 @@ public class CameraController : Singleton<CameraController>
 {
     public UnityEvent OnStandardViewSet;
     public Camera RadarCamera;
+    public CameraViews CameraViews { get; private set; }
 
     [SerializeField] private PlayerController player;
     [SerializeField] private float minCameraSize = 120f;
@@ -26,86 +27,17 @@ public class CameraController : Singleton<CameraController>
     {
         base.Awake();
         camera = Camera.main;
-        CameraViews.Initialize();
-        CameraView.Cam = camera;
+        CameraViews = new CameraViews();
+        CameraViews.Initialize(camera);
         effects = GetComponent<Effects>();
         var playerPos = PlayerController.Instance.transform.position;
         transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
-
         playerMinimapView = PlayerController.Instance.gameObject.transform.GetComponentInChildren<MinimapElement>();
     }
 
-    public void NormalLook()
-    {
-        CameraViews.SetActive(CameraView.CameraViewType.NormalLook, SetStandardViewParams);
-    }
-
-    private void OnEnable()
+    public void OnEnable()
     {
         RegisterCallbacks();
-    }
-
-    private void SetPosition(Vector3 position)
-    {
-        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -300f), .1f);
-    }
-
-    private void SetSize(float ratio)
-    {
-        float size = minCameraSize + (maxCameraSize - minCameraSize) * ratio;
-        sizeBuffer.Add(size);
-        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, sizeBuffer.AverageValue, interpolationValue);
-    }
-
-    private void SetRotation()
-    {
-    }
-
-    private void Update()
-    {
-        RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotateSpeed);
-        effects.intensity = player.CurrentToMaximumVelocityMagnitudeRatio / 250;
-    }
-
-    private void FixedUpdate()
-    {
-        if (CameraViews.ActiveView is StandardView)
-        {
-            SetPosition(player.transform.position);
-            SetSize(player.CurrentToMaximumVelocityMagnitudeRatio);
-        }
-    }
-
-    private void SetStandardViewParams()
-    {
-        angleBuffer.Clear();
-        sizeBuffer.Clear();
-        transform.SetParent(null);
-        player.transform.SetParent(null);
-        CameraViews.SetActive(CameraView.CameraViewType.Standard);
-        OnStandardViewSet?.Invoke();
-    }
-
-    private void RegisterCallbacks()
-    {
-        PlayerController.Instance.OnPlayerLanded += (x) =>
-        {
-            transform.SetParent(player.transform);
-            CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
-        };
-
-        PlayerController.Instance.OnPlayerTookOff += (x) =>
-        {
-            CameraViews.SetActive(CameraView.CameraViewType.NormalLook, SetStandardViewParams);
-        };
-
-        PlayerController.Instance.OnPlayerDied.AddListener(() =>
-        {
-            if (transform.parent != null)
-                transform.SetParent(null);
-
-            CameraViews.SetActive(CameraView.CameraViewType.Distant);
-        });
     }
 
     public void ShowQuickDistantView()
@@ -121,7 +53,7 @@ public class CameraController : Singleton<CameraController>
         if (previousView is CloseView)
         {
             transform.parent = PlayerController.Instance.transform;
-            CameraViews.SetActive(CameraView.CameraViewType.CloseLook);
+            CameraViews.SetActive(CameraView.CameraViewType.Close);
         }
         else
         {
@@ -163,4 +95,70 @@ public class CameraController : Singleton<CameraController>
             return false;
         }
     }
+
+    public void SetNormalLook()
+    {
+        CameraViews.SetActive(CameraView.CameraViewType.Normal, SetStandardViewParams);
+    }
+
+    private void SetPosition(Vector3 position)
+    {
+        transform.position = Vector3.Lerp(transform.position, new Vector3(position.x, position.y, -300f), .1f);
+    }
+
+    private void SetSize(float ratio)
+    {
+        float size = minCameraSize + (maxCameraSize - minCameraSize) * ratio;
+        sizeBuffer.Add(size);
+        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, sizeBuffer.AverageValue, interpolationValue);
+    }
+
+    private void Update()
+    {
+        RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotateSpeed);
+        effects.intensity = player.CurrentToMaximumVelocityMagnitudeRatio / 250;
+    }
+
+    private void FixedUpdate()
+    {
+        if (CameraViews.ActiveView is StandardView)
+        {
+            SetPosition(player.transform.position);
+            SetSize(player.CurrentToMaximumVelocityMagnitudeRatio);
+        }
+    }
+
+    private void SetStandardViewParams()
+    {
+        angleBuffer.Clear();
+        sizeBuffer.Clear();
+        transform.SetParent(null);
+        player.transform.SetParent(null);
+        CameraViews.SetActive(CameraView.CameraViewType.Standard);
+        OnStandardViewSet?.Invoke();
+    }
+
+    private void RegisterCallbacks()
+    {
+        PlayerController.Instance.OnPlayerLanded += (x) =>
+        {
+            transform.SetParent(player.transform);
+            CameraViews.SetActive(CameraView.CameraViewType.Close);
+        };
+
+        PlayerController.Instance.OnPlayerTookOff += (x) =>
+        {
+            CameraViews.SetActive(CameraView.CameraViewType.Normal, SetStandardViewParams);
+        };
+
+        PlayerController.Instance.OnPlayerDied.AddListener(() =>
+        {
+            if (transform.parent != null)
+                transform.SetParent(null);
+
+            CameraViews.SetActive(CameraView.CameraViewType.Distant);
+        });
+    }
+
+
 }

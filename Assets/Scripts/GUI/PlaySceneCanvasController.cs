@@ -14,7 +14,6 @@ public class PlaySceneCanvasController : Singleton<PlaySceneCanvasController>
     [SerializeField] private GameObject indicatorsHolder;
     private List<MovableCanvasElement> movableElements = new List<MovableCanvasElement>();
     
-
     public override void Awake()
     {
         base.Awake();

@@ -4,18 +4,18 @@ using DG.Tweening;
 
 public class NpcEntityCanvas : MonoBehaviour
 {
+    public SpeechBubble SpeechBubble { get; private set; }
+
     [SerializeField] private TextMeshProUGUI name;
     [SerializeField] private Vector3 offset = new Vector3(40, 80, 0);
     private NPCEntity target;
 
-    public SpeechBubble SpeechBubble { get; private set; }
-
-    void Awake()
+    public void Awake()
     {
         SpeechBubble = GetComponentInChildren<SpeechBubble>();
     }
 
-    void Update()
+    public void Update()
     {
         if(target != null)
         {

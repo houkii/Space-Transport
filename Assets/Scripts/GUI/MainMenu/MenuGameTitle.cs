@@ -17,6 +17,11 @@ public class MenuGameTitle : MovableCanvasElement
         titleGroup = GetComponent<GridLayoutGroup>();
     }
 
+    public Sequence ShowIntro()
+    {
+        return GetTitleSequence();
+    }
+
     private Sequence GetTitleSequence()
     {
         Sequence titleSequence = DOTween.Sequence();
@@ -30,10 +35,5 @@ public class MenuGameTitle : MovableCanvasElement
                                 .SetLoops(int.MaxValue, LoopType.Yoyo));
 
         return titleSequence;
-    }
-
-    public Sequence ShowIntro()
-    {
-        return GetTitleSequence();
     }
 }

@@ -15,7 +15,7 @@ public class SummaryPanelController : MonoBehaviour
     [SerializeField] private Button RestartButton;
     [SerializeField] private Button NextMissionButton;
 
-    private void Awake()
+    public void Awake()
     {
         MainMenuButton.onClick.AddListener(SceneController.Instance.LoadMainMenu);
         MainMenuButton.onClick.AddListener(SoundManager.Instance.PlayBackButton);
@@ -25,7 +25,7 @@ public class SummaryPanelController : MonoBehaviour
         NextMissionButton.onClick.AddListener(SoundManager.Instance.PlayForwardButton);
     }
 
-    private void Start()
+    public void Start()
     {
         PlayerController.Instance.OnNewGlobalHighScore.AddListener(() => ShowRecord(GlobalHighScoreText.rectTransform));
         PlayerController.Instance.OnNewPersonalHighScore.AddListener(() => ShowRecord(PersonalRecordText.rectTransform));

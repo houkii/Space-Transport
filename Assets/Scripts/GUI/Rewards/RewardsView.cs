@@ -6,16 +6,15 @@ using UnityEngine;
 public class RewardsView : Singleton<RewardsView>
 {
     [SerializeField] private GameObject UIRewardPrefab;
-    private Coroutine showRewardsCR = null;
+    private Coroutine showRewardsCoroutine = null;
     private Queue<Action> UIRewardsQueue = new Queue<Action>();
-
     private int currentDir = 1;
 
     private void Start()
     {
-        if (showRewardsCR == null)
+        if (showRewardsCoroutine == null)
         {
-            showRewardsCR = StartCoroutine(ShowInQueue());
+            showRewardsCoroutine = StartCoroutine(ShowInQueue());
         }
     }
 

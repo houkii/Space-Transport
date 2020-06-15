@@ -4,29 +4,35 @@ using System.Collections;
 using UnityEngine;
 
 
-public static class CameraViews
+public class CameraViews
 {
     public delegate void CameraViewChangedDelegate(CameraView view);
-    public static CameraViewChangedDelegate OnCameraViewChanged;
-    public static CameraView ActiveView { get; private set; }
+    public CameraViewChangedDelegate OnCameraViewChanged;
+    public CameraView ActiveView { get; private set; }
 
-    public static void SetActive(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)
+    public void Initialize(Camera camera)
+    {
+        ActiveView = new StandardView();
+        CameraView.Cam = camera;
+    }
+
+    public void SetActive(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)
     {
         GameController.Instance.StartCoroutine(SetCameraViewType(cameraViewType, onViewSetupCompleted, finishPreviousViewTransition));
     }
 
-    public static void SetInstantCameraViewType(CameraView.CameraViewType cameraViewType)
+    public void SetInstantCameraViewType(CameraView.CameraViewType cameraViewType)
     {
         switch (cameraViewType)
         {
-            case CameraView.CameraViewType.CloseLook:
+            case CameraView.CameraViewType.Close:
                 ActiveView = new CloseView(); break;
             default:
                 ActiveView = new StandardView(); break;
         }
     }
 
-    private static IEnumerator SetCameraViewType(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)
+    private IEnumerator SetCameraViewType(CameraView.CameraViewType cameraViewType, Action onViewSetupCompleted = null, bool finishPreviousViewTransition = false)
     {
         if (finishPreviousViewTransition)
             yield return new WaitUntil(() => ActiveView.IsSet == true);
@@ -35,9 +41,9 @@ public static class CameraViews
         {
             case CameraView.CameraViewType.Standard:
                 SetActiveCameraView(new StandardView(), onViewSetupCompleted); break;
-            case CameraView.CameraViewType.NormalLook:
+            case CameraView.CameraViewType.Normal:
                 SetActiveCameraView(new NormalView(), onViewSetupCompleted); break;
-            case CameraView.CameraViewType.CloseLook:
+            case CameraView.CameraViewType.Close:
                 SetActiveCameraView(new CloseView(), onViewSetupCompleted); break;
             case CameraView.CameraViewType.Distant:
                 SetActiveCameraView(new DistantView(), onViewSetupCompleted); break;
@@ -48,7 +54,7 @@ public static class CameraViews
         }
     }
 
-    private static void SetActiveCameraView(CameraView view, Action onViewSetupCompleted = null)
+    private void SetActiveCameraView(CameraView view, Action onViewSetupCompleted = null)
     {
         if (ActiveView != null)
         {
@@ -69,8 +75,5 @@ public static class CameraViews
         }
     }
 
-    public static void Initialize()
-    {
-        ActiveView = new StandardView();
-    }
+
 }

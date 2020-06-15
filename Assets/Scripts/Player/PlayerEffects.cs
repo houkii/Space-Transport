@@ -98,7 +98,7 @@ public class PlayerEffects
 
         obj.transform.SetParent(player);
         obj.transform.localScale = Vector3.zero;
-        CameraViews.ActiveView.Disable();
+        //CameraViews.ActiveView.Disable();
         Camera.main.transform.SetParent(null);
 
         Sequence BHSeq = DOTween.Sequence();

@@ -6,14 +6,10 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Spawner : MonoBehaviour
+public class AsteroidSpawner : MonoBehaviour
 {
-    [SerializeField]
-    private List<Mesh> meshes;
-
-    [SerializeField]
-    private Material material;
-
+    [SerializeField] private List<Mesh> meshes;
+    [SerializeField] private Material material;
     private List<Mesh> meshesToRender = new List<Mesh>();
 
     public void Awake()
@@ -22,14 +18,27 @@ public class Spawner : MonoBehaviour
         PrepareMeshes();
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void SpawnAsteroids(Vector2 origin)
+    {
+        foreach (Mesh mesh in meshesToRender)
+        {
+            Spawn(1, mesh, 200, 1200, 100, 200, origin);
+        }
+
+        foreach (Mesh mesh in meshesToRender)
+        {
+            Spawn(1, mesh, 200, 1200, -100, -200, origin);
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -78,25 +87,12 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    public void SpawnAsteroids(Vector2 origin)
-    {
-        foreach (Mesh mesh in meshesToRender)
-        {
-            Spawn(1, mesh, 200, 1200, 100, 200, origin);
-        }
-
-        foreach (Mesh mesh in meshesToRender)
-        {
-            Spawn(1, mesh, 200, 1200, -100, -200, origin);
-        }
-    }
-
     private void Spawn(int numToSpawn, Mesh mesh, float innerRadius, float outerRadius, float zMin, float zMax, Vector2 origin)
     {
         EntityManager entityManager = World.Active.EntityManager;
 
         EntityArchetype entityArchetype = entityManager.CreateArchetype(
-            typeof(MoveComponent),
+            typeof(AsteroidMoveComponent),
             typeof(Translation),
             typeof(Rotation),
             typeof(RenderMesh),
@@ -111,7 +107,7 @@ public class Spawner : MonoBehaviour
             Entity entity = entityArray[i];
             var position = RandomInRing(innerRadius, outerRadius);
 
-            entityManager.SetComponentData(entity, new MoveComponent
+            entityManager.SetComponentData(entity, new AsteroidMoveComponent
             {
                 rotationSpeeds = RandomRotationSpeed,
                 origin = new Unity.Mathematics.float2(origin.x, origin.y),
@@ -206,29 +202,3 @@ public class Spawner : MonoBehaviour
     }
 }
 
-public struct MoveComponent : IComponentData
-{
-    public Unity.Mathematics.float3 rotationSpeeds;
-    public Unity.Mathematics.float2 origin;
-    public Unity.Mathematics.float2 current;
-}
-
-public class MoveSystem : ComponentSystem
-{
-    protected override void OnUpdate()
-    {
-        Entities.ForEach((ref Translation translation, ref Rotation rotation, ref MoveComponent moveData) =>
-        {
-            var entityPos = new Vector2(moveData.current.x, moveData.current.y);
-            var newPosXY = Utils.GetRotatedPosition(entityPos, translation.Value.z / 50 * Time.deltaTime);
-            moveData.current = new Unity.Mathematics.float2(newPosXY.x, newPosXY.y);
-            translation.Value = new Unity.Mathematics.float3(newPosXY.x + moveData.origin.x, newPosXY.y + moveData.origin.y, translation.Value.z);
-
-            rotation.Value = Unity.Mathematics.quaternion.Euler(
-                moveData.rotationSpeeds.x * Time.unscaledTime,
-                moveData.rotationSpeeds.y * Time.unscaledTime,
-                0
-            );
-        });
-    }
-}

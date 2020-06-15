@@ -32,16 +32,6 @@ public class MainMenuPanel : MovableCanvasElement
         buttonGroup.cellSize = new Vector2(175,-45f);
     }
 
-    private void StartGame()
-    {
-        SceneController.Instance.LoadLevel();
-    }
-
-    private void QuitGame()
-    {
-        Application.Quit();
-    }
-
     public override Sequence Show()
     {
         var mainMenuPanelSequence = base.Show().Append(
@@ -57,5 +47,15 @@ public class MainMenuPanel : MovableCanvasElement
                         .3f).SetEase(Ease.OutExpo));
 
         return mainMenuPanelSequence;
+    }
+
+    private void StartGame()
+    {
+        SceneController.Instance.LoadLevel();
+    }
+
+    private void QuitGame()
+    {
+        Application.Quit();
     }
 }

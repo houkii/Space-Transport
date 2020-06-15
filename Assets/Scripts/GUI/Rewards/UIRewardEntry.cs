@@ -11,7 +11,7 @@ public class UIRewardEntry : MonoBehaviour
     private RectTransform rt;
     private Reward reward;
 
-    private void Awake()
+    public void Awake()
     {
         gameObject.SetActive(false);
     }

@@ -166,7 +166,7 @@ public class TargetIndicator : MonoBehaviour
     {
         if (hideable)
         {
-            CameraViews.OnCameraViewChanged += (view) =>
+            CameraController.Instance.CameraViews.OnCameraViewChanged += (view) =>
             {
                 if (this == null) return;
 

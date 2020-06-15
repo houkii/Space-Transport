@@ -10,7 +10,14 @@ public interface ICameraView
 
 public abstract class CameraView : ICameraView
 {
-    public enum CameraViewType { Standard, NormalLook, CloseLook, Distant, QuickDistant }
+    public enum CameraViewType 
+    { 
+        Standard, 
+        Normal, 
+        Close, 
+        Distant, 
+        QuickDistant 
+    }
 
     public static Camera Cam;
     public bool IsSet { get; private set; }

@@ -16,7 +16,7 @@ public class TopPanelController : MonoBehaviour
         set => scoreValue.text = value.ToString();
     }
 
-    private void Start()
+    public void Start()
     {
         fuelSlider.maxValue = PlayerController.Instance.Stats.MaxFuel;
         fuelSlider.value = PlayerController.Instance.Stats.Fuel;
@@ -25,13 +25,13 @@ public class TopPanelController : MonoBehaviour
         SetInfoButton(GameController.Instance.Settings.InfoActive);
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         PlayerController.Instance.Stats.OnScoreUpdated += UpdateScore;
         PlayerController.Instance.Stats.OnFuelUpdated += UpdateFuel;
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         PlayerController.Instance.Stats.OnScoreUpdated -= UpdateScore;
         PlayerController.Instance.Stats.OnFuelUpdated -= UpdateFuel;
