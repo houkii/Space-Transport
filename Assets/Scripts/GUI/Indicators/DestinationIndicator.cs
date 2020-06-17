@@ -2,9 +2,10 @@
 
 public class DestinationIndicator : MonoBehaviour
 {
+    public Transform Destination;
+
     [SerializeField] private float offsetRadius = 30f;
     private float platformPosOffset = 40f;
-    public Transform Destination;
 
     private void Awake()
     {

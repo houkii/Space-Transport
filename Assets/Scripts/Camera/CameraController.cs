@@ -159,6 +159,4 @@ public class CameraController : Singleton<CameraController>
             CameraViews.SetActive(CameraView.CameraViewType.Distant);
         });
     }
-
-
 }

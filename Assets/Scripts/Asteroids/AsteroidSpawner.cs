@@ -28,7 +28,7 @@ public class AsteroidSpawner : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public void SpawnAsteroids(Vector2 origin)
+    private void SpawnAsteroids(Vector2 origin)
     {
         foreach (Mesh mesh in meshesToRender)
         {
@@ -59,7 +59,7 @@ public class AsteroidSpawner : MonoBehaviour
             DestroyEntities();
             foreach (Mesh mesh in meshesToRender)
             {
-                Spawn(5, mesh, 350, 650, 250, 550, Vector2.zero);
+                Spawn(10, mesh, 350, 650, 250, 550, Vector2.zero);
             }
         }
     }

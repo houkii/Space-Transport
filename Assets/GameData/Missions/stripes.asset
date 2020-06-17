@@ -25,11 +25,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 135
       ID: 1
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 12
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 30
+      Period: 50
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: e6b9819d098c20d45ab4c09b8ae64177,
         type: 3}
@@ -37,11 +37,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 135
       ID: 2
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: -13
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -40
+      Period: -50
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -49,11 +49,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 100
       ID: 3
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 0
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 10
+      Period: 15
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -61,11 +61,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 100
       ID: 4
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 0
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -10
+      Period: -15
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -73,11 +73,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 100
       ID: 5
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 0
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: 10
+      Period: 15
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -85,11 +85,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 100
       ID: 6
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 0
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -10
+      Period: -15
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -97,11 +97,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 100
       ID: 7
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 0
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -10
+      Period: -15
       Satellites: []
     - Prefab: {fileID: 8017094335169556457, guid: acf3adad934470d4688a2c969f13f847,
         type: 3}
@@ -109,11 +109,11 @@ MonoBehaviour:
       Mass: 700
       Scale: 100
       ID: 8
-      rotationAngles: {x: 0, y: 0, z: 0}
       RotationSpeed: 0
+      rotationAngles: {x: 0, y: 0, z: 0}
       CentralObject: {fileID: 0}
       Center: {x: 0, y: 0, z: 0}
-      Period: -10
+      Period: -15
       Satellites: []
   Planets: []
   NpcsToSpawn:
@@ -133,3 +133,5 @@ MonoBehaviour:
     DestinationPlanet: 2
     SpawnDelay: 0
   BoundsSize: 1750
+  tutorial:
+    lessons: []

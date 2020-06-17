@@ -5,12 +5,12 @@ using DG.Tweening;
 
 public class ShipThruster : MonoBehaviour
 {
+    [SerializeField] private float maxRotation = 2f;
     private Material material;
     private MeshRenderer renderer;
     private Sequence activeSequence;
     private float rotation = 0f;
     private float currentParentYScale;
-    [SerializeField] private float maxRotation = 2f;
     private bool canRotate = false;
 
     void Awake()
@@ -25,6 +25,19 @@ public class ShipThruster : MonoBehaviour
         this.SetScale();
     }
 
+    public void SetActive(bool active)
+    {
+        activeSequence.Kill();
+        if (active)
+        {
+            activeSequence = GetStartSequence();
+        }
+        else
+        {
+            activeSequence = GetHideSequence();
+        }
+    }
+
     private void SetRotation()
     {
         if (canRotate)
@@ -37,27 +50,11 @@ public class ShipThruster : MonoBehaviour
     private void SetScale()
     {
         currentParentYScale = transform.parent.transform.localScale.y;
-        //float yScale = Mathf.Lerp(transform.parent.transform.localScale.y, 4*PlayerController.Instance.CurrentToMaximumVelocityMagnitudeRatio, 0.05f);
-        //transform.parent.transform.localScale = new Vector3(1, yScale, 1);
-    }
-
-    public void SetActive(bool active)
-    {
-        activeSequence.Kill();
-        if(active)
-        {
-            activeSequence = GetStartSequence();
-        }
-        else
-        {
-            activeSequence = GetHideSequence();
-        }
     }
 
     private Sequence GetStartSequence()
     {
         renderer.enabled = true;
-        //this.canRotate = true;
         Sequence seq = DOTween.Sequence();
         transform.parent.transform.localScale = new Vector3(1, currentParentYScale, 1);
         seq.Append(transform.parent.transform.DOScaleY(.25f, 1.25f).SetEase(Ease.OutExpo))

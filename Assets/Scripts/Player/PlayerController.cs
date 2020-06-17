@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ShipThruster shipThruster;
     [SerializeField] private PlayerEffects playerEffects;
     [SerializeField] private ShipSounds Sounds;
-
     private ParticleSystem.EmissionModule propulsionEmission;
     private Rigidbody rigidbody;
     private CameraController cameraController;
@@ -47,12 +46,12 @@ public class PlayerController : MonoBehaviour
     private static Vector3[] emptyMovementVectorArray = new Vector3[averagedMovementVectorArraySize];
     private CircularBuffer<Vector3> movementBuff = new CircularBuffer<Vector3>(averagedMovementVectorArraySize, emptyMovementVectorArray);
 
-    private bool joystickAvailable => !(transform.parent != null || (isLocked || hasLanded) || Joystick.Instance.Input.magnitude < .2f);
     public float CurrentToMaximumVelocityMagnitudeRatio => (rigidbody.velocity.magnitude / maxVelocityMagnitude);
     public float VelocityToDirectionAngle => Vector3.Angle(rigidbody.velocity.normalized, transform.forward);
     public float VelocityToDirectionSignedAngle => Vector3.SignedAngle(transform.forward, rigidbody.velocity.normalized, transform.up);
     public float DelayedForwardAngle => Vector3.SignedAngle(transform.forward, averagedMovementVector, transform.up);
     public bool IsDead => isDead;
+    private bool joystickAvailable => !(transform.parent != null || (isLocked || hasLanded) || Joystick.Instance.Input.magnitude < .2f);
 
 
     private void Awake()
@@ -89,15 +88,6 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(WaitForTutorialCompletion());
     }
 
-    private IEnumerator WaitForTutorialCompletion()
-    {
-        rigidbody.isKinematic = true;
-        transform.localScale = Vector3.zero;
-        yield return new WaitUntil(() => GameController.Instance.MissionController.CurrentMission.tutorial.Complete);
-        rigidbody.isKinematic = false;
-        playerEffects.PlayIntroSequence();
-    }
-
     private void Update()
     {
         HandleInput();
@@ -113,6 +103,52 @@ public class PlayerController : MonoBehaviour
             Move();
     }
 
+    public void Kill()
+    {
+        playerEffects.ShowExplosion(transform.position, transform.rotation);
+        Camera.main.transform.DOShakeRotation(.45f, 5f, 30).OnComplete(() => OnPlayerDied?.Invoke());
+        var colliders = transform.GetComponents<Collider>();
+        foreach (Collider coll in colliders) Destroy(coll);
+        isDead = true;
+        SoundManager.Instance.PlayExplosion();
+        SoundManager.Instance.PlayMissionFailedTheme();
+        Vibration.Vibrate(50);
+        gameObject.SetActive(false);
+    }
+
+    public void StartMovement()
+    {
+        if (!isMoving && Stats.Fuel > 0)
+        {
+            StartEngine();
+            isMoving = true;
+        }
+    }
+
+    public void StopMovement()
+    {
+        if (isMoving)
+        {
+            StopEngine();
+            isMoving = false;
+        }
+    }
+
+    public void AddPassenger(NPCEntity entity)
+    {
+        Audio2.PlayOneShot(Sounds.GetOnBoard);
+        entity.OnReachedDestination.AddListener(() =>
+            AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
+        Passengers.Add(entity);
+        Vibration.Vibrate(15);
+        playerEffects.ShowTravellerEnterFX(shipThruster.transform.position, transform.rotation);
+    }
+
+    public void RemovePassenger(NPCEntity entity)
+    {
+        Passengers.Remove(entity);
+    }
+
     private void ProximityCheck()
     {
         if (transform.position.magnitude > GameController.Instance.MissionController.CurrentMission.BoundsSize * 1.1f)
@@ -120,17 +156,6 @@ public class PlayerController : MonoBehaviour
             if (DialogCanvasManager.Instance.midInfo.gameObject.activeSelf == false)
                 DialogCanvasManager.Instance.midInfo.Show("You're too far away!");
         }
-    }
-
-    private IEnumerator MissionEndedCR()
-    {
-        yield return new WaitForSeconds(1.25f);
-        var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
-                new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
-        Stats.AddScore(endgameLandingScore);
-        StopLoadingFuel();
-        playerEffects.PlayOutroSequence();
-        StartCoroutine(SetScore());
     }
 
     private void HandleInput()
@@ -207,52 +232,6 @@ public class PlayerController : MonoBehaviour
         {
             Kill();
         }
-    }
-
-    public void Kill()
-    {
-        playerEffects.ShowExplosion(transform.position, transform.rotation);
-        Camera.main.transform.DOShakeRotation(.45f, 5f, 30).OnComplete(() => OnPlayerDied?.Invoke());
-        var colliders = transform.GetComponents<Collider>();
-        foreach (Collider coll in colliders) Destroy(coll);
-        isDead = true;
-        SoundManager.Instance.PlayExplosion();
-        SoundManager.Instance.PlayMissionFailedTheme();
-        Vibration.Vibrate(50);
-        gameObject.SetActive(false);
-    }
-
-    public void StartMovement()
-    {
-        if (!isMoving && Stats.Fuel > 0)
-        {
-            StartEngine();
-            isMoving = true;
-        }
-    }
-
-    public void StopMovement()
-    {
-        if (isMoving)
-        {
-            StopEngine();
-            isMoving = false;
-        }
-    }
-
-    public void AddPassenger(NPCEntity entity)
-    {
-        Audio2.PlayOneShot(Sounds.GetOnBoard);
-        entity.OnReachedDestination.AddListener(() =>
-            AddScore(Reward.RewardType.DeliveryReward, entity.DeliveryRewardData));
-        Passengers.Add(entity);
-        Vibration.Vibrate(15);
-        playerEffects.ShowTravellerEnterFX(shipThruster.transform.position, transform.rotation);
-    }
-
-    public void RemovePassenger(NPCEntity entity)
-    {
-        Passengers.Remove(entity);
     }
 
     private void OnCollisionExit(Collision collision)
@@ -480,7 +459,24 @@ public class PlayerController : MonoBehaviour
         }
         return (vectorSum / movementBuff.Capacity);
     }
+
+    private IEnumerator WaitForTutorialCompletion()
+    {
+        rigidbody.isKinematic = true;
+        transform.localScale = Vector3.zero;
+        yield return new WaitUntil(() => GameController.Instance.MissionController.CurrentMission.tutorial.Complete);
+        rigidbody.isKinematic = false;
+        playerEffects.PlayIntroSequence();
+    }
+
+    private IEnumerator MissionEndedCR()
+    {
+        yield return new WaitForSeconds(1.25f);
+        var endgameLandingScore = GameController.Instance.Rewards.GetReward(Reward.RewardType.FuelReward,
+                new FuelRewardArgs(Stats.MaxFuel, Stats.Fuel, Stats.TotalFuelUsed));
+        Stats.AddScore(endgameLandingScore);
+        StopLoadingFuel();
+        playerEffects.PlayOutroSequence();
+        StartCoroutine(SetScore());
+    }
 }
-
-
-

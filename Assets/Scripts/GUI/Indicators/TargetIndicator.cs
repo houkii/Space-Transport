@@ -4,22 +4,11 @@ using UnityEngine.UI;
 
 public class TargetIndicator : MonoBehaviour
 {
-    private Camera mainCamera;
-    private RectTransform m_icon;
-    private Image m_iconImage;
-    private GameObject targetsHolder;
-    private Vector3 m_cameraOffsetUp;
-    private Vector3 m_cameraOffsetRight;
-    private Vector3 m_cameraOffsetForward;
-    public Sprite m_targetIconOnScreen;
-    public Sprite m_targetIconOffScreen;
-
-    [Space]
     [Range(0, 300)]
     public float m_edgeBuffer;
-
-    [Space]
     public bool ShowDebugLines;
+    public Sprite m_targetIconOnScreen;
+    public Sprite m_targetIconOffScreen;
 
     [SerializeField, Range(0f, 1f)] private float minScale;
     [SerializeField, Range(0f, 2f)] private float maxScale;
@@ -27,9 +16,11 @@ public class TargetIndicator : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float offScreenAlpha;
     [SerializeField] private Color color;
     [SerializeField] private bool hideable;
+    private Camera mainCamera;
+    private RectTransform m_icon;
+    private Image m_iconImage;
+    private GameObject targetsHolder;
     private Vector3 screenCenter;
-
-    private TextMeshProUGUI iconText;
 
     private void Awake()
     {
@@ -57,6 +48,39 @@ public class TargetIndicator : MonoBehaviour
             DrawDebugLines();
 
         UpdateTargetIcon();
+    }
+
+    public void DrawDebugLines()
+    {
+        Vector3 directionFromCamera = transform.position - mainCamera.transform.position;
+        Vector3 cameraForwad = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
+        Vector3 cameraUp = mainCamera.transform.up;
+        cameraForwad *= Vector3.Dot(cameraForwad, directionFromCamera);
+        cameraRight *= Vector3.Dot(cameraRight, directionFromCamera);
+        cameraUp *= Vector3.Dot(cameraUp, directionFromCamera);
+        Debug.DrawRay(mainCamera.transform.position, directionFromCamera, Color.magenta);
+        Vector3 forwardPlaneCenter = mainCamera.transform.position + cameraForwad;
+        Debug.DrawLine(mainCamera.transform.position, forwardPlaneCenter, Color.blue);
+        Debug.DrawLine(forwardPlaneCenter, forwardPlaneCenter + cameraUp, Color.green);
+        Debug.DrawLine(forwardPlaneCenter, forwardPlaneCenter + cameraRight, Color.red);
+    }
+
+    public Vector3 Vector3Maximize(Vector3 vector)
+    {
+        Vector3 returnVector = vector;
+        float max = 0;
+        max = vector.x > max ? vector.x : max;
+        max = vector.y > max ? vector.y : max;
+        max = vector.z > max ? vector.z : max;
+        returnVector /= max;
+        return returnVector;
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(m_icon.gameObject);
+        Destroy(this);
     }
 
     private void InstantiateTargetIcon()
@@ -180,38 +204,5 @@ public class TargetIndicator : MonoBehaviour
                 }
             };
         }
-    }
-
-    public void DrawDebugLines()
-    {
-        Vector3 directionFromCamera = transform.position - mainCamera.transform.position;
-        Vector3 cameraForwad = mainCamera.transform.forward;
-        Vector3 cameraRight = mainCamera.transform.right;
-        Vector3 cameraUp = mainCamera.transform.up;
-        cameraForwad *= Vector3.Dot(cameraForwad, directionFromCamera);
-        cameraRight *= Vector3.Dot(cameraRight, directionFromCamera);
-        cameraUp *= Vector3.Dot(cameraUp, directionFromCamera);
-        Debug.DrawRay(mainCamera.transform.position, directionFromCamera, Color.magenta);
-        Vector3 forwardPlaneCenter = mainCamera.transform.position + cameraForwad;
-        Debug.DrawLine(mainCamera.transform.position, forwardPlaneCenter, Color.blue);
-        Debug.DrawLine(forwardPlaneCenter, forwardPlaneCenter + cameraUp, Color.green);
-        Debug.DrawLine(forwardPlaneCenter, forwardPlaneCenter + cameraRight, Color.red);
-    }
-
-    public Vector3 Vector3Maximize(Vector3 vector)
-    {
-        Vector3 returnVector = vector;
-        float max = 0;
-        max = vector.x > max ? vector.x : max;
-        max = vector.y > max ? vector.y : max;
-        max = vector.z > max ? vector.z : max;
-        returnVector /= max;
-        return returnVector;
-    }
-
-    public void DestroySelf()
-    {
-        Destroy(m_icon.gameObject);
-        Destroy(this);
     }
 }

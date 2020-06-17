@@ -11,6 +11,7 @@ public class AsteroidMoveSystem : JobComponentSystem
     {
         [ReadOnly] public float DeltaTime;
         [ReadOnly] public float UnscaledTime;
+
         public void Execute(Entity entity, int index, ref Translation translation, ref Rotation rotation, ref AsteroidMoveComponent moveData)
         {
             var entityPos = new Vector2(moveData.current.x, moveData.current.y);

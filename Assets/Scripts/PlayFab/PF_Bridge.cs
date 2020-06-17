@@ -2,6 +2,7 @@
 {
     public delegate void PlayFabErrorHandler(string details, PlayFabAPIMethods method, MessageDisplayStyle displayStyle);
     public static event PlayFabErrorHandler OnPlayFabCallbackError;
+
     public delegate void CallbackSuccess(string details, PlayFabAPIMethods method, MessageDisplayStyle displayStyle);
     public static event CallbackSuccess OnPlayfabCallbackSuccess;
 
